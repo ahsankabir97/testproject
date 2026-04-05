@@ -1394,24 +1394,7 @@ function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 // ── RENDER ────────────────────────────────────────────────────────────
 function renderAll(){
   const tot=ENGS.reduce((s,eng)=>s+D[eng].length,0)+D.unassigned.length+D.done.length;
-  ENGS.forEach(eng=>{
-  const badge=document.getElementById('b-'+eng);
-  badge.textContent=D[eng].length;
-  if(_currentUser===eng){
-    badge.style.background='#16a34a';
-    badge.style.color='#fff';
-    badge.style.borderColor='rgba(22,163,74,.4)';
-    badge.style.boxShadow='0 0 8px rgba(22,163,74,.4)';
-  } else {
-    badge.style.background='';
-    badge.style.color='';
-    badge.style.borderColor='';
-    badge.style.boxShadow='';
-// last line of renderAll
-  updateEngBadgeColors();
-}
-  }
-});
+  ENGS.forEach(eng=>document.getElementById('b-'+eng).textContent=D[eng].length);
   document.getElementById('b-done').textContent=D.done.length;
   document.getElementById('b-all').textContent=tot;
   document.getElementById('b-un').textContent=D.unassigned.length;
@@ -2164,30 +2147,7 @@ function applyRoleUI(){
   const manageTab = document.getElementById('tab-manage');
   if(manageTab) manageTab.style.display = (u==='admin'?'':'none');
   if(u!=='admin' && document.querySelector('#page-manage.active')){go('all');}
-  
   renderAll();
-  
-  // Apply AFTER renderAll so it doesn't get overwritten
-  updateEngBadgeColors();
-}
-
-function updateEngBadgeColors(){
-  const u = _currentUser;
-  ENGS.forEach(eng=>{
-    const b=document.getElementById('b-'+eng);
-    if(!b) return;
-    if(u===eng){
-      b.style.setProperty('background','#16a34a','important');
-      b.style.setProperty('color','#ffffff','important');
-      b.style.setProperty('border-color','rgba(22,163,74,.5)','important');
-      b.style.setProperty('box-shadow','0 0 10px rgba(22,163,74,.5)','important');
-    } else {
-      b.style.removeProperty('background');
-      b.style.removeProperty('color');
-      b.style.removeProperty('border-color');
-      b.style.removeProperty('box-shadow');
-    }
-  });
 }
 
 function openSheetsUrlModal(){
