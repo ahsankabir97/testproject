@@ -53,7 +53,32 @@
                 linear-gradient(145deg, #e8edf7 0%, #eef2f9 45%, #e4eff8 100%);
             background-attachment: fixed;
         }
-
+.btn-delete-mode {
+    background: var(--grad-danger);
+    color: white; border: none;
+    padding: 5px 10px; border-radius: 6px;
+    cursor: pointer; font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.58rem;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: all 0.2s ease; text-transform: uppercase;
+    letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-delete-mode:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(220,38,38,0.40); }
+.btn-confirm-delete {
+    background: var(--grad-danger);
+    color: white; border: none;
+    padding: 8px 16px; border-radius: 6px;
+    cursor: pointer; font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.68rem;
+    display: none; align-items: center; gap: 6px;
+    transition: all 0.2s ease; text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-left: 8px;
+}
+.btn-confirm-delete.visible { display: inline-flex; }
+.delete-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #dc2626; }
         /* ── LOGIN SCREEN ── */
         #loginScreen {
             position: fixed; inset: 0; z-index: 9999;
@@ -370,32 +395,9 @@
             border-radius:0 0 10px 10px;
         }
         @media (max-width: 768px) {
-    .sheet-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .sheet-wrapper iframe { width: 900px; height: 280px; min-width: 900px; }
-
-    .main-content { overflow-x: hidden; }
-
-    div[style*="overflow-x:auto"] {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        max-width: 100vw;
-        display: block;
-    }
-
-    #ongoingTable,
-    #completedTable {
-        min-width: 700px !important;
-        width: max-content !important;
-        display: table !important;
-    }
-
-    #ongoingTable th, #ongoingTable td,
-    #completedTable th, #completedTable td {
-        white-space: nowrap !important;
-        padding: 8px 10px !important;
-        font-size: 0.68rem !important;
-    }
-}
+            .sheet-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .sheet-wrapper iframe { width: 900px; height: 280px; min-width: 900px; }
+        }
 
         /* ── FORM ── */
         .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px; align-items:end; }
@@ -963,26 +965,90 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
             </div>
 
             <!-- SECTION: Task Live Summary -->
-            <div class="dashboard-section" id="section-summary">
-                <div class="card card-summary">
-                    <div class="card-title" style="color:var(--sky);"><i class="fas fa-chart-bar"></i> TASK LIVE SUMMARY</div>
-                    <div class="sheet-wrapper">
-                        <div class="sheet-top-mask"></div>
-                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYE61oI9ahQllfKmXmV-ulhGeFDi16gBDgHN8b4NWk9Y3bLyxnyc8S06Wk_TTU21YzVFj2aKKvHDJG/pubhtml?gid=337897408&single=true&widget=false&headers=false&range=A1:M7"></iframe>
-                        <div class="sheet-bottom-mask"></div>
-                    </div>
-                    <div class="copyright-text">Prepared By: AHSANUL KABIR </div>
-                </div>
+           <!-- SECTION: Task Live Summary -->
+<!-- SECTION: Task Live Summary -->
+<div class="dashboard-section" id="section-summary">
+    <div class="card card-summary">
+        <div class="card-title" style="color:var(--sky);"><i class="fas fa-chart-bar"></i> TASK LIVE SUMMARY</div>
+
+        <!-- Monthly Stats -->
+        <div style="margin-bottom:24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
+    <i class="fas fa-calendar-alt"></i> Monthly Task Count
+</div>
+                <div id="monthDropdownContainer"></div>
             </div>
+            <div style="overflow-x:auto;">
+                <table id="monthlyTable" style="min-width:500px;">
+                    <thead>
+                        <tr id="monthlyHeader">
+                            <th>Month</th>
+                            <th><span class="badge bg-sumon">Sumon</span></th>
+                            <th><span class="badge bg-alamin">Alamin</span></th>
+                            <th><span class="badge bg-fahim">Fahim</span></th>
+                            <th><span class="badge bg-nahid">Nahid</span></th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthlyTableBody">
+                        <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Daily Stats -->
+        <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
+    <i class="fas fa-calendar-day"></i> Daily Task Report
+</div>
+                <input type="date" id="summaryDateSelector" class="search-box" onchange="renderSummary()">
+            </div>
+            <div style="overflow-x:auto;">
+                <table id="dailyTable" style="min-width:500px;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th><span class="badge bg-sumon">Sumon</span></th>
+                            <th><span class="badge bg-alamin">Alamin</span></th>
+                            <th><span class="badge bg-fahim">Fahim</span></th>
+                            <th><span class="badge bg-nahid">Nahid</span></th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyTableBody">
+                        <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="copyright-text">Prepared By: AHSANUL KABIR</div>
+    </div>
+</div>
 
             <!-- SECTION: Ongoing Tasks -->
             <div class="dashboard-section" id="section-ongoing">
                 <div class="card card-ongoing">
-                    <div class="card-title" style="color:var(--rose);"><i class="fas fa-spinner fa-pulse"></i> ONGOING TASKS (WORKING)</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div class="card-title" style="color:var(--rose); margin:0; padding:0; border:none;">
+        <i class="fas fa-spinner fa-pulse"></i> ONGOING TASKS (WORKING)
+    </div>
+    <div style="display:flex; align-items:center;">
+        <button class="btn-delete-mode" id="toggleDeleteBtn" onclick="toggleDeleteMode()">
+            <i class="fas fa-trash-alt"></i> Delete
+        </button>
+        <button class="btn-confirm-delete" id="confirmDeleteBtn" onclick="deleteSelectedOngoing()">
+            <i class="fas fa-check"></i> Delete Selected
+        </button>
+    </div>
+</div>
                     <div id="techViewInfoOngoing" class="tech-view-info" style="display:none;">
                         <i class="fas fa-eye"></i> Showing all technicians' ongoing tasks. You can mark any task as done.
                     </div>
-                    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; display:block;">
+                    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; cursor:grab;">
     <table id="ongoingTable" style="min-width:650px;">
                             <thead>
                                 <tr><th>Date & Action</th><th>Start</th><th>Ticket ID</th><th>Area</th><th>Technician</th><th>Assigned By</th><th>Status</th></tr>
@@ -996,10 +1062,12 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
             <!-- SECTION: Completed Tasks -->
             <div class="dashboard-section" id="section-completed">
                 <div class="card card-completed">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
     <div class="card-title" style="color:var(--teal); margin:0; padding:0; border:none;"><i class="fas fa-check-circle"></i> COMPLETED TASKS</div>
     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <input type="date" id="searchDate" class="search-box" onchange="renderAll()">
+        <input type="date" id="searchDateFrom" class="search-box" onchange="renderAll()" placeholder="From">
+<span style="font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;color:var(--navy-mid);">TO</span>
+<input type="date" id="searchDateTo" class="search-box" onchange="renderAll()" placeholder="To">
         <select id="filterTech" class="search-box" onchange="renderAll()">
             <option value="">All Technicians</option>
             <option>Sumon</option>
@@ -1007,12 +1075,15 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
             <option>Nahid</option>
             <option>Fahim</option>
         </select>
-        <button class="btn-clear" onclick="clearCompleted()" id="clearBtn">
-            <i class="fas fa-trash-alt"></i> Clear
+        <button class="btn-delete-mode" id="toggleDeleteCompletedBtn" onclick="toggleDeleteModeCompleted()">
+            <i class="fas fa-trash-alt"></i> Delete
+        </button>
+        <button class="btn-confirm-delete" id="confirmDeleteCompletedBtn" onclick="deleteSelectedCompleted()">
+            <i class="fas fa-check"></i> Delete Selected
         </button>
     </div>
 </div>
-                    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; display:block;">
+                    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; cursor:grab;">
     <table id="completedTable" style="min-width:750px;">
                             <thead>
                                 <tr><th>Date</th><th>Start</th><th>End</th><th>Ticket</th><th>Area</th><th>Technician</th><th>Assigned By</th><th>Status</th></tr>
@@ -1293,19 +1364,24 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
         const dot = document.getElementById('roleDot');
         dot.className = 'role-dot ' + (currentUser.role === 'engineer' ? 'eng' : 'tech');
 
-        if (currentUser.role === 'engineer') {
-            document.getElementById('engineerOnlyNotice').style.display = 'none';
-            document.getElementById('assignForm').style.display = 'block';
-            document.getElementById('techViewInfoOngoing').style.display = 'none';
-            document.getElementById('clearBtn').style.display = 'flex';
-        } else {
-            document.getElementById('engineerOnlyNotice').style.display = 'none';
-            document.getElementById('assignForm').style.display = 'block';
-            document.getElementById('techViewInfoOngoing').style.display = 'flex';
-            document.getElementById('clearBtn').style.display = 'none';
-            const sel = document.getElementById('personInput');
-            sel.value = currentUser.name;
-        }
+       if (currentUser.role === 'engineer') {
+    document.getElementById('engineerOnlyNotice').style.display = 'none';
+    document.getElementById('assignForm').style.display = 'block';
+    document.getElementById('techViewInfoOngoing').style.display = 'none';
+    } else {
+    document.getElementById('engineerOnlyNotice').style.display = 'none';
+    document.getElementById('assignForm').style.display = 'block';
+    document.getElementById('techViewInfoOngoing').style.display = 'flex';
+    const sel = document.getElementById('personInput');
+    sel.value = currentUser.name;
+}
+
+// ✅ এই দুই লাইন if-else এর পরে, কিন্তু loginAs() এর ভেতরে বসাবেন
+const isAdmin = currentUser.username === 'admin';
+document.getElementById('toggleDeleteBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+document.getElementById('confirmDeleteBtn').style.display = 'none';
+document.getElementById('toggleDeleteCompletedBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+document.getElementById('confirmDeleteCompletedBtn').style.display = 'none';
 
         startFirebaseSync();
     }
@@ -1455,69 +1531,198 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
         if (!currentUser) return;
         updateNavBadges();
 
-        const sv = document.getElementById('searchDate').value;
-        const ob = document.querySelector('#ongoingTable tbody');
-        const isAdmin    = currentUser.username === 'admin';
-        const isEngineer = currentUser.role === 'engineer';
+        const sv = document.getElementById('searchDateFrom')?.value || '';
+const svTo = document.getElementById('searchDateTo')?.value || '';
+       const ob = document.querySelector('#ongoingTable tbody');
+const isAdmin    = currentUser.username === 'admin';
+const isEngineer = currentUser.role === 'engineer';
+const inDeleteMode = window._deleteMode || false;
 
-        ob.innerHTML = ongoing.length === 0
-            ? '<tr><td colspan="7" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Active Tasks Found</td></tr>'
-            : ongoing.map(t => {
-                const isMyTask = t.person.toLowerCase() === currentUser.name.toLowerCase();
-                // Only admin OR the assigned technician can mark done; other engineers cannot
-                const canDone  = isAdmin || isMyTask;
-                const actionCell = canDone
-                    ? `<button class="btn-done" onclick="markDone(${t.id})"><i class="fas fa-check"></i> MARK DONE</button>`
-                    : '';
-                const assignedBy = t.assignedBy || '—';
-                const assignedByLower = assignedBy.toLowerCase();
-                return `<tr>
-                <td><strong><i class="far fa-calendar-alt"></i> ${formatDateDisplay(t.date)}</strong>
-                    ${actionCell}</td>
-                <td style="color:var(--navy-light);font-weight:600;font-family:'Montserrat';"><i class="far fa-clock"></i> ${t.startTime}</td>
-                <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
-                <td><span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
-                <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
-                <td><span class="badge bg-${assignedByLower}" style="background:linear-gradient(135deg,#1e3a6e 0%,#2563eb 100%);"><i class="fas fa-user-tie"></i> ${assignedBy}</span></td>
-                <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</span></td></tr>`;
-            }).join('');
+ob.innerHTML = ongoing.length === 0
+    ? '<tr><td colspan="8" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Active Tasks Found</td></tr>'
+    : ongoing.map(t => {
+        const isMyTask = t.person.toLowerCase() === currentUser.name.toLowerCase();
+        const canDone  = isAdmin || isMyTask;
+        const actionCell = canDone
+            ? `<button class="btn-done" onclick="markDone(${t.id})"><i class="fas fa-check"></i> MARK DONE</button>`
+            : '';
+        const assignedBy = t.assignedBy || '—';
+        const assignedByLower = assignedBy.toLowerCase();
+        const checkboxCell = inDeleteMode
+            ? `<td><input type="checkbox" class="delete-checkbox ongoing-del-cb" value="${t.id}"></td>`
+            : '';
+        return `<tr>
+        ${checkboxCell}
+        <td><strong><i class="far fa-calendar-alt"></i> ${formatDateDisplay(t.date)}</strong>
+            ${actionCell}</td>
+        <td style="color:var(--navy-light);font-weight:600;font-family:'Montserrat';"><i class="far fa-clock"></i> ${t.startTime}</td>
+        <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
+        <td><span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
+        <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
+        <td><span class="badge bg-${assignedByLower}" style="background:linear-gradient(135deg,#1e3a6e 0%,#2563eb 100%);"><i class="fas fa-user-tie"></i> ${assignedBy}</span></td>
+        <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</span></td></tr>`;
+    }).join('');
 
         const st = document.getElementById('filterTech').value;
 const filtered = completed.filter(t => {
-    const dateMatch = sv ? t.date === sv : true;
+    const dateMatch = (sv && svTo) ? (t.date >= sv && t.date <= svTo)
+                    : sv ? t.date >= sv
+                    : svTo ? t.date <= svTo
+                    : true;
     const techMatch = st ? t.person === st : true;
     return dateMatch && techMatch;
 });
         const cb = document.querySelector('#completedTable tbody');
         cb.innerHTML = filtered.length === 0
             ? '<tr><td colspan="8" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Completed Tasks Found</td></tr>'
-            : filtered.map(t => {
-                const assignedBy = t.assignedBy || '—';
-                const assignedByLower = assignedBy.toLowerCase();
-                return `<tr>
-                <td>${formatDateDisplay(t.date)}</td>
-<td>${t.startTime}</td>
-<td>${t.doneTime}</td>
-<td>${t.ticket}</td>
-<td>${t.area}</td>
-<td>${t.person}</td>
-<td>${assignedBy}</td>
-<td>Done</td></tr>`;
-            }).join('');
+           : filtered.map(t => {
+    const assignedBy = t.assignedBy || '—';
+    const inDeleteModeCompleted = window._deleteModeCompleted || false;
+    const checkboxCell = inDeleteModeCompleted
+        ? `<td><input type="checkbox" class="delete-checkbox completed-del-cb" value="${t.id}"></td>`
+        : '';
+    return `<tr>
+    ${checkboxCell}
+    <td>${formatDateDisplay(t.date)}</td>
+    <td>${t.startTime}</td>
+    <td>${t.doneTime}</td>
+    <td>${t.ticket}</td>
+    <td>${t.area}</td>
+    <td>${t.person}</td>
+    <td>${assignedBy}</td>
+    <td>Done</td></tr>`;
+}).join('');
+renderSummary();
+    }
+function renderSummary() {
+    const allTasks = [...ongoing, ...completed];
+    const techs = ['Sumon','Alamin','Fahim','Nahid'];
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    // ── MONTH DROPDOWN SETUP ──
+    const monthSet = new Set();
+    allTasks.forEach(t => {
+        if (!t.date) return;
+        const d = new Date(t.date);
+        monthSet.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+    });
+    // Always include current month
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    monthSet.add(currentMonthKey);
+
+    const monthKeys = [...monthSet].sort().reverse();
+
+    let monthDropdown = document.getElementById('monthSelector');
+    const prevMonth = monthDropdown ? monthDropdown.value : currentMonthKey;
+
+    // Rebuild dropdown if needed
+    const monthDropdownContainer = document.getElementById('monthDropdownContainer');
+    if (monthDropdownContainer) {
+        monthDropdownContainer.innerHTML = `
+            <select id="monthSelector" class="search-box" onchange="renderSummary()" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:0.72rem;">
+                ${monthKeys.map(k => {
+                    const [yr, mo] = k.split('-');
+                    const label = `${monthNames[parseInt(mo)-1]} ${yr}`;
+                    return `<option value="${k}" ${k === prevMonth ? 'selected' : ''}>${label}</option>`;
+                }).join('')}
+            </select>`;
     }
 
+    const selectedMonth = document.getElementById('monthSelector')?.value || currentMonthKey;
+
+    // ── MONTHLY COUNT ──
+    const monthlyCount = {};
+    techs.forEach(t => monthlyCount[t] = 0);
+    allTasks.forEach(t => {
+        if (!t.date || !techs.includes(t.person)) return;
+        const d = new Date(t.date);
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        if (key === selectedMonth) monthlyCount[t.person]++;
+    });
+
+    // Ranking
+    const monthRanked = techs
+        .map(name => ({ name, count: monthlyCount[name] }))
+        .sort((a,b) => b.count - a.count);
+    const rankSuffix = ['1st','2nd','3rd','4th'];
+    const monthRankMap = {};
+    monthRanked.forEach((r,i) => monthRankMap[r.name] = rankSuffix[i]);
+
+    const monthlyBody = document.getElementById('monthlyTableBody');
+    if (monthlyBody) {
+        const [yr, mo] = selectedMonth.split('-');
+        const monthLabel = `${monthNames[parseInt(mo)-1]} ${yr}`;
+        const monthTotal = techs.reduce((s,t) => s + monthlyCount[t], 0);
+        monthlyBody.innerHTML = `<tr>
+            <td><strong>${monthLabel}</strong></td>
+            ${techs.map(name => `
+            <td>
+                <span style="font-weight:700;font-family:'Montserrat',sans-serif;font-size:0.85rem;">${monthlyCount[name]}</span>
+                <span style="font-size:0.58rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--muted);margin-left:4px;">(${monthRankMap[name]})</span>
+            </td>`).join('')}
+            <td><strong style="font-family:'Montserrat',sans-serif;">${monthTotal}</strong></td>
+        </tr>`;
+    }
+
+    // ── DATE SELECTOR SETUP ──
+    const todayStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+    let dateSelector = document.getElementById('summaryDateSelector');
+if (dateSelector) {
+    if (!dateSelector.value) {
+        dateSelector.value = todayStr;
+    }
+}
+    const selectedDate = dateSelector ? dateSelector.value || todayStr : todayStr;
+
+    // ── DAILY COUNT ──
+    const dailyCount = {};
+    techs.forEach(t => dailyCount[t] = 0);
+    allTasks.forEach(t => {
+        if (!t.date || !techs.includes(t.person)) return;
+        if (t.date === selectedDate) dailyCount[t.person]++;
+    });
+
+    // Ranking
+    const dailyRanked = techs
+        .map(name => ({ name, count: dailyCount[name] }))
+        .sort((a,b) => b.count - a.count);
+    const dailyRankMap = {};
+    dailyRanked.forEach((r,i) => dailyRankMap[r.name] = rankSuffix[i]);
+
+    const dailyBody = document.getElementById('dailyTableBody');
+    if (dailyBody) {
+        const dailyTotal = techs.reduce((s,t) => s + dailyCount[t], 0);
+        dailyBody.innerHTML = `<tr>
+            <td><strong>${formatDateDisplay(selectedDate)}</strong></td>
+            ${techs.map(name => `
+            <td>
+                <span style="font-weight:700;font-family:'Montserrat',sans-serif;font-size:0.85rem;">${dailyCount[name]}</span>
+                <span style="font-size:0.58rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--muted);margin-left:4px;">(${dailyRankMap[name]})</span>
+            </td>`).join('')}
+            <td><strong style="font-family:'Montserrat',sans-serif;">${dailyTotal}</strong></td>
+        </tr>`;
+    }
+}
     // ── SIDEBAR NAVIGATION ──
-    function showSection(name) {
-        // Hide all sections
-        document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+   function showSection(name) {
+    document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-        // Show selected
-        const section = document.getElementById('section-' + name);
-        const navItem = document.getElementById('nav-' + name);
-        if (section) section.classList.add('active');
-        if (navItem) navItem.classList.add('active');
+    const section = document.getElementById('section-' + name);
+    const navItem = document.getElementById('nav-' + name);
+    if (section) section.classList.add('active');
+    if (navItem) navItem.classList.add('active');
+
+    // Summary section এ ঢুকলে date always today reset হবে
+    if (name === 'summary') {
+        const now2 = new Date();
+const todayStr = new Date(now2.getTime() - now2.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+        const dateSelector = document.getElementById('summaryDateSelector');
+        if (dateSelector) dateSelector.value = todayStr;
+        renderSummary();
     }
+}
 
     // Update sidebar badges
     function updateNavBadges() {
@@ -1603,19 +1808,105 @@ async function markDone(id) {
         showPopup('warning','Sync Error','Error saving! Check connection.');
     }
 }
-
-    // ── CLEAR COMPLETED ──
-    async function clearCompleted() {
-        if (currentUser?.role !== 'engineer') { showPopup('warning','Access Denied','Only Engineers can clear completed tasks.'); return; }
-        if (!confirm("Clear all completed tasks? This cannot be undone.")) return;
-        try {
-            await Promise.all(completed.map(t => fbDelete(`tasks/${t.id}`)));
-            completed = []; renderAll();
-            showPopup('info','Tasks Cleared','All completed tasks have been cleared.');
-        } catch(e) {
-            showPopup('warning','Error','Failed to clear tasks.');
-        }
+// ── DELETE MODE TOGGLE ──
+function toggleDeleteMode() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete ongoing tasks.');
+        return;
     }
+    window._deleteMode = !window._deleteMode;
+    const btn = document.getElementById('toggleDeleteBtn');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (window._deleteMode) {
+        btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+        btn.style.background = 'rgba(255,255,255,0.15)';
+        confirmBtn.classList.add('visible');
+    } else {
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+    }
+    renderAll();
+}
+
+// ── DELETE SELECTED ONGOING TASKS ──
+async function deleteSelectedOngoing() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete ongoing tasks.');
+        return;
+    }
+    const checkboxes = document.querySelectorAll('.ongoing-del-cb:checked');
+    if (checkboxes.length === 0) {
+        showPopup('warning', 'None Selected', 'কোনো task select করা হয়নি।');
+        return;
+    }
+    if (!confirm(`${checkboxes.length}টি task delete করবেন?`)) return;
+
+    const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+    try {
+        await Promise.all(ids.map(id => fbDelete(`tasks/${id}`)));
+        ongoing = ongoing.filter(t => !ids.includes(t.id));
+        window._deleteMode = false;
+        const btn = document.getElementById('toggleDeleteBtn');
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+        renderAll();
+        showPopup('success', 'Deleted', `${ids.length}টি task সফলভাবে delete হয়েছে।`);
+    } catch(e) {
+        showPopup('warning', 'Error', 'Delete করতে সমস্যা হয়েছে।');
+    }
+}
+function toggleDeleteModeCompleted() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete completed tasks.');
+        return;
+    }
+    window._deleteModeCompleted = !window._deleteModeCompleted;
+    const btn = document.getElementById('toggleDeleteCompletedBtn');
+    const confirmBtn = document.getElementById('confirmDeleteCompletedBtn');
+    if (window._deleteModeCompleted) {
+        btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+        btn.style.background = 'rgba(255,255,255,0.15)';
+        confirmBtn.classList.add('visible');
+    } else {
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+    }
+    renderAll();
+}
+
+async function deleteSelectedCompleted() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete completed tasks.');
+        return;
+    }
+    const checkboxes = document.querySelectorAll('.completed-del-cb:checked');
+    if (checkboxes.length === 0) {
+        showPopup('warning', 'None Selected', 'কোনো task select করা হয়নি।');
+        return;
+    }
+    if (!confirm(`${checkboxes.length}টি completed task delete করবেন?`)) return;
+
+    const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+    try {
+        await Promise.all(ids.map(id => fbDelete(`tasks/${id}`)));
+        completed = completed.filter(t => !ids.includes(t.id));
+        window._deleteModeCompleted = false;
+        const btn = document.getElementById('toggleDeleteCompletedBtn');
+        const confirmBtn = document.getElementById('confirmDeleteCompletedBtn');
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+        renderAll();
+        showPopup('success', 'Deleted', `${ids.length}টি completed task সফলভাবে delete হয়েছে।`);
+    } catch(e) {
+        showPopup('warning', 'Error', 'Delete করতে সমস্যা হয়েছে।');
+    }
+}
+  
 
     // ══════════════════════════════════════════════
     // PAGE INIT — session check on load
