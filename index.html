@@ -83,7 +83,6 @@
         }
         .login-sub { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
 
-        /* Login form fields */
         .login-field-group { margin-bottom: 14px; text-align: left; }
         .login-field-label {
             font-family: 'Montserrat', sans-serif;
@@ -173,25 +172,6 @@
         }
         .cpm-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(13,148,136,0.40); }
 
-        .login-section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.65rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-            color: rgba(255,255,255,0.45);
-            margin-bottom: 10px; text-align: left;
-        }
-        .user-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .user-btn {
-            background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
-            border-radius: 12px; padding: 14px 10px; color: white; cursor: pointer;
-            font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.25s ease;
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-        }
-        .user-btn:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
-        .user-btn i { font-size: 1.3rem; }
-        .user-btn .role-tag { font-size: 0.55rem; opacity: 0.65; letter-spacing: 0.8px; font-weight: 600; }
-
         /* ── MAIN APP ── */
         .container {
             max-width: 1000px; margin: 0 auto;
@@ -228,7 +208,6 @@
         .sync-indicator { width:6px; height:6px; background:#4ade80; border-radius:50%; box-shadow:0 0 5px #4ade80; }
         .sync-indicator.updating { background:#facc15; animation:pulse 1s infinite; }
 
-        /* Current User Badge */
         .current-user-badge {
             background: rgba(255,255,255,0.10);
             border: 1px solid rgba(255,255,255,0.18);
@@ -268,13 +247,12 @@
         }
         .card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent); pointer-events:none; }
         .card:hover { transform:translateY(-3px); background:var(--glass-bg-hover); box-shadow:0 16px 40px rgba(15,31,61,0.16), inset 0 1px 0 rgba(255,255,255,0.65); }
-        .card-summary { border-top:3px solid var(--sky); box-shadow:var(--glass-shadow), 0 -1px 8px rgba(37,99,235,0.18), inset 0 1px 0 rgba(255,255,255,0.55); }
-        .card-new     { border-top:3px solid var(--sky-light); box-shadow:var(--glass-shadow), 0 -1px 8px rgba(59,130,246,0.18), inset 0 1px 0 rgba(255,255,255,0.55); }
-        .card-ongoing { border-top:3px solid var(--rose); box-shadow:var(--glass-shadow), 0 -1px 8px rgba(225,29,72,0.15), inset 0 1px 0 rgba(255,255,255,0.55); }
-        .card-completed { border-top:3px solid var(--teal); box-shadow:var(--glass-shadow), 0 -1px 8px rgba(13,148,136,0.15), inset 0 1px 0 rgba(255,255,255,0.55); }
+        .card-summary { border-top:3px solid var(--sky); }
+        .card-new     { border-top:3px solid var(--sky-light); }
+        .card-ongoing { border-top:3px solid var(--rose); }
+        .card-completed { border-top:3px solid var(--teal); }
         .card-title { font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.78rem; margin-bottom:15px; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:0.6px; border-bottom:1px solid rgba(148,163,184,0.25); padding-bottom:10px; }
 
-        /* ── ENGINEER-ONLY NOTICE ── */
         .engineer-only-notice {
             background: rgba(37,99,235,0.08);
             border: 1px dashed rgba(37,99,235,0.30);
@@ -317,7 +295,6 @@
         tr:nth-child(even) td { background:rgba(226,232,240,0.18); }
         tr:nth-child(even):hover td { background:rgba(255,255,255,0.40); }
 
-        /* ── SEARCH BOX ── */
         .search-box { padding:10px 12px; border:1.5px solid rgba(13,148,136,0.30); border-radius:8px; font-size:0.74rem; font-family:'Outfit',sans-serif; background:rgba(255,255,255,0.50); backdrop-filter:blur(6px); color:var(--slate-text); box-shadow:0 2px 8px rgba(13,148,136,0.08); }
         .search-box:focus { outline:none; border-color:var(--teal); background:rgba(255,255,255,0.78); }
 
@@ -333,7 +310,6 @@
         .bg-amit     { background:linear-gradient(135deg,#ea580c 0%,#dc2626 100%); }
         .bg-bashudeb { background:linear-gradient(135deg,#0891b2 0%,#1d4ed8 100%); }
 
-        /* ── STATUS ── */
         .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Montserrat',sans-serif; font-size:0.72rem; display:flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(225,29,72,0.08); border-radius:6px; width:fit-content; border:1px solid rgba(225,29,72,0.18); backdrop-filter:blur(4px); }
         @keyframes blink { 50%{ opacity:0.35; } }
 
@@ -354,7 +330,6 @@
 
         .copyright-text { font-family:'Poppins',sans-serif; font-size:0.63rem; color:var(--sky); font-weight:600; letter-spacing:0.3px; text-align:left; margin-top:9px; }
 
-        /* ── TECHNICIAN VIEW INFO ── */
         .tech-view-info {
             background: rgba(13,148,136,0.08);
             border: 1px dashed rgba(13,148,136,0.30);
@@ -381,7 +356,6 @@
             .form-grid { grid-template-columns:1fr; }
             .card { padding:16px; }
             .popup-message { top:10px; right:10px; left:10px; max-width:none; }
-            .user-grid { grid-template-columns:1fr 1fr; }
             .current-user-badge .uname { display:none; }
         }
     </style>
@@ -469,7 +443,6 @@
 <div id="mainApp" style="display:none;">
 <div class="container">
 
-    <!-- Header -->
     <header>
         <div class="header-left">
             <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
@@ -480,7 +453,6 @@
             </div>
         </div>
         <div class="header-right">
-            <!-- Current User -->
             <div class="current-user-badge" id="userBadge" title="Click to logout">
                 <div class="role-dot" id="roleDot"></div>
                 <div>
@@ -512,7 +484,7 @@
         <div class="copyright-text">© Ahsanul Kabir</div>
     </div>
 
-    <!-- New Assignment (Engineer only) -->
+    <!-- New Assignment -->
     <div class="card card-new" id="assignCard">
         <div class="card-title" style="color:var(--sky-light);"><i class="fas fa-plus-circle"></i> CREATE NEW ASSIGNMENT</div>
         <div class="engineer-only-notice" id="engineerOnlyNotice" style="display:none;">
@@ -608,11 +580,9 @@
 
 <script>
     // ═══════════════════════════════════════════════════════
-    // FIREBASE CONFIG — Free Realtime Database
-    // Database: link3-work-dashboard (public read/write rules)
+    // FIREBASE CONFIG
     // ═══════════════════════════════════════════════════════
     const FB_URL = "https://link3-dashboard-default-rtdb.firebaseio.com/";
-    // Google Sheets fallback (read-only legacy sync)
     const G_URL  = "https://script.google.com/macros/s/AKfycbz1ZE69wIfAem_gmCk5v-_2tH6ohSOdZoUkFpE1c0HRnQSqZxHfHVzTvVRAqjCcdB0/exec";
 
     // Firebase REST helpers
@@ -622,15 +592,7 @@
     }
     async function fbSet(path, data) {
         await fetch(`${FB_URL}/${path}.json`, {
-            method: 'PUT',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(data)
-        });
-    }
-    async function fbPatch(path, data) {
-        await fetch(`${FB_URL}/${path}.json`, {
-            method: 'PATCH',
-            headers: {'Content-Type':'application/json'},
+            method: 'PUT', headers: {'Content-Type':'application/json'},
             body: JSON.stringify(data)
         });
     }
@@ -638,35 +600,95 @@
         await fetch(`${FB_URL}/${path}.json`, { method: 'DELETE' });
     }
 
-    // ── USER CONFIG ──
+    // ══════════════════════════════════════════════
+    // USER ACCOUNTS — প্রত্যেক user এর নিজস্ব password
+    // ══════════════════════════════════════════════
     const USER_ACCOUNTS = [
-        { username: 'admin',    name: 'Admin',    role: 'engineer' },
-        { username: 'tamim',    name: 'Tamim',    role: 'engineer' },
-        { username: 'rupchan',  name: 'Rupchan',  role: 'engineer' },
-        { username: 'amit',     name: 'Amit',     role: 'engineer' },
-        { username: 'bashudeb', name: 'Bashudeb', role: 'engineer' },
-        { username: 'sumon',    name: 'Sumon',    role: 'technician' },
-        { username: 'alamin',   name: 'Alamin',   role: 'technician' },
-        { username: 'fahim',    name: 'Fahim',    role: 'technician' },
-        { username: 'nahid',    name: 'Nahid',    role: 'technician' },
+        { username: 'admin',    name: 'Administrator', role: 'engineer',   defaultPw: '78773597in' },
+        { username: 'tamim',    name: 'Tamim',         role: 'engineer',   defaultPw: 'tamim1234'  },
+        { username: 'rupchan',  name: 'Rupchan',       role: 'engineer',   defaultPw: 'rupchan1234'},
+        { username: 'amit',     name: 'Amit',          role: 'engineer',   defaultPw: 'amit1234'   },
+        { username: 'bashudeb', name: 'Bashudeb',      role: 'engineer',   defaultPw: 'bashudeb1234'},
+        { username: 'sumon',    name: 'Sumon',         role: 'technician', defaultPw: 'sumon1234'  },
+        { username: 'alamin',   name: 'Alamin',        role: 'technician', defaultPw: 'alamin1234' },
+        { username: 'fahim',    name: 'Fahim',         role: 'technician', defaultPw: 'fahim1234'  },
+        { username: 'nahid',    name: 'Nahid',         role: 'technician', defaultPw: 'nahid1234'  },
     ];
 
-    // Load or init password store (stored in Firebase under /passwords)
-    async function getPasswords() {
+    // ══════════════════════════════════════════════
+    // SESSION PERSISTENCE — refresh করলে logout হবে না
+    // ══════════════════════════════════════════════
+    const SESSION_KEY = 'dash_session_v1';
+
+    function saveSession(user) {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    }
+    function loadSession() {
         try {
-            const remote = await fbGet('passwords');
-            if (remote) return remote;
-        } catch(e) {}
-        // fallback to localStorage
-        const stored = localStorage.getItem('dash_passwords_v1');
-        if (stored) return JSON.parse(stored);
+            const s = sessionStorage.getItem(SESSION_KEY);
+            return s ? JSON.parse(s) : null;
+        } catch(e) { return null; }
+    }
+    function clearSession() {
+        sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    // ══════════════════════════════════════════════
+    // PASSWORD MANAGEMENT
+    // ══════════════════════════════════════════════
+    const PW_STORAGE_KEY = 'dash_passwords_v2';
+
+    function getDefaultPasswords() {
         const def = {};
-        USER_ACCOUNTS.forEach(u => def[u.username] = '1234');
+        USER_ACCOUNTS.forEach(u => def[u.username] = u.defaultPw);
         return def;
     }
-    async function savePasswords(obj) {
-        localStorage.setItem('dash_passwords_v1', JSON.stringify(obj));
-        try { await fbSet('passwords', obj); } catch(e) {}
+
+    function getPasswords() {
+        try {
+            const stored = localStorage.getItem(PW_STORAGE_KEY);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Make sure all users have a password (add missing ones with defaults)
+                const defaults = getDefaultPasswords();
+                let changed = false;
+                USER_ACCOUNTS.forEach(u => {
+                    if (!parsed[u.username]) {
+                        parsed[u.username] = defaults[u.username];
+                        changed = true;
+                    }
+                });
+                if (changed) localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(parsed));
+                return parsed;
+            }
+        } catch(e) {}
+        // First time — use defaults
+        const defaults = getDefaultPasswords();
+        localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(defaults));
+        return defaults;
+    }
+
+    function savePasswords(obj) {
+        localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(obj));
+        // Also sync to Firebase (best-effort)
+        try { fbSet('passwords', obj); } catch(e) {}
+    }
+
+    // Also try to load passwords from Firebase and merge
+    async function syncPasswordsFromFirebase() {
+        try {
+            const remote = await fbGet('passwords');
+            if (remote && typeof remote === 'object') {
+                const local = getPasswords();
+                // Remote wins for any key that exists remotely
+                const merged = { ...local, ...remote };
+                // But make sure all users have at least their default
+                USER_ACCOUNTS.forEach(u => {
+                    if (!merged[u.username]) merged[u.username] = u.defaultPw;
+                });
+                localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(merged));
+            }
+        } catch(e) {}
     }
 
     let currentUser = null;
@@ -696,6 +718,8 @@
         const errMsg = document.getElementById('loginErrorMsg');
         const btn    = document.getElementById('loginBtn');
 
+        errBox.style.display = 'none';
+
         if (!uname || !pw) {
             errMsg.textContent = 'Username and password are required.';
             errBox.style.display = 'flex'; return;
@@ -710,11 +734,16 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
         btn.disabled = true;
 
-        const passwords = await getPasswords();
-        // Init password if not set yet
-        if (!passwords[uname]) passwords[uname] = '1234';
+        // Sync passwords from Firebase first (best-effort, fast timeout)
+        await Promise.race([
+            syncPasswordsFromFirebase(),
+            new Promise(r => setTimeout(r, 2000))
+        ]);
 
-        if (passwords[uname] !== pw) {
+        const passwords = getPasswords();
+        const expectedPw = passwords[uname] || account.defaultPw;
+
+        if (expectedPw !== pw) {
             errMsg.textContent = 'Incorrect password. Please try again.';
             errBox.style.display = 'flex';
             btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
@@ -724,22 +753,24 @@
 
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
         btn.disabled = false;
-        errBox.style.display = 'none';
         document.getElementById('loginPassword').value = '';
-        loginAs(account.name, account.role, account.username);
+
+        const userObj = { name: account.name, role: account.role, username: account.username };
+        saveSession(userObj);
+        loginAs(userObj);
     }
 
-    function loginAs(name, role, username) {
-        currentUser = { name, role, username };
+    function loginAs(userObj) {
+        currentUser = userObj;
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
 
-        document.getElementById('headerUserName').textContent = name;
-        document.getElementById('headerUserRole').textContent = role === 'engineer' ? 'Engineer' : 'Technician';
+        document.getElementById('headerUserName').textContent = currentUser.name;
+        document.getElementById('headerUserRole').textContent = currentUser.role === 'engineer' ? 'Engineer' : 'Technician';
         const dot = document.getElementById('roleDot');
-        dot.className = 'role-dot ' + (role === 'engineer' ? 'eng' : 'tech');
+        dot.className = 'role-dot ' + (currentUser.role === 'engineer' ? 'eng' : 'tech');
 
-        if (role === 'engineer') {
+        if (currentUser.role === 'engineer') {
             document.getElementById('engineerOnlyNotice').style.display = 'none';
             document.getElementById('assignForm').style.display = 'block';
             document.getElementById('techViewInfoOngoing').style.display = 'none';
@@ -750,7 +781,7 @@
             document.getElementById('techViewInfoOngoing').style.display = 'flex';
             document.getElementById('clearBtn').style.display = 'none';
             const sel = document.getElementById('personInput');
-            sel.value = name;
+            sel.value = currentUser.name;
         }
 
         startFirebaseSync();
@@ -758,6 +789,7 @@
 
     function logout() {
         currentUser = null;
+        clearSession();
         if (fbPollInterval) { clearInterval(fbPollInterval); fbPollInterval = null; }
         document.getElementById('mainApp').style.display = 'none';
         document.getElementById('loginScreen').style.display = 'flex';
@@ -782,21 +814,25 @@
     function closeChangePw() {
         document.getElementById('changePwModal').classList.remove('active');
     }
-    async function saveNewPassword() {
+    function saveNewPassword() {
         const cur     = document.getElementById('cpmCurrent').value;
         const nw      = document.getElementById('cpmNew').value;
-        const confirm = document.getElementById('cpmConfirm').value;
+        const conf    = document.getElementById('cpmConfirm').value;
         const errBox  = document.getElementById('cpmError');
         const errMsg  = document.getElementById('cpmErrorMsg');
 
-        const passwords = await getPasswords();
+        const passwords = getPasswords();
         const username  = currentUser.username;
+        const account   = USER_ACCOUNTS.find(u => u.username === username);
+        const expectedPw = passwords[username] || account.defaultPw;
 
-        if (!cur || !nw || !confirm) {
+        errBox.style.display = 'none';
+
+        if (!cur || !nw || !conf) {
             errMsg.textContent = 'All fields are required.';
             errBox.style.display = 'flex'; return;
         }
-        if ((passwords[username] || '1234') !== cur) {
+        if (expectedPw !== cur) {
             errMsg.textContent = 'Current password is incorrect.';
             errBox.style.display = 'flex'; return;
         }
@@ -804,7 +840,7 @@
             errMsg.textContent = 'New password must be at least 4 characters.';
             errBox.style.display = 'flex'; return;
         }
-        if (nw !== confirm) {
+        if (nw !== conf) {
             errMsg.textContent = 'New passwords do not match.';
             errBox.style.display = 'flex'; return;
         }
@@ -813,16 +849,11 @@
             errBox.style.display = 'flex'; return;
         }
 
-        errBox.style.display = 'none';
         passwords[username] = nw;
         savePasswords(passwords);
         closeChangePw();
         showPopup('success', 'Password Changed', `Password updated successfully for ${currentUser.name}.`);
     }
-
-    // ── INIT ──
-    function buildLoginScreen() { /* no-op: login screen is static HTML now */ }
-
 
     // ── HELPERS ──
     function validateTicketID(t) {
@@ -864,7 +895,6 @@
     // ── FIREBASE SYNC ──
     async function startFirebaseSync() {
         await pullFromFirebase();
-        // Poll every 5 seconds for real-time feel
         if (fbPollInterval) clearInterval(fbPollInterval);
         fbPollInterval = setInterval(pullFromFirebase, 5000);
     }
@@ -883,49 +913,20 @@
                 completed = allTasks.filter(t => t && t.status === 'completed').sort((a,b) => b.id - a.id);
                 txt.innerText = "🟢 Live"; txt.style.color = "#059669";
             } else if (!data) {
-                // Empty database — that's fine (no tasks yet)
                 ongoing = []; completed = [];
                 txt.innerText = "🟢 Live"; txt.style.color = "#059669";
-            } else {
-                throw new Error("DB error");
             }
             renderAll();
         } catch(e) {
-            txt.innerText = "⚠ Setup Needed"; txt.style.color = "#d97706";
-            // Show setup guide once
-            if (!window._fbSetupShown) {
-                window._fbSetupShown = true;
-                showFirebaseSetupGuide();
-            }
+            txt.innerText = "⚠ Offline"; txt.style.color = "#d97706";
         } finally {
             isSyncing = false;
             ind.classList.remove('updating');
         }
     }
 
-    function showFirebaseSetupGuide() {
-        const c  = document.getElementById('popupContainer');
-        const el = document.createElement('div');
-        el.className = 'popup-message';
-        el.style.maxWidth = '340px';
-        el.innerHTML = `<div class="popup-content info" style="text-align:left;">
-            <div class="popup-title"><i class="fas fa-database" style="color:#2563eb"></i> Firebase Setup Required</div>
-            <div class="popup-text" style="margin-left:0;margin-top:8px;line-height:1.6;">
-                Real-time sync needs a Firebase DB.<br>
-                <strong>Steps:</strong><br>
-                1. Go to <a href="https://console.firebase.google.com" target="_blank" style="color:#2563eb;">console.firebase.google.com</a><br>
-                2. Create project → Realtime Database → Start in test mode<br>
-                3. Copy the DB URL and replace <code>FB_URL</code> in this file<br><br>
-                <em>Meanwhile, data saves locally only.</em>
-            </div>
-            <button onclick="this.closest('.popup-message').remove()" style="margin-top:10px;padding:6px 14px;background:var(--grad-primary);border:none;border-radius:6px;color:white;cursor:pointer;font-size:0.72rem;font-family:'Montserrat';font-weight:700;">OK, Got It</button>
-        </div>`;
-        c.appendChild(el);
-    }
-
     async function pushTaskToFirebase(task) {
         await fbSet(`tasks/${task.id}`, task);
-        // Also push to Google Sheet as backup
         try { await fetch(G_URL, {method:'POST', mode:'no-cors', body:JSON.stringify(task)}); } catch(e) {}
     }
 
@@ -997,7 +998,6 @@
 
         if (!task.area || !task.person) { showPopup('warning','Incomplete Info','Please select both Area and Staff.'); return; }
 
-        // Check duplicate across both lists
         const allExisting = [...ongoing, ...completed];
         if (allExisting.some(t => t.ticket === task.ticket)) {
             showPopup('warning','Duplicate Ticket',`Ticket ID "${task.ticket}" already exists!`); ti.focus(); return;
@@ -1024,7 +1024,6 @@
         const task = ongoing.find(t => t.id === id);
         if (!task) return;
 
-        // Permission check
         const isEngineer = currentUser.role === 'engineer';
         const isAssigned = task.person.toLowerCase() === currentUser.name.toLowerCase();
         if (!isEngineer && !isAssigned) {
@@ -1051,7 +1050,6 @@
         if (currentUser?.role !== 'engineer') { showPopup('warning','Access Denied','Only Engineers can clear completed tasks.'); return; }
         if (!confirm("Clear all completed tasks? This cannot be undone.")) return;
         try {
-            // Delete each completed task from Firebase
             await Promise.all(completed.map(t => fbDelete(`tasks/${t.id}`)));
             completed = []; renderAll();
             showPopup('info','Tasks Cleared','All completed tasks have been cleared.');
@@ -1060,15 +1058,35 @@
         }
     }
 
-    // ── INIT ──
+    // ══════════════════════════════════════════════
+    // PAGE INIT — session check on load
+    // ══════════════════════════════════════════════
     document.addEventListener('DOMContentLoaded', () => {
-        buildLoginScreen();
+        // Set today's date
         document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+
+        // Clock updater
         setInterval(() => {
             const n = new Date();
             document.getElementById('liveClock').innerHTML = `<i class="far fa-clock"></i> ${n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
             document.getElementById('liveDate').innerHTML  = `<i class="far fa-calendar-alt"></i> ${n.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}`;
         }, 1000);
+
+        // ── AUTO-RESTORE SESSION ON REFRESH ──
+        const savedSession = loadSession();
+        if (savedSession) {
+            // Validate the session user still exists
+            const account = USER_ACCOUNTS.find(u => u.username === savedSession.username);
+            if (account) {
+                loginAs(savedSession);
+                return; // Skip login screen
+            } else {
+                clearSession();
+            }
+        }
+
+        // No valid session — show login screen
+        document.getElementById('loginScreen').style.display = 'flex';
     });
 </script>
 </body>
