@@ -58,9 +58,10 @@
             position: fixed; inset: 0; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
             background:
-                radial-gradient(ellipse at 20% 20%, rgba(37,99,235,0.18) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(13,148,136,0.14) 0%, transparent 50%),
-                linear-gradient(145deg, #0f1f3d 0%, #1a3158 50%, #1e3a6e 100%);
+                radial-gradient(ellipse at 20% 20%, rgba(37,99,235,0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(13,148,136,0.22) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.18) 0%, transparent 60%),
+                linear-gradient(145deg, #0a1628 0%, #0f2244 40%, #112960 70%, #1a3a7a 100%);
         }
         .login-box {
             background: rgba(255,255,255,0.10);
@@ -172,6 +173,59 @@
         }
         .cpm-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(13,148,136,0.40); }
 
+        /* Login page change password section */
+        .login-divider {
+            display: flex; align-items: center; gap: 10px;
+            margin: 18px 0 14px;
+        }
+        .login-divider::before, .login-divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(255,255,255,0.12);
+        }
+        .login-divider span {
+            font-family: 'Montserrat', sans-serif; font-size: 0.58rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+            color: rgba(255,255,255,0.30);
+        }
+        .login-changepw-btn {
+            width: 100%; padding: 11px;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 10px; color: rgba(255,255,255,0.55);
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px;
+            cursor: pointer; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .login-changepw-btn:hover {
+            background: rgba(13,148,136,0.15);
+            border-color: rgba(13,148,136,0.40);
+            color: #14b8a6;
+        }
+        #loginChangePwPanel {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 12px; padding: 16px; margin-top: 12px;
+        }
+        .panel-title {
+            font-family: 'Montserrat', sans-serif; font-size: 0.65rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            color: #14b8a6; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .login-changepw-save {
+            width: 100%; padding: 11px; margin-top: 10px;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 9px;
+            color: #fff; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(13,148,136,0.28);
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+        }
+        .login-changepw-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(13,148,136,0.40); }
+
         /* ── MAIN APP ── */
         .container {
             max-width: 1000px; margin: 0 auto;
@@ -192,19 +246,29 @@
         header::before { content:''; position:absolute; top:-40%; right:-15%; width:150px; height:150px; background:rgba(255,255,255,0.06); border-radius:50%; }
         header::after  { content:''; position:absolute; bottom:-30%; left:-8%; width:120px; height:120px; background:rgba(255,255,255,0.04); border-radius:50%; }
         .header-left { position:relative; z-index:2; display:flex; align-items:center; gap:15px; }
-        .company-logo { height:60px; width:70px; display:block; }
+        .company-logo { height:60px; width:70px; display:block; border-radius:10px; border:2px solid rgba(59,130,246,0.55); box-shadow: 0 0 14px rgba(37,99,235,0.40), 0 0 30px rgba(59,130,246,0.18), inset 0 0 8px rgba(255,255,255,0.08); padding:3px; background: rgba(37,99,235,0.10); }
         .main-title {
             font-family:'Montserrat',sans-serif; font-size:1.1rem; font-weight:800;
             letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;
             background: linear-gradient(135deg,#ffffff 0%,#bfdbfe 100%);
             -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
         }
-        .company-name { font-family:'Montserrat',sans-serif; font-size:0.9rem; font-weight:700; color:#7dd3fc; display:block; }
+        .company-name { font-family:'Montserrat',sans-serif; font-size:1.05rem; font-weight:800; color:#7dd3fc; display:block; text-shadow: 0 2px 12px rgba(125,211,252,0.45), 0 1px 3px rgba(0,0,0,0.30); letter-spacing:0.5px; }
         .header-right { text-align:right; position:relative; z-index:2; display:flex; align-items:center; gap:14px; }
         .datetime-container { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
         #liveDate { font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:500; color:rgba(255,255,255,0.80); letter-spacing:0.3px; text-transform:uppercase; }
         #liveClock { font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.80rem; background:rgba(255,255,255,0.10); padding:6px 14px; border-radius:10px; backdrop-filter:blur(10px); letter-spacing:0.8px; color:#fff; border:1px solid rgba(255,255,255,0.15); box-shadow:0 3px 12px rgba(0,0,0,0.25); min-width:120px; text-align:center; }
-        .sync-status { font-size:0.6rem; color:rgba(255,255,255,0.6); margin-top:4px; display:flex; align-items:center; justify-content:flex-end; gap:5px; }
+        .sync-status { font-size:0.85rem; margin-top:5px; display:flex; align-items:center; justify-content:flex-end; gap:6px; font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:1px; }
+        #syncText {
+            background: linear-gradient(90deg, #4ade80 0%, #a3e635 25%, #34d399 50%, #4ade80 75%, #a3e635 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 2.5s linear infinite;
+            text-shadow: none;
+        }
+        @keyframes shimmer { 0%{ background-position: 0% center; } 100%{ background-position: 200% center; } }
         .sync-indicator { width:6px; height:6px; background:#4ade80; border-radius:50%; box-shadow:0 0 5px #4ade80; }
         .sync-indicator.updating { background:#facc15; animation:pulse 1s infinite; }
 
@@ -310,7 +374,8 @@
         .bg-amit     { background:linear-gradient(135deg,#ea580c 0%,#dc2626 100%); }
         .bg-bashudeb { background:linear-gradient(135deg,#0891b2 0%,#1d4ed8 100%); }
 
-        .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Montserrat',sans-serif; font-size:0.72rem; display:flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(225,29,72,0.08); border-radius:6px; width:fit-content; border:1px solid rgba(225,29,72,0.18); backdrop-filter:blur(4px); }
+        .status-working-cell { vertical-align: middle; text-align: center; }
+        .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Montserrat',sans-serif; font-size:0.72rem; display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(225,29,72,0.08); border-radius:6px; border:1px solid rgba(225,29,72,0.18); backdrop-filter:blur(4px); }
         @keyframes blink { 50%{ opacity:0.35; } }
 
         /* ── POPUP ── */
@@ -345,9 +410,9 @@
             .container { transform:scale(1); max-width:100%; }
             header { flex-direction:row; flex-wrap:wrap; gap:8px; padding:8px 12px; justify-content:space-between; align-items:center; }
             .header-left { flex-direction:row; align-items:center; text-align:left; gap:8px; flex:1; }
-            .company-logo { height:45px; width:auto; }
+            .company-logo { height:45px; width:auto; padding:2px; }
             .main-title { font-size:0.85rem; margin-bottom:0; line-height:1.2; }
-            .company-name { font-size:0.65rem; }
+            .company-name { font-size:0.75rem; text-shadow: none; }
             .header-right { text-align:right; flex-shrink:0; }
             .datetime-container { align-items:flex-end; gap:2px; }
             #liveDate { display:none; }
@@ -394,6 +459,56 @@
         <button class="login-btn" id="loginBtn" onclick="doLogin()">
             <i class="fas fa-sign-in-alt"></i> Login
         </button>
+
+        <!-- Change Password Section in Login Page -->
+        <div class="login-divider"><span>or</span></div>
+        <button class="login-changepw-btn" onclick="toggleLoginChangePw()">
+            <i class="fas fa-key"></i> Change My Password
+        </button>
+
+        <div id="loginChangePwPanel">
+            <div class="panel-title"><i class="fas fa-lock"></i> Change Password</div>
+
+            <div id="lcpError" class="login-error" style="margin-bottom:10px;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="lcpErrorMsg"></span>
+            </div>
+            <div id="lcpSuccess" style="display:none; background:rgba(13,148,136,0.18); border:1px solid rgba(13,148,136,0.35); border-radius:8px; padding:9px 12px; font-size:0.73rem; color:#5eead4; font-family:'Outfit',sans-serif; margin-bottom:10px; align-items:center; gap:7px;">
+                <i class="fas fa-check-circle"></i> <span id="lcpSuccessMsg"></span>
+            </div>
+
+            <div class="login-field-group" style="margin-bottom:10px;">
+                <label class="login-field-label"><i class="fas fa-user"></i> &nbsp;Username</label>
+                <div class="login-input-wrap">
+                    <input type="text" id="lcpUsername" class="login-input" placeholder="Your username" autocomplete="off">
+                    <i class="fas fa-user login-input-icon"></i>
+                </div>
+            </div>
+            <div class="login-field-group" style="margin-bottom:10px;">
+                <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Current Password</label>
+                <div class="login-input-wrap">
+                    <input type="password" id="lcpCurrent" class="login-input" placeholder="Current password">
+                    <i class="fas fa-eye login-input-icon" onclick="toggleField('lcpCurrent',this)"></i>
+                </div>
+            </div>
+            <div class="login-field-group" style="margin-bottom:10px;">
+                <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;New Password</label>
+                <div class="login-input-wrap">
+                    <input type="password" id="lcpNew" class="login-input" placeholder="New password (min 4 chars)">
+                    <i class="fas fa-eye login-input-icon" onclick="toggleField('lcpNew',this)"></i>
+                </div>
+            </div>
+            <div class="login-field-group" style="margin-bottom:0;">
+                <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Confirm New Password</label>
+                <div class="login-input-wrap">
+                    <input type="password" id="lcpConfirm" class="login-input" placeholder="Repeat new password">
+                    <i class="fas fa-eye login-input-icon" onclick="toggleField('lcpConfirm',this)"></i>
+                </div>
+            </div>
+            <button class="login-changepw-save" onclick="saveLoginChangePw()">
+                <i class="fas fa-save"></i> Save New Password
+            </button>
+        </div>
     </div>
 </div>
 
@@ -448,7 +563,7 @@
             <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
                  alt="Link3 Logo" class="company-logo">
             <div>
-                <div class="main-title">Work Dashboard</div>
+                <div class="main-title">Technician Task Dashboard</div>
                 <span class="company-name">Link3 Technologies Ltd</span>
             </div>
         </div>
@@ -461,9 +576,6 @@
                 </div>
                 <i class="fas fa-sign-out-alt" style="font-size:0.75rem;color:rgba(255,255,255,0.55);"></i>
             </div>
-            <button class="btn-logout" onclick="openChangePw()" title="Change Password" style="padding:7px 10px;">
-                <i class="fas fa-key"></i>
-            </button>
             <div class="datetime-container">
                 <span id="liveDate"><i class="far fa-calendar-alt"></i> </span>
                 <span id="liveClock"><i class="far fa-clock"></i> </span>
@@ -710,6 +822,76 @@
         else { inp.type = 'password'; iconEl.classList.replace('fa-eye-slash','fa-eye'); }
     }
 
+    // ── LOGIN PAGE CHANGE PASSWORD ──
+    function toggleLoginChangePw() {
+        const panel = document.getElementById('loginChangePwPanel');
+        const isOpen = panel.style.display === 'block';
+        panel.style.display = isOpen ? 'none' : 'block';
+        if (!isOpen) {
+            document.getElementById('lcpUsername').value = '';
+            document.getElementById('lcpCurrent').value = '';
+            document.getElementById('lcpNew').value = '';
+            document.getElementById('lcpConfirm').value = '';
+            document.getElementById('lcpError').style.display = 'none';
+            document.getElementById('lcpSuccess').style.display = 'none';
+            setTimeout(() => document.getElementById('lcpUsername').focus(), 100);
+        }
+    }
+
+    function saveLoginChangePw() {
+        const uname   = document.getElementById('lcpUsername').value.trim().toLowerCase();
+        const cur     = document.getElementById('lcpCurrent').value;
+        const nw      = document.getElementById('lcpNew').value;
+        const conf    = document.getElementById('lcpConfirm').value;
+        const errBox  = document.getElementById('lcpError');
+        const errMsg  = document.getElementById('lcpErrorMsg');
+        const sucBox  = document.getElementById('lcpSuccess');
+        const sucMsg  = document.getElementById('lcpSuccessMsg');
+
+        errBox.style.display = 'none';
+        sucBox.style.display = 'none';
+
+        if (!uname || !cur || !nw || !conf) {
+            errMsg.textContent = 'All fields are required.';
+            errBox.style.display = 'flex'; return;
+        }
+        const account = USER_ACCOUNTS.find(u => u.username === uname);
+        if (!account) {
+            errMsg.textContent = 'Username not found.';
+            errBox.style.display = 'flex'; return;
+        }
+        const passwords = getPasswords();
+        const expectedPw = passwords[uname] || account.defaultPw;
+        if (expectedPw !== cur) {
+            errMsg.textContent = 'Current password is incorrect.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw.length < 4) {
+            errMsg.textContent = 'New password must be at least 4 characters.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw !== conf) {
+            errMsg.textContent = 'New passwords do not match.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw === cur) {
+            errMsg.textContent = 'New password must be different from current.';
+            errBox.style.display = 'flex'; return;
+        }
+
+        passwords[uname] = nw;
+        savePasswords(passwords);
+        document.getElementById('lcpCurrent').value = '';
+        document.getElementById('lcpNew').value = '';
+        document.getElementById('lcpConfirm').value = '';
+        sucMsg.textContent = `Password changed successfully for ${account.name}!`;
+        sucBox.style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loginChangePwPanel').style.display = 'none';
+            sucBox.style.display = 'none';
+        }, 3000);
+    }
+
     // ── DO LOGIN ──
     async function doLogin() {
         const uname = document.getElementById('loginUsername').value.trim().toLowerCase();
@@ -936,13 +1118,15 @@
 
         const sv = document.getElementById('searchDate').value;
         const ob = document.querySelector('#ongoingTable tbody');
+        const isAdmin    = currentUser.username === 'admin';
         const isEngineer = currentUser.role === 'engineer';
 
         ob.innerHTML = ongoing.length === 0
             ? '<tr><td colspan="6" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Active Tasks Found</td></tr>'
             : ongoing.map(t => {
                 const isMyTask = t.person.toLowerCase() === currentUser.name.toLowerCase();
-                const canDone  = isEngineer || isMyTask;
+                // Only admin OR the assigned technician can mark done; other engineers cannot
+                const canDone  = isAdmin || isMyTask;
                 const actionCell = canDone
                     ? `<button class="btn-done" onclick="markDone(${t.id})"><i class="fas fa-check"></i> MARK DONE</button>`
                     : '';
@@ -953,7 +1137,7 @@
                 <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
                 <td><i class="fas fa-map-marker-alt"></i> ${t.area}</td>
                 <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
-                <td class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</td></tr>`;
+                <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</span></td></tr>`;
             }).join('');
 
         const filtered = sv ? completed.filter(t => t.date === sv) : completed;
@@ -1024,10 +1208,11 @@
         const task = ongoing.find(t => t.id === id);
         if (!task) return;
 
-        const isEngineer = currentUser.role === 'engineer';
+        const isAdmin    = currentUser.username === 'admin';
         const isAssigned = task.person.toLowerCase() === currentUser.name.toLowerCase();
-        if (!isEngineer && !isAssigned) {
-            showPopup('warning', 'Access Denied', `Only ${task.person} or an Engineer can mark this task as done.`);
+
+        if (!isAdmin && !isAssigned) {
+            showPopup('warning', 'Access Denied', `Only ${task.person} or Admin can mark this task as done.`);
             return;
         }
 
