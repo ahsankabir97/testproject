@@ -364,6 +364,7 @@
 
         /* ── BADGES ── */
         .badge { padding:5px 11px; border-radius:20px; font-weight:700; color:white; font-size:0.63rem; font-family:'Montserrat',sans-serif; display:inline-flex; align-items:center; gap:5px; width:fit-content; text-transform:uppercase; letter-spacing:0.3px; box-shadow:0 2px 8px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.20); }
+        .area-badge { padding:5px 12px; border-radius:20px; font-weight:700; color:white; font-size:0.63rem; font-family:'Montserrat',sans-serif; display:inline-flex; align-items:center; gap:5px; width:fit-content; letter-spacing:0.3px; box-shadow:0 2px 10px rgba(15,31,61,0.22); border:1px solid rgba(255,255,255,0.20); background:linear-gradient(135deg,#1e3a6e 0%,#2563eb 100%); }
         .bg-sumon    { background:linear-gradient(135deg,#0d9488 0%,#0891b2 100%); }
         .bg-alamin   { background:linear-gradient(135deg,#d97706 0%,#ea580c 100%); }
         .bg-nahid    { background:linear-gradient(135deg,#7c3aed 0%,#a21caf 100%); }
@@ -657,7 +658,7 @@
         <div style="overflow-x:auto;">
             <table id="ongoingTable">
                 <thead>
-                    <tr><th>Date & Action</th><th>Start</th><th>Ticket ID</th><th>Area</th><th>Staff</th><th>Status</th></tr>
+                    <tr><th>Date & Action</th><th>Start</th><th>Ticket ID</th><th>Area</th><th>Technician</th><th>Status</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -678,7 +679,7 @@
         <div style="overflow-x:auto;">
             <table id="completedTable">
                 <thead>
-                    <tr><th>Date</th><th>Start</th><th>End</th><th>Ticket</th><th>Area</th><th>Staff</th><th>Status</th></tr>
+                    <tr><th>Date</th><th>Start</th><th>End</th><th>Ticket</th><th>Area</th><th>Technician</th><th>Status</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -1135,7 +1136,7 @@
                     ${actionCell}</td>
                 <td style="color:var(--navy-light);font-weight:600;font-family:'Montserrat';"><i class="far fa-clock"></i> ${t.startTime}</td>
                 <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
-                <td><i class="fas fa-map-marker-alt"></i> ${t.area}</td>
+                <td><span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
                 <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
                 <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</span></td></tr>`;
             }).join('');
@@ -1149,7 +1150,7 @@
                 <td><i class="far fa-clock"></i> ${t.startTime}</td>
                 <td style="color:var(--teal);font-weight:700;font-family:'Montserrat';"><i class="fas fa-flag-checkered"></i> ${t.doneTime}</td>
                 <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
-                <td><i class="fas fa-map-marker-alt"></i> ${t.area}</td>
+                <td><span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
                 <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
                 <td style="color:var(--teal);font-weight:700;font-family:'Montserrat';"><i class="fas fa-check-circle"></i> Done</td></tr>`).join('');
     }
