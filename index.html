@@ -993,7 +993,7 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
         <div class="card-title" style="color:var(--sky);"><i class="fas fa-chart-bar"></i> TASK LIVE SUMMARY</div>
 
         <!-- Daily Stats -->
-        <div style="background:rgba(13,148,136,0.06); border:2px solid rgba(13,148,136,0.30); border-radius:14px; padding:16px; box-shadow:0 4px 18px rgba(13,148,136,0.12);">
+        <div style="background:rgba(13,148,136,0.18); border:2px solid rgba(13,148,136,0.45); border-radius:14px; padding:16px; box-shadow:0 4px 18px rgba(13,148,136,0.12);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
         <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
     <i class="fas fa-calendar-day"></i> Daily Task Report
@@ -1021,7 +1021,7 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
 
 <!-- Monthly Stats -->
         <!-- Monthly Stats -->
-        <div style="margin-top:24px; background:rgba(37,99,235,0.04); border:1.5px solid rgba(37,99,235,0.22); border-radius:14px; padding:18px; box-shadow:0 3px 14px rgba(37,99,235,0.08);">
+        <div style="margin-top:24px; background:rgba(37,99,235,0.14); border:1.5px solid rgba(37,99,235,0.40); border-radius:14px; padding:18px; box-shadow:0 3px 14px rgba(37,99,235,0.08);">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
                 <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
     <i class="fas fa-calendar-alt"></i> Monthly Task Count
@@ -1713,7 +1713,7 @@ const techColors = {
         const monthLabel = `${monthNames[parseInt(mo)-1]} ${yr}`;
         const monthTotal = techs.reduce((s,t) => s + monthlyCount[t], 0);
         monthlyBody.innerHTML = `<tr>
-            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${monthLabel}</strong></td>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:900;color:var(--navy-mid);">${monthLabel}</strong></td>
             ${techs.map(name => `
             <td>
                 <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.3rem;color:${techColors[name]};">${monthlyCount[name]}</span>
@@ -1752,7 +1752,7 @@ if (dateSelector) {
     if (dailyBody) {
         const dailyTotal = techs.reduce((s,t) => s + dailyCount[t], 0);
         dailyBody.innerHTML = `<tr>
-            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
             ${techs.map(name => {
                 const techOngoing = ongoing.filter(t => t.person === name).map(t => t.area);
                 const areaText = techOngoing.length > 0 ? techOngoing.join(', ') : '';
