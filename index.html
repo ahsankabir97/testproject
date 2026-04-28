@@ -992,8 +992,36 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
     <div class="card card-summary">
         <div class="card-title" style="color:var(--sky);"><i class="fas fa-chart-bar"></i> TASK LIVE SUMMARY</div>
 
+        <!-- Daily Stats -->
+        <div style="background:rgba(13,148,136,0.06); border:2px solid rgba(13,148,136,0.30); border-radius:14px; padding:16px; box-shadow:0 4px 18px rgba(13,148,136,0.12);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
+    <i class="fas fa-calendar-day"></i> Daily Task Report
+</div>
+                <input type="date" id="summaryDateSelector" class="search-box" onchange="renderSummary()">
+            </div>
+            <div style="overflow-x:auto;">
+                <table id="dailyTable" style="min-width:500px;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th><span class="badge bg-sumon">Sumon</span></th>
+                            <th><span class="badge bg-alamin">Alamin</span></th>
+                            <th><span class="badge bg-fahim">Fahim</span></th>
+                            <th><span class="badge bg-nahid">Nahid</span></th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyTableBody">
+                        <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<!-- Monthly Stats -->
         <!-- Monthly Stats -->
-        <div style="margin-bottom:24px;">
+        <div style="margin-top:24px; background:rgba(37,99,235,0.04); border:1.5px solid rgba(37,99,235,0.22); border-radius:14px; padding:18px; box-shadow:0 3px 14px rgba(37,99,235,0.08);">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
                 <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
     <i class="fas fa-calendar-alt"></i> Monthly Task Count
@@ -1013,33 +1041,6 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
                         </tr>
                     </thead>
                     <tbody id="monthlyTableBody">
-                        <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Daily Stats -->
-        <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-                <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
-    <i class="fas fa-calendar-day"></i> Daily Task Report
-</div>
-                <input type="date" id="summaryDateSelector" class="search-box" onchange="renderSummary()">
-            </div>
-            <div style="overflow-x:auto;">
-                <table id="dailyTable" style="min-width:500px;">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th><span class="badge bg-sumon">Sumon</span></th>
-                            <th><span class="badge bg-alamin">Alamin</span></th>
-                            <th><span class="badge bg-fahim">Fahim</span></th>
-                            <th><span class="badge bg-nahid">Nahid</span></th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dailyTableBody">
                         <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
                     </tbody>
                 </table>
@@ -1752,11 +1753,18 @@ if (dateSelector) {
         const dailyTotal = techs.reduce((s,t) => s + dailyCount[t], 0);
         dailyBody.innerHTML = `<tr>
             <td><strong style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
-            ${techs.map(name => `
-            <td>
-                <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.15rem;color:${techColors[name]};">${dailyCount[name]}</span>
-                <span style="font-size:0.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:${techColors[name]};margin-left:5px;opacity:0.75;">(${dailyRankMap[name]})</span>
-            </td>`).join('')}
+            ${techs.map(name => {
+                const techOngoing = ongoing.filter(t => t.person === name).map(t => t.area);
+                const areaText = techOngoing.length > 0 ? techOngoing.join(', ') : '';
+                const isFree = ongoing.filter(t => t.person === name).length === 0;
+                return `
+                <td>
+                    <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.15rem;color:${techColors[name]};">${dailyCount[name]}</span>
+                    <span style="font-size:0.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:${techColors[name]};margin-left:5px;opacity:0.75;">(${dailyRankMap[name]})</span>
+                    ${isFree ? `<br><span style="display:inline-block;margin-top:4px;padding:2px 8px;background:#16a34a;color:#fff;border-radius:20px;font-size:0.58rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:0.5px;">✓ FREE</span>` : ''}
+                    ${areaText ? `<br><span style="display:inline-block;margin-top:4px;padding:2px 8px;background:#ea580c;color:#fff;border-radius:20px;font-size:0.65rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:0.3px;">${areaText}</span>` : ''}
+                </td>`;
+            }).join('')}
             <td><strong style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:var(--navy-mid);">${dailyTotal}</strong></td>
         </tr>`;
     }
