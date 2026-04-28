@@ -722,6 +722,8 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
     }
 }
     </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 
@@ -1099,6 +1101,8 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
         </select>
         <button class="btn-delete-mode" id="toggleDeleteCompletedBtn" onclick="toggleDeleteModeCompleted()">
             <i class="fas fa-trash-alt"></i> Delete
+<button class="btn-done" id="downloadPdfBtn" onclick="downloadCompletedPDF()" style="padding:7px 14px;font-size:0.65rem;display:none;">
+    <i class="fas fa-file-pdf"></i> Download PDF
         </button>
        <button class="btn-confirm-delete" id="confirmDeleteCompletedBtn" onclick="deleteSelectedCompleted()">
             <i class="fas fa-check"></i> Delete Selected
@@ -1428,10 +1432,12 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
 
 // ✅ এই দুই লাইন if-else এর পরে, কিন্তু loginAs() এর ভেতরে বসাবেন
 const isAdmin = currentUser.username === 'admin';
+const isEngineerOrAdmin = isAdmin || currentUser.role === 'engineer';
 document.getElementById('toggleDeleteBtn').style.display = isAdmin ? 'inline-flex' : 'none';
 document.getElementById('confirmDeleteBtn').style.display = 'none';
 document.getElementById('toggleDeleteCompletedBtn').style.display = isAdmin ? 'inline-flex' : 'none';
 document.getElementById('confirmDeleteCompletedBtn').style.display = 'none';
+document.getElementById('downloadPdfBtn').style.display = isEngineerOrAdmin ? 'inline-flex' : 'none';
 
         startFirebaseSync();
     }
@@ -2003,6 +2009,119 @@ async function deleteSelectedCompleted() {
         // No valid session — show login screen
         document.getElementById('loginScreen').style.display = 'flex';
     });
+function downloadCompletedPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+    // Filter logic — same as renderAll()
+    const sv    = document.getElementById('searchDateFrom')?.value || '';
+    const svTo  = document.getElementById('searchDateTo')?.value || '';
+    const st    = document.getElementById('filterTech').value;
+
+    const filtered = completed.filter(t => {
+        const dateMatch = (sv && svTo) ? (t.date >= sv && t.date <= svTo)
+                        : sv ? t.date >= sv
+                        : svTo ? t.date <= svTo
+                        : true;
+        const techMatch = st ? t.person === st : true;
+        return dateMatch && techMatch;
+    });
+
+    if (filtered.length === 0) {
+        showPopup('warning', 'No Data', 'কোনো completed task পাওয়া যায়নি।');
+        return;
+    }
+
+    // Header
+    doc.setFillColor(15, 31, 61);
+    doc.rect(0, 0, 297, 22, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text('Link3 Technologies Ltd — Completed Task Report', 148.5, 10, { align: 'center' });
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+
+    // Filter info line
+    let filterInfo = '';
+    if (sv && svTo)   filterInfo = `Date: ${formatDateDisplay(sv)} to ${formatDateDisplay(svTo)}`;
+    else if (sv)      filterInfo = `From: ${formatDateDisplay(sv)}`;
+    else if (svTo)    filterInfo = `To: ${formatDateDisplay(svTo)}`;
+    else              filterInfo = 'All Dates';
+    if (st) filterInfo += `  |  Technician: ${st}`;
+    else    filterInfo += '  |  All Technicians';
+    filterInfo += `  |  Total: ${filtered.length} tasks`;
+
+    doc.setTextColor(180, 200, 255);
+    doc.text(filterInfo, 148.5, 17, { align: 'center' });
+
+    // Table data
+    const rows = filtered.map((t, i) => [
+        i + 1,
+        formatDateDisplay(t.date),
+        t.startTime || '—',
+        t.doneTime  || '—',
+        t.ticket    || '—',
+        t.area      || '—',
+        t.person    || '—',
+        t.assignedBy|| '—',
+        'Done'
+    ]);
+
+    doc.autoTable({
+        startY: 26,
+        head: [['#', 'Date', 'Start', 'End', 'Ticket ID', 'Area', 'Technician', 'Assigned By', 'Status']],
+        body: rows,
+        theme: 'grid',
+        styles: {
+            fontSize: 8,
+            cellPadding: 3,
+            valign: 'middle',
+            halign: 'center',
+            textColor: [30, 40, 60],
+            lineColor: [200, 210, 230],
+            lineWidth: 0.3,
+        },
+        headStyles: {
+            fillColor: [30, 58, 110],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            fontSize: 8.5,
+        },
+        alternateRowStyles: {
+            fillColor: [237, 244, 255],
+        },
+        columnStyles: {
+            0: { cellWidth: 10 },
+            1: { cellWidth: 28 },
+            2: { cellWidth: 20 },
+            3: { cellWidth: 20 },
+            4: { cellWidth: 55 },
+            5: { cellWidth: 28 },
+            6: { cellWidth: 25 },
+            7: { cellWidth: 28 },
+            8: { cellWidth: 20 },
+        },
+        margin: { left: 10, right: 10 },
+        didDrawPage: (data) => {
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            doc.setFontSize(7);
+            doc.setTextColor(120, 130, 150);
+            doc.text(
+                `Page ${data.pageNumber} of ${pageCount}  |  Generated: ${new Date().toLocaleString()}  |  Prepared by: AHSANUL KABIR`,
+                148.5, doc.internal.pageSize.height - 5, { align: 'center' }
+            );
+        }
+    });
+
+    // File name
+    const today = new Date().toISOString().split('T')[0];
+    const techPart = st ? `_${st}` : '_All';
+    doc.save(`Completed_Tasks${techPart}_${today}.pdf`);
+
+    showPopup('success', 'PDF Downloaded', `${filtered.length}টি task এর PDF তৈরি হয়েছে।`);
+}
 </script>
 </body>
 </html>
