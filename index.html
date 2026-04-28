@@ -68,16 +68,24 @@
 .btn-confirm-delete {
     background: var(--grad-danger);
     color: white; border: none;
-    padding: 8px 16px; border-radius: 6px;
+    padding: 5px 10px; border-radius: 6px;
     cursor: pointer; font-family: 'Montserrat', sans-serif;
-    font-weight: 700; font-size: 0.68rem;
-    display: none; align-items: center; gap: 6px;
+    font-weight: 700; font-size: 0.58rem;
+    align-items: center; gap: 4px;
     transition: all 0.2s ease; text-transform: uppercase;
+    letter-spacing: 0.5px;
     box-shadow: 0 4px 12px rgba(220,38,38,0.28);
     border: 1px solid rgba(255,255,255,0.2);
     margin-left: 8px;
+    display: none !important;
 }
-.btn-confirm-delete.visible { display: inline-flex; }
+.btn-confirm-delete:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 5px 14px rgba(220,38,38,0.40); 
+}
+.btn-confirm-delete.visible { 
+    display: inline-flex !important; 
+}
 .delete-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #dc2626; }
         /* ── LOGIN SCREEN ── */
         #loginScreen {
@@ -1136,7 +1144,7 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
     // FIREBASE CONFIG
     // ═══════════════════════════════════════════════════════
     const FB_URL = "https://link3-dashboard-default-rtdb.firebaseio.com/";
-    const G_URL  = "https://script.google.com/macros/s/AKfycbz1ZE69wIfAem_gmCk5v-_2tH6ohSOdZoUkFpE1c0HRnQSqZxHfHVzTvVRAqjCcdB0/exec";
+    const G_URL  = "https://script.google.com/macros/s/AKfycby09K_Bv39dn8GHdgjljUc1rk-JTmgHlHC4EejmQQcHFJDq-h9BOCWuMDycjGWKMVsx/exec";
 
     // Firebase REST helpers
     async function fbGet(path) {
@@ -1149,9 +1157,21 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
             body: JSON.stringify(data)
         });
     }
-    async function fbDelete(path) {
-        await fetch(`${FB_URL}/${path}.json`, { method: 'DELETE' });
+  async function fbDelete(path, taskId) {
+    // Firebase থেকে আগে ticket নম্বর বের করো
+    const taskData = ongoing.find(t => t.id === taskId) 
+                  || completed.find(t => t.id === taskId);
+    
+    await fetch(`${FB_URL}/${path}.json`, { method: 'DELETE' });
+    
+    if (taskData && taskData.ticket) {
+        try {
+            await fetch(G_URL + '?action=delete&ticket=' + encodeURIComponent(taskData.ticket), {
+                method: 'GET', mode: 'no-cors'
+            });
+        } catch(e) {}
     }
+}
 
     // ══════════════════════════════════════════════
     // USER ACCOUNTS — প্রত্যেক user এর নিজস্ব password
@@ -1857,11 +1877,11 @@ function toggleDeleteMode() {
     if (window._deleteMode) {
         btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
         btn.style.background = 'rgba(255,255,255,0.15)';
-        confirmBtn.classList.add('visible');
+        confirmBtn.classList.add('visible');         // ← ঠিক করা
     } else {
         btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
         btn.style.background = '';
-        confirmBtn.classList.remove('visible');
+        confirmBtn.classList.remove('visible');      // ← ঠিক করা
     }
     renderAll();
 }
@@ -1881,7 +1901,7 @@ async function deleteSelectedOngoing() {
 
     const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
     try {
-        await Promise.all(ids.map(id => fbDelete(`tasks/${id}`)));
+        await Promise.all(ids.map(id => fbDelete(`tasks/${id}`, id)));
         ongoing = ongoing.filter(t => !ids.includes(t.id));
         window._deleteMode = false;
         const btn = document.getElementById('toggleDeleteBtn');
