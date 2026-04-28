@@ -44,7 +44,7 @@
             min-height: 100vh;
             font-size: 14px;
             padding: 15px;
-            overflow-x: hidden;
+            overflow-x: auto;
             background:
                 radial-gradient(ellipse at 8%  18%,  rgba(37,99,235,0.12)  0%, transparent 48%),
                 radial-gradient(ellipse at 88% 12%,  rgba(15,31,61,0.14)   0%, transparent 44%),
@@ -184,7 +184,7 @@
             flex: 1; padding: 11px; background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.14); border-radius: 9px;
             color: rgba(255,255,255,0.65); font-family: 'Montserrat', sans-serif;
-            font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+            font-weight: 700; font-size: 0.82rem; text-transform: uppercase;
             cursor: pointer; transition: all 0.2s;
         }
         .cpm-cancel:hover { background: rgba(255,255,255,0.12); }
@@ -419,7 +419,7 @@
 
         /* ── TABLES ── */
         table { width:100%; border-collapse:separate; border-spacing:0; margin-top:12px; border-radius:12px; overflow:hidden; background:rgba(255,255,255,0.12); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(148,163,184,0.28); box-shadow:0 4px 18px rgba(15,31,61,0.08); }
-        th { text-align:center; padding:10px 10px; background:rgba(15,31,61,0.08); backdrop-filter:blur(8px); font-family:'Montserrat',sans-serif; font-size:0.58rem; color:var(--navy-mid); text-transform:uppercase; letter-spacing:0.6px; border-bottom:1px solid rgba(37,99,235,0.15); font-weight:700; position:relative; }
+        th { text-align:center; padding:10px 10px; background:rgba(15,31,61,0.08); backdrop-filter:blur(8px); font-family:'Montserrat',sans-serif; font-size:0.72rem; color:var(--navy-mid); text-transform:uppercase; letter-spacing:0.6px; border-bottom:1px solid rgba(37,99,235,0.15); font-weight:800; position:relative; }
         th:not(:last-child)::after { content:''; position:absolute; right:0; top:20%; height:60%; width:1px; background:rgba(37,99,235,0.12); }
         td { padding:10px 10px; border-bottom:1px solid rgba(148,163,184,0.15); font-size:0.72rem; font-family:'Outfit',sans-serif; background:rgba(255,255,255,0.20); transition:all 0.2s ease; color:var(--slate-text); text-align:center; }
         tr:hover td { background:rgba(255,255,255,0.40); transform:translateX(2px); }
@@ -456,7 +456,7 @@
         .popup-content.info::before    { background:linear-gradient(90deg,#2563eb,#0ea5e9); }
         .popup-title { font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.84rem; color:var(--navy); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:8px; }
         .popup-text { font-family:'Outfit',sans-serif; font-size:0.79rem; color:var(--muted); line-height:1.4; margin-left:28px; }
-        .popup-close { position:absolute; top:10px; right:10px; background:none; border:none; color:var(--soft); font-size:1rem; cursor:pointer; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease; }
+        .popup-close { position:absolute; top:10px; right:10px; background:none; border:none; color:var(--soft); font-size:1.1rem; cursor:pointer; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease; }
         .popup-close:hover { background:rgba(0,0,0,0.05); color:var(--muted); }
 
         @keyframes slideInRight { from{transform:translateX(100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
@@ -698,6 +698,19 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
     #completedTable th, #completedTable td {
         padding: 8px 10px;
         white-space: nowrap;
+    }
+}
+@media (max-width: 768px) {
+    body {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .container {
+        min-width: 900px;
+        overflow-x: visible;
+    }
+    .app-layout {
+        min-width: 900px;
     }
 }
     </style>
@@ -1078,10 +1091,26 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
         <button class="btn-delete-mode" id="toggleDeleteCompletedBtn" onclick="toggleDeleteModeCompleted()">
             <i class="fas fa-trash-alt"></i> Delete
         </button>
-        <button class="btn-confirm-delete" id="confirmDeleteCompletedBtn" onclick="deleteSelectedCompleted()">
+       <button class="btn-confirm-delete" id="confirmDeleteCompletedBtn" onclick="deleteSelectedCompleted()">
             <i class="fas fa-check"></i> Delete Selected
         </button>
     </div>
+</div>
+<div id="completedTaskCount" style="
+    margin-bottom:10px;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    color:var(--amber);
+    background:rgba(217,119,6,0.10);
+    border:1px solid rgba(217,119,6,0.25);
+    border-radius:8px;
+    padding:7px 14px;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+">
+    <i class="fas fa-list-check"></i> Total Tasks: <span id="completedTaskCountNum" style="font-size:1.1rem;font-weight:900;color:var(--amber);">0</span>
 </div>
                     <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; cursor:grab;">
     <table id="completedTable" style="min-width:750px;">
@@ -1572,7 +1601,9 @@ const filtered = completed.filter(t => {
     const techMatch = st ? t.person === st : true;
     return dateMatch && techMatch;
 });
-        const cb = document.querySelector('#completedTable tbody');
+	const countEl = document.getElementById('completedTaskCountNum');
+        if (countEl) countEl.textContent = filtered.length;        
+	const cb = document.querySelector('#completedTable tbody');
         cb.innerHTML = filtered.length === 0
             ? '<tr><td colspan="8" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Completed Tasks Found</td></tr>'
            : filtered.map(t => {
@@ -1597,6 +1628,12 @@ renderSummary();
 function renderSummary() {
     const allTasks = [...ongoing, ...completed];
     const techs = ['Sumon','Alamin','Fahim','Nahid'];
+const techColors = {
+    'Sumon':  '#0d9488',   // teal — badge bg-sumon
+    'Alamin': '#d97706',   // orange — badge bg-alamin
+    'Fahim':  '#1d4ed8',   // blue — badge bg-fahim
+    'Nahid':  '#7c3aed',   // purple — badge bg-nahid
+};
     const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     // ── MONTH DROPDOWN SETUP ──
@@ -1655,13 +1692,13 @@ function renderSummary() {
         const monthLabel = `${monthNames[parseInt(mo)-1]} ${yr}`;
         const monthTotal = techs.reduce((s,t) => s + monthlyCount[t], 0);
         monthlyBody.innerHTML = `<tr>
-            <td><strong>${monthLabel}</strong></td>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${monthLabel}</strong></td>
             ${techs.map(name => `
             <td>
-                <span style="font-weight:700;font-family:'Montserrat',sans-serif;font-size:0.85rem;">${monthlyCount[name]}</span>
-                <span style="font-size:0.58rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--muted);margin-left:4px;">(${monthRankMap[name]})</span>
+                <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.3rem;color:${techColors[name]};">${monthlyCount[name]}</span>
+                <span style="font-size:0.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:${techColors[name]};margin-left:5px;opacity:0.75;">(${monthRankMap[name]})</span>
             </td>`).join('')}
-            <td><strong style="font-family:'Montserrat',sans-serif;">${monthTotal}</strong></td>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:var(--navy-mid);">${monthTotal}</strong></td>
         </tr>`;
     }
 
@@ -1694,13 +1731,13 @@ if (dateSelector) {
     if (dailyBody) {
         const dailyTotal = techs.reduce((s,t) => s + dailyCount[t], 0);
         dailyBody.innerHTML = `<tr>
-            <td><strong>${formatDateDisplay(selectedDate)}</strong></td>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
             ${techs.map(name => `
             <td>
-                <span style="font-weight:700;font-family:'Montserrat',sans-serif;font-size:0.85rem;">${dailyCount[name]}</span>
-                <span style="font-size:0.58rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--muted);margin-left:4px;">(${dailyRankMap[name]})</span>
+                <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.15rem;color:${techColors[name]};">${dailyCount[name]}</span>
+                <span style="font-size:0.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:${techColors[name]};margin-left:5px;opacity:0.75;">(${dailyRankMap[name]})</span>
             </td>`).join('')}
-            <td><strong style="font-family:'Montserrat',sans-serif;">${dailyTotal}</strong></td>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:var(--navy-mid);">${dailyTotal}</strong></td>
         </tr>`;
     }
 }
