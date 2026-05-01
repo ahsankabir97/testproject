@@ -92,20 +92,20 @@
 .sidebar{width:var(--nav-w);min-height:100vh;background:linear-gradient(180deg,#0d1f5c 0%,#1a3a8f 45%,#2354c7 100%);display:flex;flex-direction:column;flex-shrink:0;position:relative;box-shadow:5px 0 28px rgba(13,31,92,.38);overflow:visible;}
 .sb-logo{padding:12px 16px 12px;border-bottom:2px solid rgba(255,255,255,.18);display:flex;align-items:center;gap:13px;background:rgba(0,0,0,.18);position:relative;}
 .sb-logo::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,.8),transparent);}
-.sb-logo-box{background:transparent;border-radius:10px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2.5px solid rgba(255,255,255,.95);box-shadow:0 0 0 3px rgba(33,150,243,.4),0 4px 16px rgba(0,0,0,.4);overflow:hidden;padding:0;}
+.sb-logo-box{background:transparent;border-radius:10px;width:70px;height:70px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2.5px solid rgba(255,255,255,.95);box-shadow:0 0 0 3px rgba(33,150,243,.4),0 4px 16px rgba(0,0,0,.4);overflow:hidden;padding:0;}
 .sb-logo-box span{font-size:12px;font-weight:900;color:var(--navy);text-align:center;font-family:'Montserrat',sans-serif}
 .sb-logo-info{flex:1}
-.sb-co{font-size:.75rem;font-weight:800;color:#fff;font-family:'Montserrat',sans-serif;line-height:1.2;text-shadow:0 1px 6px rgba(0,0,0,.3)}
-.sb-zone{display:inline-flex;align-items:center;gap:5px;margin-top:4px;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,rgba(33,150,243,.6),rgba(33,150,243,.3));border:1px solid rgba(255,255,255,.35);padding:2px 8px;border-radius:20px;}
-.sb-user{margin:10px 10px 0;padding:8px 12px;border-radius:11px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:10px;}
+.sb-co{font-size:.93rem;font-weight:900;color:#fff;font-family:'Outfit',sans-serif;line-height:1.2;text-shadow:0 1px 6px rgba(0,0,0,.3)}
+.sb-zone{display:inline-flex;align-items:center;gap:5px;margin-top:4px;font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,rgba(33,150,243,.6),rgba(33,150,243,.3));border:1px solid rgba(255,255,255,.35);padding:2px 8px;border-radius:20px;}
+.sb-user{margin:10px 10px 0;padding:8px 15px;border-radius:11px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:10px;}
 .sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2196f3,#64b5f6);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900;color:#fff;flex-shrink:0;font-family:'Montserrat',sans-serif;}
 .sb-uname{font-size:.73rem;font-weight:700;color:#fff;font-family:'Montserrat',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sb-urole{font-size:.54rem;color:rgba(255,255,255,.55);letter-spacing:.6px;font-family:'Montserrat',sans-serif;font-weight:600;text-transform:uppercase}
 
-.sb-nav{flex:1;padding:18px 0 6px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;gap:2px;}
+.sb-nav{flex:1;padding:28px 0 6px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;gap:1px;}
 .nav-sec{display:none}
 .nav-sep{display:none}
-.nav-item{margin:1px 8px;padding:0 10px;height:44px;flex-shrink:0;display:flex;align-items:center;gap:10px;cursor:pointer;border-radius:10px;border-left:3px solid transparent;position:relative;overflow:hidden;transition:background .3s ease,border-color .3s ease,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;text-decoration:none;}
+.nav-item{margin:0 8px;padding:0 10px;height:38px;flex-shrink:0;display:flex;align-items:center;gap:10px;cursor:pointer;border-radius:10px;border-left:3px solid transparent;position:relative;overflow:hidden;transition:background .3s ease,border-color .3s ease,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;text-decoration:none;}
 
 /* Shimmer sweep on hover */
 .nav-item::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transition:left .5s ease;pointer-events:none;}
@@ -159,7 +159,7 @@
 .top-bar::before{content:'';position:absolute;top:-50%;right:-10%;width:200px;height:200px;background:radial-gradient(circle,rgba(33,150,243,.25),transparent 65%);pointer-events:none;}
 .top-title-wrap{position:absolute;left:50%;transform:translateX(-50%);text-align:center}
 .top-title{font-size:1.65rem;font-weight:900;color:#fff;letter-spacing:2px;font-family:'Montserrat',sans-serif;text-shadow:0 2px 0 rgba(0,0,0,.3),0 4px 18px rgba(0,0,0,.3),0 0 40px rgba(33,150,243,.5);text-transform:uppercase;line-height:1}
-.top-sub{font-size:.72rem;color:rgba(255,255,255,.75);letter-spacing:5px;margin-top:4px;font-family:'Montserrat',sans-serif;font-weight:700;text-transform:uppercase;text-shadow:0 1px 6px rgba(13,31,92,.5)}
+.top-sub{font-size:.95rem;color:rgba(255,255,255,.92);letter-spacing:2px;margin-top:4px;font-family:'Outfit',sans-serif;font-weight:900;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.45),0 0 20px rgba(255,255,255,.15)}
 .top-right{display:flex;align-items:center;gap:14px;margin-left:auto;position:relative;z-index:1}
 .fb-status{display:flex;align-items:center;gap:6px;padding:3px 12px;border-radius:20px;font-size:.6rem;font-weight:800;font-family:'Montserrat',sans-serif;letter-spacing:.8px;text-transform:uppercase}
 .fb-status.connected{background:rgba(22,163,74,.2);color:#4ade80;border:1px solid rgba(22,163,74,.4)}
@@ -208,10 +208,11 @@
 .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0d1f5c,#1d4ed8,#2196f3,#64b5f6)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px}
 .fg{display:flex;flex-direction:column;gap:5px}
-.fg label{font-size:.62rem;font-weight:800;color:var(--blue);letter-spacing:.8px;display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;text-transform:uppercase}
+.fg label{font-size:.75rem;font-weight:800;color:var(--blue);letter-spacing:.8px;display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;text-transform:uppercase}
 .fg label i{font-size:.8rem;color:var(--accent);min-width:16px;text-align:center}
 .fg input,.fg select,.fg textarea{width:100%;padding:7px 11px;border:1.5px solid var(--border);border-radius:9px;font-size:.8rem;color:var(--text);background:rgba(235,245,255,.75);transition:all .25s;font-family:'Outfit',sans-serif;height:34px;outline:none}
-#f-eng{font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:800;color:var(--blue);letter-spacing:.3px}
+#f-eng{font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:800;color:var(--blue);letter-spacing:.3px}
+#f-eng option{font-weight:700;color:var(--navy);font-family:'Montserrat',sans-serif;background:#f0f8ff}
 input[type=date]{font-family:'Montserrat',sans-serif;font-size:.84rem;color:var(--navy);font-weight:800;letter-spacing:.3px}
 input[type=date]::-webkit-datetime-edit{font-family:'Montserrat',sans-serif;font-weight:800;color:var(--navy)}
 input[type=date]::-webkit-datetime-edit-fields-wrapper{font-family:'Montserrat',sans-serif;font-weight:800}
@@ -223,6 +224,12 @@ input[type=date]::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer;fi
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(33,150,243,.15);transform:translateY(-1px)}
 .fg input:hover,.fg select:hover{border-color:var(--accent);background:#e8f4fd}
 .fg textarea{resize:vertical;min-height:64px;height:auto}
+#f-ticket::placeholder,
+#f-mac::placeholder,
+#f-remarks::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
 .fg-full{grid-column:1/-1}
 .submit-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 .ncss-tag{font-size:.62rem;color:var(--accent);font-weight:700;font-family:'Montserrat',sans-serif;letter-spacing:.5px}
@@ -239,9 +246,10 @@ input[type=date]::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer;fi
 .page-ttl i{color:var(--accent)}
 .filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:5px 12px;box-shadow:0 2px 10px rgba(26,58,143,.06);margin-bottom:10px}
 .filter-bar-label{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:800;color:var(--blue);white-space:nowrap;display:flex;align-items:center;gap:4px}
-.filter-bar input,.filter-bar select{padding:5px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;color:#a8b4c0;background:#e8f4fd;height:30px;outline:none;font-family:'Montserrat',sans-serif;font-weight:800}
+.filter-bar input,.filter-bar select{padding:5px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;color:#0d1f5c;background:#e8f4fd;height:30px;outline:none;font-family:'Outfit',sans-serif;font-weight:700}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--accent)}
-.filter-bar input[type=text]{min-width:160px;background:#e8f4fd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 9px center;padding-left:28px}
+.filter-bar input[type=text]{min-width:160px;background:#e8f4fd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 9px center;padding-left:28px;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c}
+.filter-bar input::placeholder{color:#5b7fa6;font-family:'Outfit',sans-serif;font-weight:500}
 .btn-go{background:linear-gradient(135deg,#1a3a8f,#2196f3);color:#fff;border:none;padding:0 14px;border-radius:7px;font-size:.65rem;font-weight:800;cursor:pointer;height:30px;transition:all .25s;display:flex;align-items:center;gap:5px;box-shadow:0 3px 8px rgba(26,58,143,.22);font-family:'Montserrat',sans-serif;letter-spacing:.3px}
 .btn-go:hover{transform:translateY(-1px);filter:brightness(1.1)}
 .btn-today{background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;border:none;padding:0 14px;border-radius:7px;font-size:.65rem;font-weight:800;cursor:pointer;height:30px;transition:all .25s;display:flex;align-items:center;gap:5px;font-family:'Montserrat',sans-serif}
@@ -274,6 +282,9 @@ th{padding:7px 10px;text-align:left;font-weight:800;font-size:.72rem;color:var(-
 td{padding:7px 10px;border-bottom:1px solid #eaf1fb;color:var(--text);vertical-align:middle;font-size:.75rem;font-family:'Montserrat',sans-serif;font-weight:500}
 tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#f0f8ff}
+#tr-summary-tbody tr:nth-child(even) td{background:rgba(232,244,253,0.5);}
+#tr-summary-tbody tr:nth-child(odd) td{background:#ffffff;}
+#tr-summary-tbody tr:hover td{background:rgba(33,150,243,0.08) !important;}
 .chip{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.65rem;font-weight:700;font-family:'Montserrat',sans-serif;letter-spacing:.3px}
 .chip-yes{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
 .chip-no{background:#f1f5f9;color:var(--muted);border:1px solid #e2e8f0}
@@ -433,7 +444,7 @@ tbody tr:hover td{background:#f0f8ff}
   <div class="top-bar">
     <div class="top-title-wrap">
       <div class="top-title" id="topTitle">Daily Work Dashboard</div>
-      <div class="top-sub"><span style="color:#93c5fd">MOTIJHEEL</span> <span style="color:rgba(255,255,255,.8)">ZONE</span></div>
+      <div class="top-sub"><span style="color:rgba(255,255,255,.95);text-shadow:0 2px 10px rgba(0,0,0,.6),0 4px 20px rgba(0,0,0,.4)">MOTIJHEEL</span> <span style="color:rgba(255,255,255,.95);text-shadow:0 2px 10px rgba(0,0,0,.6),0 4px 20px rgba(0,0,0,.4)">ZONE</span></div>
     </div>
     <div class="top-right">
       <div class="fb-status disconnected" id="fb-status">
@@ -454,7 +465,7 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card">
         <div class="form-grid">
           <div class="fg"><label><i class="fas fa-calendar-alt"></i>Work Date</label><input type="date" id="f-date"></div>
-          <div class="fg"><label><i class="fas fa-ticket-alt"></i>Ticket ID</label><input type="text" id="f-ticket" placeholder="e.g. L3-31Jan26-1234"></div>
+          <div class="fg"><label><i class="fas fa-ticket-alt"></i>Ticket ID</label><input type="text" id="f-ticket" placeholder="e.g. L3-31Jan26-1234, L3-31Jan26-5678"></div>
           <!-- TASK CATEGORY -->
           <div class="fg" style="position:relative">
             <label><i class="fas fa-tags"></i>Task Category</label>
@@ -561,7 +572,7 @@ tbody tr:hover td{background:#f0f8ff}
               <button class="btn-today" onclick="setToday('mt-date');renderMyTask()"><i class="fas fa-calendar-day"></i> Today</button>
               <button class="btn-del-sel" onclick="clearMyFilters()"><i class="fas fa-times"></i> Clear</button>
             </div>
-            <input type="text" id="mt-search" placeholder="Search ticket / engineer..." style="padding:5px 10px 5px 28px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 9px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#a8b4c0" oninput="renderMyTask()">
+            <input type="text" id="mt-search" placeholder="Search ticket / engineer..." style="padding:5px 10px 5px 28px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 9px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c" oninput="renderMyTask()">
           </div>
         </div>
       </div>
@@ -643,17 +654,17 @@ tbody tr:hover td{background:#f0f8ff}
               <input type="date" id="at-date-to" onchange="renderAll()" title="To Date" style="border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
               <button onclick="clearAtDates()" title="Clear dates" style="border:none;background:none;cursor:pointer;color:var(--muted);font-size:.7rem;padding:0 2px" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'"><i class="fas fa-times"></i></button>
             </div>
-            <select id="at-eng" onchange="renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#a8b4c0">
+            <select id="at-eng" onchange="renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
               <option value="">All Engineers</option>
               <option>Ahsanul Kabir</option><option>Tamim</option><option>Nazrul Islam</option>
               <option>Rupchan</option><option>Amit Hasan</option><option>Basudeb Roy</option>
               <option>ATM Arifuzzaman</option><option>Maruf Hasan</option><option>Abu Sayed</option>
             </select>
-            <select id="at-team" onchange="renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#a8b4c0">
+            <select id="at-team" onchange="renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
               <option value="">All Teams</option>
               <option>Engineer</option><option>Single Tech &amp; Engineer</option><option>FI Team</option>
             </select>
-            <input type="text" id="at-search" placeholder="Search..." oninput="renderAll()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#a8b4c0;min-width:140px">
+            <input type="text" id="at-search" placeholder="Search..." oninput="renderAll()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:140px">
           </div>
         </div>
         <!-- Excel Download Row -->
@@ -680,7 +691,7 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
           <div class="page-ttl"><i class="fas fa-network-wired"></i>Used Devices</div>
-          <input type="text" id="dv-search" placeholder="Search MAC address..." oninput="renderDevices()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#a8b4c0;min-width:180px">
+          <input type="text" id="dv-search" placeholder="Search MAC address..." oninput="renderDevices()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
         </div>
       </div>
       <div class="tbl-card">
@@ -697,7 +708,7 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
           <div class="page-ttl"><i class="fas fa-wifi"></i>WiFi Scoring</div>
-          <input type="text" id="wf-search" placeholder="Search..." oninput="renderWifi()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#a8b4c0;min-width:180px">
+          <input type="text" id="wf-search" placeholder="Search..." oninput="renderWifi()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
         </div>
       </div>
       <div class="tbl-card">
@@ -1025,7 +1036,16 @@ updateClock(); setInterval(updateClock,1000);
 
 const today=new Date().toISOString().split('T')[0];
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function fmtDateDisp(iso){if(!iso||iso==='—')return iso||'—';const p=iso.split('-');if(p.length!==3)return iso;return String(p[2]).padStart(2,'0')+'/'+String(p[1]).padStart(2,'0')+'/'+p[0];}
+function fmtDateDisp(iso){
+  if(!iso||iso==='—')return iso||'—';
+  const p=iso.split('-');
+  if(p.length!==3)return iso;
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const day=parseInt(p[2],10);
+  const mon=months[parseInt(p[1],10)-1]||p[1];
+  const year=p[0];
+  return day+'-'+mon+'-'+year;
+}
 function setDateDefaults(){ document.getElementById('f-date').value=today; document.getElementById('mt-date').value=today; }
 setDateDefaults();
 function setToday(id){document.getElementById(id).value=today;}
@@ -1130,25 +1150,47 @@ document.addEventListener('click',function(e){
 
 async function submitTicket(){
   const d=document.getElementById('f-date').value;
-  const ti=document.getElementById('f-ticket').value.trim();
+  const rawTicket=document.getElementById('f-ticket').value.trim();
   const cat=document.getElementById('f-cat').value;
   const tt=document.getElementById('f-tasktype').value;
   const tm=document.getElementById('f-team').value;
   const eng=document.getElementById('f-eng').value;
-  if(!d||!ti||!cat||!tt||!tm||!eng){toast('⚠ Please fill all required fields!');return;}
-  const ticketData={
-    id:Date.now(),date:d,ticket:ti,cat,tt,tm,eng,
-    bnoc:document.getElementById('f-bnoc').value,
-    mac:document.getElementById('f-mac').value.trim(),
-    wifi:document.getElementById('f-wifi').value,
-    remarks:document.getElementById('f-remarks').value.trim(),
-    submittedBy: currentUser ? currentUser.username : 'unknown'
-  };
+  if(!d||!rawTicket||!cat||!tt||!tm||!eng){toast('⚠ Please fill all required fields!');return;}
+
+  // Parse multiple tickets: split by comma or space, filter empty
+  const ticketList = rawTicket
+    .split(/[\s,]+/)
+    .map(t=>t.trim())
+    .filter(t=>t.length>0);
+
+  if(ticketList.length===0){toast('⚠ Please enter at least one Ticket ID!');return;}
+
   const btn=document.querySelector('.btn-submit');
-  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving...';
-  const ok=await window._fbPush(ticketData);
-  btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Done Tickets';
-  if(ok){
+  btn.disabled=true;
+  btn.innerHTML=`<i class="fas fa-spinner fa-spin"></i> Saving ${ticketList.length} ticket(s)...`;
+
+  let successCount=0;
+  let failCount=0;
+
+  for(const ti of ticketList){
+    const ticketData={
+      id:Date.now()+Math.random(),
+      date:d,ticket:ti,cat,tt,tm,eng,
+      bnoc:document.getElementById('f-bnoc').value,
+      mac:document.getElementById('f-mac').value.trim(),
+      wifi:document.getElementById('f-wifi').value,
+      remarks:document.getElementById('f-remarks').value.trim(),
+      submittedBy: currentUser ? currentUser.username : 'unknown'
+    };
+    const ok=await window._fbPush(ticketData);
+    if(ok) successCount++;
+    else failCount++;
+  }
+
+  btn.disabled=false;
+  btn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Done Tickets';
+
+  if(successCount>0){
     ['f-ticket','f-mac','f-remarks'].forEach(i=>document.getElementById(i).value='');
     resetCdd('cat','Select Category');
     resetCdd('tt','Select Task Type');
@@ -1156,9 +1198,14 @@ async function submitTicket(){
     if(currentUser.role!=='engineer') document.getElementById('f-eng').value='';
     setToggle('bnoc','NO');
     setToggle('wifi','NO');
-    toast('✅ Ticket saved to Firebase successfully!');
+  }
+
+  if(failCount===0){
+    toast(`✅ ${successCount} ticket(s) saved successfully!`);
+  } else if(successCount===0){
+    toast(`❌ All ${failCount} ticket(s) failed! Check connection.`);
   } else {
-    toast('❌ Firebase save failed! Check your connection.');
+    toast(`⚠ ${successCount} saved, ${failCount} failed!`);
   }
 }
 
