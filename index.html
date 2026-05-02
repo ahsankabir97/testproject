@@ -601,7 +601,7 @@ tbody tr:hover td{background:#f0f8ff}
           <div class="fg"><label><i class="fas fa-network-wired"></i>ONU MAC-Address</label>
             <input type="text" id="f-mac" placeholder="Enter ONU MAC if used">
           </div>
-          <div class="fg"><label><i class="fas fa-wifi"></i>WiFi Scoring Data</label>
+          <div class="fg"><label><i class="fas fa-wifi"></i>WiFi Scoring</label>
             <button type="button" class="toggle-single is-no" id="btn-wifi" onclick="toggleSingle('wifi')">
               <span class="ts-val" id="ts-wifi-val">NO</span>
               <span class="ts-arrow">&#10549;</span>
@@ -791,12 +791,22 @@ tbody tr:hover td{background:#f0f8ff}
     <div class="page" id="page-wifi">
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
-          <div class="page-ttl"><i class="fas fa-wifi"></i>WiFi Scoring</div>
+          <div class="page-ttl"><i class="fas fa-wifi"></i>WiFi Scoring Data</div>
           <input type="text" id="wf-search" placeholder="Search..." oninput="wfPage=1;renderWifi()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
         </div>
       </div>
       <div class="tbl-card">
-        <div class="tbl-top"><span class="tbl-title"><i class="fas fa-signal"></i>WiFi Scored Tickets</span><span class="tbl-badge" id="wf-cnt">0 records</span></div>
+        <div class="tbl-top">
+  <span class="tbl-title"><i class="fas fa-signal"></i>WiFi Scored Tickets</span>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d1f5c,#1d4ed8);border-radius:10px;padding:6px 16px">
+      <i class="fas fa-wifi" style="color:#64b5f6;font-size:.8rem"></i>
+      <span style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.5px">TOTAL SCORED</span>
+      <span id="wf-total-badge" style="font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:900;color:#fff">0</span>
+    </div>
+   
+  </div>
+</div>
         <div class="tbl-wrap"><table>
           <thead><tr><th>#</th><th>Date</th><th>Ticket ID</th><th>Category</th><th>Engineer</th><th>Team</th><th>WiFi</th><th>Remarks</th></tr></thead>
           <tbody id="wf-tbody"></tbody>
@@ -1972,7 +1982,10 @@ function renderWifi(){
   const s=document.getElementById('wf-search').value.toLowerCase();
   let arr=tickets.filter(t=>t.wifi==='YES'&&(!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s))));
   arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
-  document.getElementById('wf-cnt').textContent=arr.length+' records';
+  
+// tbl-top এ total badge update
+const wfTotal = document.getElementById('wf-total-badge');
+if(wfTotal) wfTotal.textContent = arr.length;
   const totalPages=Math.max(1,Math.ceil(arr.length/WF_PER_PAGE));
   if(wfPage>totalPages) wfPage=totalPages;
   const start=(wfPage-1)*WF_PER_PAGE;
