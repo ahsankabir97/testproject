@@ -24,7 +24,7 @@
   const db = getDatabase(app);
   const ticketsRef = ref(db, 'tickets');
 
- onValue(ticketsRef, (snapshot) => {
+onValue(ticketsRef, (snapshot) => {
     const data = snapshot.val();
     tickets = [];
     if (data) {
@@ -33,21 +33,24 @@
       });
       tickets.sort((a, b) => (b.id || 0) - (a.id || 0));
     }
-    renderMyTask();
-    renderAll();
-    renderDevices();
-    renderWifi();
-    // ✅ Task Report page active থাকলে re-render করবে
-    if(document.getElementById('page-taskreport').classList.contains('active')){
-      renderReport();
-    }
+    // শুধু active page টাই render করবে
+    const pages = ['mytask','alltask','devices','wifi','taskreport'];
+    pages.forEach(pg => {
+      if(document.getElementById('page-'+pg).classList.contains('active')){
+        if(pg==='mytask') renderMyTask();
+        if(pg==='alltask') renderAll();
+        if(pg==='devices') renderDevices();
+        if(pg==='wifi') renderWifi();
+        if(pg==='taskreport') renderReport();
+      }
+    });
     updateFirebaseStatus(true);
   }, (error) => {
     console.error("Firebase error:", error);
     updateFirebaseStatus(false);
   });
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2_9FujiuKu28uv8MOEcbfSJlZ98HtPxNECbMjZ_Li2sJosjN0Tac8XYGMuJV3CYBNiA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEKdd1tWAaBePaLG4Z_7cke3-nZ5jcsGu61i6nWudG7mcPBXkb6Q/exec';
 
   window._fbPush = async function(ticketData) {
     try {
@@ -330,10 +333,10 @@ input[type=date]::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer;fi
 .tbl-title i{color:var(--accent)}
 .tbl-badge{font-size:.65rem;background:var(--light);color:var(--blue);padding:3px 12px;border-radius:20px;font-weight:700;font-family:'Montserrat',sans-serif;border:1px solid var(--border)}
 .tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.78rem}
+table{width:100%;border-collapse:collapse;font-size:.78rem;table-layout:auto}
 thead tr{background:linear-gradient(90deg,#e8f4fd,#f0f8ff)}
-th{padding:7px 10px;text-align:left;font-weight:800;font-size:.72rem;color:var(--blue);border-bottom:2px solid var(--border);white-space:nowrap;letter-spacing:.5px;font-family:'Montserrat',sans-serif;text-transform:uppercase}
-td{padding:7px 10px;border-bottom:1px solid #eaf1fb;color:var(--text);vertical-align:middle;font-size:.75rem;font-family:'Montserrat',sans-serif;font-weight:500}
+th{padding:4px 5px;text-align:center;font-weight:800;font-size:.65rem;color:var(--blue);border-bottom:2px solid var(--border);border-right:1px solid var(--border);white-space:nowrap;letter-spacing:.2px;font-family:'Montserrat',sans-serif;text-transform:uppercase}
+td{padding:4px 5px;border-bottom:1px solid #eaf1fb;border-right:1px solid #eaf1fb;color:var(--navy);vertical-align:middle;font-size:.68rem;font-family:'Outfit',sans-serif;font-weight:600;white-space:nowrap;text-align:center}
 tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#f0f8ff}
 #tr-summary-tbody tr:nth-child(even) td{background:rgba(232,244,253,0.5);}
@@ -352,7 +355,8 @@ tbody tr:hover td{background:#f0f8ff}
 .btn-row-del:hover{background:#fff0f0}
 
 /* TOAST */
-.toast{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,rgba(26,58,143,.94),rgba(33,150,243,.94));color:#fff;padding:12px 20px;border-radius:12px;font-size:.78rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s;z-index:9999;box-shadow:0 12px 36px rgba(26,58,143,.35);display:flex;align-items:center;gap:10px;font-family:'Montserrat',sans-serif;border:1px solid rgba(255,255,255,.22);min-width:240px;max-width:320px;}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(30px);background:linear-gradient(135deg,rgba(26,58,143,.94),rgba(33,150,243,.94));color:#fff;padding:12px 20px;border-radius:12px;font-size:.78rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .35s ease,transform .35s ease;z-index:9999;box-shadow:0 12px 36px rgba(26,58,143,.35);display:flex;align-items:center;gap:10px;font-family:'Montserrat',sans-serif;border:1px solid rgba(255,255,255,.22);min-width:240px;max-width:320px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.show{opacity:1}
 
 /* TOGGLE BUTTON */
@@ -624,11 +628,11 @@ tbody tr:hover td{background:#f0f8ff}
             <div class="filter-bar" style="margin-bottom:0;padding:5px 12px">
               <span class="filter-bar-label"><i class="fas fa-filter"></i>Date:</span>
               <input type="date" id="mt-date" style="font-size:.76rem;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
-              <button class="btn-go" onclick="renderMyTask()"><i class="fas fa-search"></i> Go</button>
-              <button class="btn-today" onclick="setToday('mt-date');renderMyTask()"><i class="fas fa-calendar-day"></i> Today</button>
+              <button class="btn-go" onclick="mtPage=1;renderMyTask()"><i class="fas fa-search"></i> Go</button>
+              <button class="btn-today" onclick="setToday('mt-date');mtPage=1;renderMyTask()"><i class="fas fa-calendar-day"></i> Today</button>
               <button class="btn-del-sel" onclick="clearMyFilters()"><i class="fas fa-times"></i> Clear</button>
             </div>
-            <input type="text" id="mt-search" placeholder="Search ticket / engineer..." style="padding:5px 10px 5px 28px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 9px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c" oninput="renderMyTask()">
+            <input type="text" id="mt-search" placeholder="Search ticket / engineer..." style="padding:5px 10px 5px 28px;border:1.5px solid var(--border);border-radius:7px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 9px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c" oninput="mtPage=1;renderMyTask()">
           </div>
         </div>
       </div>
@@ -639,8 +643,20 @@ tbody tr:hover td{background:#f0f8ff}
           <span class="tbl-badge" id="mt-cnt">0 tickets</span>
         </div>
         <div class="tbl-wrap"><table>
-          <thead><tr><th>#</th><th>Date</th><th>Ticket ID</th><th>Category</th><th>Task Type</th>
-          <th>Team</th><th>Engineer</th><th>BNOC</th><th>MAC</th><th>WiFi</th><th>Remarks</th><th></th></tr></thead>
+          <thead><tr>
+  <th>#</th>
+  <th>Date</th>
+  <th>Ticket ID</th>
+  <th>Category</th>
+  <th>Task Type</th>
+  <th>Team</th>
+  <th>Engineer</th>
+  <th>BNOC</th>
+  <th>MAC</th>
+  <th>WiFi</th>
+  <th>Remarks</th>
+  <th></th>
+</tr></thead>
           <tbody id="mt-tbody"></tbody>
         </table></div>
       </div>
@@ -705,22 +721,22 @@ tbody tr:hover td{background:#f0f8ff}
             <!-- Date Range Filter -->
             <div style="display:flex;align-items:center;gap:5px;background:rgba(33,150,243,.08);border:1.5px solid var(--border);border-radius:8px;padding:3px 8px;height:30px">
               <i class="fas fa-calendar-alt" style="color:var(--accent);font-size:.72rem"></i>
-              <input type="date" id="at-date-from" onchange="renderAll()" title="From Date" style="border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
+              <input type="date" id="at-date-from" onchange="atPage=1;renderAll()" title="From Date" style="border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
               <span style="color:var(--muted);font-size:.7rem;font-weight:700">→</span>
-              <input type="date" id="at-date-to" onchange="renderAll()" title="To Date" style="border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
+              <input type="date" id="at-date-to" onchange="atPage=1;renderAll()" title="To Date" style="border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
               <button onclick="clearAtDates()" title="Clear dates" style="border:none;background:none;cursor:pointer;color:var(--muted);font-size:.7rem;padding:0 2px" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'"><i class="fas fa-times"></i></button>
             </div>
-            <select id="at-eng" onchange="renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
+            <select id="at-eng" onchange="atPage=1;renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
               <option value="">All Engineers</option>
               <option>Ahsanul Kabir</option><option>Tamim</option><option>Nazrul Islam</option>
               <option>Rupchan</option><option>Amit Hasan</option><option>Basudeb Roy</option>
               <option>ATM Arifuzzaman</option><option>Maruf Hasan</option><option>Abu Sayed</option>
             </select>
-            <select id="at-team" onchange="renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
+            <select id="at-team" onchange="atPage=1;renderAll()" style="font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
               <option value="">All Teams</option>
               <option>Engineer</option><option>Single Tech &amp; Engineer</option><option>FI Team</option>
             </select>
-            <input type="text" id="at-search" placeholder="Search..." oninput="renderAll()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:140px">
+            <input type="text" id="at-search" placeholder="Search..." oninput="atPage=1;renderAll()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:140px">
           </div>
         </div>
         <!-- Excel Download Row -->
@@ -735,8 +751,20 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="tbl-card">
         <div class="tbl-top"><span class="tbl-title"><i class="fas fa-check-double"></i>Completed Task List</span><span class="tbl-badge" id="at-cnt">0 tickets</span></div>
         <div class="tbl-wrap"><table>
-          <thead><tr><th>#</th><th>Date</th><th>Ticket ID</th><th>Category</th><th>Task Type</th>
-          <th>Team</th><th>Engineer</th><th>BNOC</th><th>MAC</th><th>WiFi</th><th>Remarks</th><th></th></tr></thead>
+          <thead><tr>
+  <th>#</th>
+  <th>Date</th>
+  <th>Ticket ID</th>
+  <th>Category</th>
+  <th>Task Type</th>
+  <th>Team</th>
+  <th>Engineer</th>
+  <th>BNOC</th>
+  <th>MAC</th>
+  <th>WiFi</th>
+  <th>Remarks</th>
+  <th></th>
+</tr></thead>
           <tbody id="at-tbody"></tbody>
         </table></div>
       </div>
@@ -747,7 +775,7 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
           <div class="page-ttl"><i class="fas fa-network-wired"></i>Used Devices List</div>
-          <input type="text" id="dv-search" placeholder="Search MAC address..." oninput="renderDevices()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
+          <input type="text" id="dv-search" placeholder="Search MAC address..." oninput="dvPage=1;renderDevices()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
         </div>
       </div>
       <div class="tbl-card">
@@ -764,7 +792,7 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
           <div class="page-ttl"><i class="fas fa-wifi"></i>WiFi Scoring</div>
-          <input type="text" id="wf-search" placeholder="Search..." oninput="renderWifi()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
+          <input type="text" id="wf-search" placeholder="Search..." oninput="wfPage=1;renderWifi()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.8rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c;min-width:180px">
         </div>
       </div>
       <div class="tbl-card">
@@ -815,7 +843,20 @@ tbody tr:hover td{background:#f0f8ff}
     </div>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>#</th><th>Date</th><th>Ticket ID</th><th>Category</th><th>Task Type</th><th>Team</th><th>Engineer</th><th>BNOC</th><th>MAC</th><th>WiFi</th><th>Remarks</th></tr></thead>
+        <thead><tr>
+  <th>#</th>
+  <th>Date</th>
+  <th>Ticket ID</th>
+  <th>Category</th>
+  <th>Task Type</th>
+  <th>Team</th>
+  <th>Engineer</th>
+  <th>BNOC</th>
+  <th>MAC</th>
+  <th>WiFi</th>
+  <th>Remarks</th>
+  <th></th>
+</tr></thead>
         <tbody id="import-preview"></tbody>
       </table>
     </div>
@@ -947,8 +988,7 @@ function canDeleteAllTask(ticket) {
 
 function canDeleteMyTask(ticket) {
   if (!currentUser) return false;
-  if (currentUser.role === 'admin' || currentUser.username === 'ahsan') return true;
-  return ticket.eng === currentUser.name || ticket.submittedBy === currentUser.username;
+  return true;
 }
 
 function setupUserUI() {
@@ -1335,7 +1375,7 @@ function toast(msg){
   const t=document.getElementById('toast');
   const m=document.getElementById('toast-msg');
   m.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
+  setTimeout(()=>t.classList.remove('show'),5000);
 }
 
 // ===== TOGGLE BUTTON =====
@@ -1409,6 +1449,28 @@ async function submitTicket(){
   const tm=document.getElementById('f-team').value;
   const eng=document.getElementById('f-eng').value;
   if(!d||!rawTicket||!cat||!tt||!tm||!eng){toast('⚠ Please fill all required fields!');return;}
+// Duplicate check
+  // Duplicate check
+  const ticketListCheck = rawTicket.split(/[\s,]+/).map(t=>t.trim()).filter(t=>t.length>0);
+  const remarks = document.getElementById('f-remarks').value.trim();
+  for(let ti of ticketListCheck){
+    const existing = tickets.find(t => t.ticket === ti);
+    if(existing){
+      if(!remarks){
+        toast(`⚠ "${ti}" is a duplicate ticket! Please add Remarks before resubmitting.`);
+        document.getElementById('f-remarks').focus();
+        // Remarks field highlight
+        const rEl = document.getElementById('f-remarks');
+        rEl.style.border = '2px solid #dc2626';
+        rEl.style.background = '#fff5f5';
+        setTimeout(()=>{
+          rEl.style.border = '';
+          rEl.style.background = '';
+        }, 3000);
+        return;
+      }
+    }
+  }
 
   // Parse multiple tickets: split by comma or space, filter empty
   const ticketList = rawTicket
@@ -1484,40 +1546,34 @@ function filterByCat(el,cat,statsId){
   if(statsId==='at-stats')renderAll();
 }
 
-function buildRows(arr,tbodyId,withDel,isMyTask){
+function buildRows(arr,tbodyId,withDel,isMyTask,startIdx=0){
   const tb=document.getElementById(tbodyId);
   if(!arr.length){
     tb.innerHTML=`<tr><td colspan="12"><div class="empty-box"><span class="ei">📂</span><p>No tasks found.</p></div></td></tr>`;
     return;
   }
   tb.innerHTML=arr.map((t,i)=>{
-    let showDel = false;
+    let showDel=false;
     if(withDel){
-      if(isMyTask){
-        showDel = canDeleteMyTask(t);
-      } else {
-        showDel = canDeleteAllTask(t);
-      }
+      if(isMyTask) showDel=canDeleteMyTask(t);
+      else showDel=canDeleteAllTask(t);
     }
     return `<tr>
-    <td style="color:var(--muted);font-weight:700;font-family:'Montserrat',sans-serif">${i+1}</td>
-    <td style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:.76rem;font-weight:800;color:var(--navy)">${fmtDateDisp(t.date)}</td>
-    <td style="max-width:150px;word-break:break-all;font-weight:600;color:var(--navy)">${t.ticket}</td>
+    <td>${startIdx+i+1}</td>
+    <td style="padding:5px 4px">${fmtDateDisp(t.date)}</td>
+    <td style="white-space:nowrap">${t.ticket}</td>
     <td><span class="chip chip-cat">${t.cat}</span></td>
-    <td style="color:var(--muted)">${t.tt}</td>
-    <td style="color:var(--muted)">${t.tm}</td>
-    <td style="font-weight:600;color:var(--blue)">${t.eng}</td>
+    <td>${t.tt}</td>
+    <td>${t.tm}</td>
+    <td style="color:var(--blue);font-weight:700">${t.eng}</td>
     <td><span class="chip ${t.bnoc==='YES'?'chip-yes':'chip-no'}">${t.bnoc}</span></td>
-    <td style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted)">${t.mac||'—'}</td>
+    <td style="font-family:'JetBrains Mono',monospace;padding:5px 4px">${t.mac||'—'}</td>
     <td><span class="chip ${t.wifi==='YES'?'chip-yes':'chip-no'}">${t.wifi}</span></td>
-    <td style="max-width:120px;color:var(--muted)">${t.remarks||'—'}</td>
-    ${showDel ?
-      `<td><button class="btn-row-del" onclick="delTicket('${t.firebaseKey||t.id}',${isMyTask?'true':'false'})"><i class="fas fa-times"></i></button></td>` :
-      '<td></td>'}
-  </tr>`;
+    <td style="max-width:150px;white-space:normal">${t.remarks||'—'}</td>
+    ${showDel?`<td><button class="btn-row-del" onclick="delTicket('${t.firebaseKey||t.id}',${isMyTask?'true':'false'})"><i class="fas fa-times"></i></button></td>`:'<td></td>'}
+    </tr>`;
   }).join('');
 }
-
 async function delTicket(fk, fromMyTask){
   if(fromMyTask){
     // My Task: user can only delete their own (already enforced by button visibility)
@@ -1538,15 +1594,65 @@ function getMyTickets(){
   return tickets.filter(t=>t.eng===currentUser.name || t.submittedBy===currentUser.username);
 }
 
+let mtPage = 1;
+const MT_PER_PAGE = 30;
+
 function renderMyTask(){
   const df=document.getElementById('mt-date').value;
   const s=document.getElementById('mt-search').value.toLowerCase();
   const cat=activeCat['mt-stats']||'';
   const base=getMyTickets();
-  let arr=base.filter(t=>(!df||t.date===df)&&(!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s)))&&(!cat||t.cat===cat));
+  let arr=base.filter(t=>
+    (!df||t.date===df)&&
+    (!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s)))&&
+    (!cat||t.cat===cat)
+  );
+  arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
   buildStats(base,'Installation,Troubleshoot,CR,Survey'.split(','),'mt-stats');
   document.getElementById('mt-cnt').textContent=arr.length+' tickets';
-  buildRows(arr,'mt-tbody',true,true);
+  const totalPages=Math.max(1,Math.ceil(arr.length/MT_PER_PAGE));
+  if(mtPage>totalPages) mtPage=totalPages;
+  const start=(mtPage-1)*MT_PER_PAGE;
+  buildRows(arr.slice(start,start+MT_PER_PAGE),'mt-tbody',true,true,start);
+  renderMtPagination(arr.length,totalPages);
+}
+
+function renderMtPagination(total,totalPages){
+  let pg=document.getElementById('mt-pagination');
+  if(!pg){
+    pg=document.createElement('div');
+    pg.id='mt-pagination';
+    pg.style.cssText='display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-top:1px solid var(--border);flex-wrap:wrap';
+    document.querySelector('#mt-tbody').closest('table').parentElement.after(pg);
+  }
+  if(totalPages<=1){pg.innerHTML='';return;}
+  let html='';
+  html+=`<button onclick="mtGoPage(${mtPage-1})" ${mtPage===1?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${mtPage===1?'#f1f5f9':'#fff'};color:${mtPage===1?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${mtPage===1?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">◀ Prev</button>`;
+  let pages=[];
+  if(totalPages<=7){for(let i=1;i<=totalPages;i++)pages.push(i);}
+  else{
+    pages=[1];
+    if(mtPage>3)pages.push('...');
+    for(let i=Math.max(2,mtPage-1);i<=Math.min(totalPages-1,mtPage+1);i++)pages.push(i);
+    if(mtPage<totalPages-2)pages.push('...');
+    pages.push(totalPages);
+  }
+  pages.forEach(p=>{
+    if(p==='...'){html+=`<span style="color:var(--muted);font-size:.8rem;padding:0 4px">…</span>`;}
+    else{
+      const active=p===mtPage;
+      html+=`<button onclick="mtGoPage(${p})" style="padding:5px 11px;border:1.5px solid ${active?'var(--accent)':'var(--border)'};border-radius:7px;background:${active?'linear-gradient(135deg,#1a3a8f,#2196f3)':'#fff'};color:${active?'#fff':'var(--blue)'};font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.7rem">${p}</button>`;
+    }
+  });
+  html+=`<button onclick="mtGoPage(${mtPage+1})" ${mtPage===totalPages?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${mtPage===totalPages?'#f1f5f9':'#fff'};color:${mtPage===totalPages?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${mtPage===totalPages?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">Next ▶</button>`;
+  html+=`<span style="font-family:'Montserrat',sans-serif;font-size:.65rem;color:var(--muted);font-weight:700">Page ${mtPage} of ${totalPages} · ${total} total</span>`;
+  pg.innerHTML=html;
+}
+
+function mtGoPage(p){
+  mtPage=p;
+  renderMyTask();
+  document.getElementById('page-mytask').scrollTop=0;
 }
 
 const ENGINEERS = ['Ahsanul Kabir','Tamim','Amit Hasan','Rupchan','Nazrul Islam','Basudeb Roy','ATM Arifuzzaman','Maruf Hasan','Abu Sayed'];
@@ -1655,8 +1761,12 @@ function renderReport(){
 function clearAtDates(){
   document.getElementById('at-date-from').value='';
   document.getElementById('at-date-to').value='';
+  atPage=1;
   renderAll();
 }
+
+let atPage = 1;
+const AT_PER_PAGE = 50;
 
 function renderAll(){
   const eng=document.getElementById('at-eng').value;
@@ -1673,16 +1783,54 @@ function renderAll(){
     (!dt||t.date<=dt)&&
     (!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s)))
   );
+  arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
   buildStats(tickets,'Installation,Troubleshoot,CR,Survey'.split(','),'at-stats');
   document.getElementById('at-cnt').textContent=arr.length+' tickets';
-  // Update export label
   const lbl=document.getElementById('at-export-label');
-  if(df||dt){
-    lbl.textContent=`Filtered: ${arr.length} of ${tickets.length} tickets`;
-  } else {
-    lbl.textContent=`Total: ${tickets.length} tickets`;
+  lbl.textContent=(df||dt)?`Filtered: ${arr.length} of ${tickets.length} tickets`:`Total: ${tickets.length} tickets`;
+  const totalPages=Math.max(1,Math.ceil(arr.length/AT_PER_PAGE));
+  if(atPage>totalPages) atPage=totalPages;
+  const start=(atPage-1)*AT_PER_PAGE;
+  buildRows(arr.slice(start,start+AT_PER_PAGE),'at-tbody',true,false,start);
+  renderAtPagination(arr.length,totalPages);
+}
+
+function renderAtPagination(total,totalPages){
+  let pg=document.getElementById('at-pagination');
+  if(!pg){
+    pg=document.createElement('div');
+    pg.id='at-pagination';
+    pg.style.cssText='display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-top:1px solid var(--border);flex-wrap:wrap';
+    document.querySelector('#at-tbody').closest('table').parentElement.after(pg);
   }
-  buildRows(arr,'at-tbody',true,false);
+  if(totalPages<=1){pg.innerHTML='';return;}
+  let html='';
+  html+=`<button onclick="atGoPage(${atPage-1})" ${atPage===1?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${atPage===1?'#f1f5f9':'#fff'};color:${atPage===1?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${atPage===1?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">◀ Prev</button>`;
+  let pages=[];
+  if(totalPages<=7){for(let i=1;i<=totalPages;i++)pages.push(i);}
+  else{
+    pages=[1];
+    if(atPage>3)pages.push('...');
+    for(let i=Math.max(2,atPage-1);i<=Math.min(totalPages-1,atPage+1);i++)pages.push(i);
+    if(atPage<totalPages-2)pages.push('...');
+    pages.push(totalPages);
+  }
+  pages.forEach(p=>{
+    if(p==='...'){html+=`<span style="color:var(--muted);font-size:.8rem;padding:0 4px">…</span>`;}
+    else{
+      const active=p===atPage;
+      html+=`<button onclick="atGoPage(${p})" style="padding:5px 11px;border:1.5px solid ${active?'var(--accent)':'var(--border)'};border-radius:7px;background:${active?'linear-gradient(135deg,#1a3a8f,#2196f3)':'#fff'};color:${active?'#fff':'var(--blue)'};font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.7rem">${p}</button>`;
+    }
+  });
+  html+=`<button onclick="atGoPage(${atPage+1})" ${atPage===totalPages?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${atPage===totalPages?'#f1f5f9':'#fff'};color:${atPage===totalPages?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${atPage===totalPages?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">Next ▶</button>`;
+  html+=`<span style="font-family:'Montserrat',sans-serif;font-size:.65rem;color:var(--muted);font-weight:700">Page ${atPage} of ${totalPages} · ${total} total</span>`;
+  pg.innerHTML=html;
+}
+
+function atGoPage(p){
+  atPage=p;
+  renderAll();
+  document.getElementById('page-alltask').scrollTop=0;
 }
 
 // ===== EXCEL EXPORT =====
@@ -1749,45 +1897,141 @@ function getAtFilteredRows(){
   );
 }
 
+let dvPage = 1;
+const DV_PER_PAGE = 30;
+
 function renderDevices(){
   const s=document.getElementById('dv-search').value.toLowerCase();
   let arr=tickets.filter(t=>t.mac&&(!s||t.mac.toLowerCase().includes(s)||t.ticket.toLowerCase().includes(s)));
+  arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
   document.getElementById('dv-cnt').textContent=arr.length+' devices';
+  const totalPages=Math.max(1,Math.ceil(arr.length/DV_PER_PAGE));
+  if(dvPage>totalPages) dvPage=totalPages;
+  const start=(dvPage-1)*DV_PER_PAGE;
+  const pageArr=arr.slice(start,start+DV_PER_PAGE);
   const tb=document.getElementById('dv-tbody');
   if(!arr.length){
     tb.innerHTML=`<tr><td colspan="7"><div class="empty-box"><span class="ei">📡</span><p>No devices found.</p></div></td></tr>`;
+    renderDvPagination(0,1);
     return;
   }
-  tb.innerHTML=arr.map((t,i)=>`<tr>
-    <td style="color:var(--muted);font-weight:700;font-family:'Montserrat',sans-serif">${i+1}</td>
-    <td style="font-family:'Montserrat',sans-serif;font-size:.76rem;font-weight:800;color:var(--navy);white-space:nowrap">${fmtDateDisp(t.date)}</td>
-    <td style="font-weight:600;color:var(--navy)">${t.ticket}</td>
-    <td style="font-family:'JetBrains Mono',monospace;color:var(--blue);font-weight:700">${t.mac}</td>
-    <td style="font-weight:600">${t.eng}</td>
-    <td style="color:var(--muted)">${t.tm}</td>
-    <td style="color:var(--muted)">${t.remarks||'—'}</td>
+  tb.innerHTML=pageArr.map((t,i)=>`<tr>
+    <td>${start+i+1}</td>
+    <td>${fmtDateDisp(t.date)}</td>
+    <td>${t.ticket}</td>
+    <td style="font-family:'JetBrains Mono',monospace">${t.mac}</td>
+    <td>${t.eng}</td>
+    <td>${t.tm}</td>
+    <td>${t.remarks||'—'}</td>
   </tr>`).join('');
+  renderDvPagination(arr.length,totalPages);
 }
+
+function renderDvPagination(total,totalPages){
+  let pg=document.getElementById('dv-pagination');
+  if(!pg){
+    pg=document.createElement('div');
+    pg.id='dv-pagination';
+    pg.style.cssText='display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-top:1px solid var(--border);flex-wrap:wrap';
+    document.querySelector('#dv-tbody').closest('table').parentElement.after(pg);
+  }
+  if(totalPages<=1){pg.innerHTML='';return;}
+  let html='';
+  html+=`<button onclick="dvGoPage(${dvPage-1})" ${dvPage===1?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${dvPage===1?'#f1f5f9':'#fff'};color:${dvPage===1?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${dvPage===1?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">◀ Prev</button>`;
+  let pages=[];
+  if(totalPages<=7){for(let i=1;i<=totalPages;i++)pages.push(i);}
+  else{
+    pages=[1];
+    if(dvPage>3)pages.push('...');
+    for(let i=Math.max(2,dvPage-1);i<=Math.min(totalPages-1,dvPage+1);i++)pages.push(i);
+    if(dvPage<totalPages-2)pages.push('...');
+    pages.push(totalPages);
+  }
+  pages.forEach(p=>{
+    if(p==='...'){html+=`<span style="color:var(--muted);font-size:.8rem;padding:0 4px">…</span>`;}
+    else{
+      const active=p===dvPage;
+      html+=`<button onclick="dvGoPage(${p})" style="padding:5px 11px;border:1.5px solid ${active?'var(--accent)':'var(--border)'};border-radius:7px;background:${active?'linear-gradient(135deg,#1a3a8f,#2196f3)':'#fff'};color:${active?'#fff':'var(--blue)'};font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.7rem">${p}</button>`;
+    }
+  });
+  html+=`<button onclick="dvGoPage(${dvPage+1})" ${dvPage===totalPages?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${dvPage===totalPages?'#f1f5f9':'#fff'};color:${dvPage===totalPages?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${dvPage===totalPages?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">Next ▶</button>`;
+  html+=`<span style="font-family:'Montserrat',sans-serif;font-size:.65rem;color:var(--muted);font-weight:700">Page ${dvPage} of ${totalPages} · ${total} total</span>`;
+  pg.innerHTML=html;
+}
+
+function dvGoPage(p){
+  dvPage=p;
+  renderDevices();
+  document.getElementById('page-devices').scrollTop=0;
+}
+
+let wfPage = 1;
+const WF_PER_PAGE = 30;
 
 function renderWifi(){
   const s=document.getElementById('wf-search').value.toLowerCase();
   let arr=tickets.filter(t=>t.wifi==='YES'&&(!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s))));
+  arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
   document.getElementById('wf-cnt').textContent=arr.length+' records';
+  const totalPages=Math.max(1,Math.ceil(arr.length/WF_PER_PAGE));
+  if(wfPage>totalPages) wfPage=totalPages;
+  const start=(wfPage-1)*WF_PER_PAGE;
+  const pageArr=arr.slice(start,start+WF_PER_PAGE);
   const tb=document.getElementById('wf-tbody');
   if(!arr.length){
     tb.innerHTML=`<tr><td colspan="8"><div class="empty-box"><span class="ei">📶</span><p>No WiFi scored tickets.</p></div></td></tr>`;
+    renderWfPagination(0,1);
     return;
   }
-  tb.innerHTML=arr.map((t,i)=>`<tr>
-    <td style="color:var(--muted);font-weight:700;font-family:'Montserrat',sans-serif">${i+1}</td>
-    <td style="font-family:'Montserrat',sans-serif;font-size:.76rem;font-weight:800;color:var(--navy);white-space:nowrap">${fmtDateDisp(t.date)}</td>
-    <td style="font-weight:600;color:var(--navy)">${t.ticket}</td>
+  tb.innerHTML=pageArr.map((t,i)=>`<tr>
+    <td>${start+i+1}</td>
+    <td>${fmtDateDisp(t.date)}</td>
+    <td>${t.ticket}</td>
     <td><span class="chip chip-cat">${t.cat}</span></td>
-    <td style="font-weight:600;color:var(--blue)">${t.eng}</td>
-    <td style="color:var(--muted)">${t.tm}</td>
+    <td>${t.eng}</td>
+    <td>${t.tm}</td>
     <td><span class="chip chip-yes"><i class="fas fa-circle" style="font-size:.4rem;vertical-align:middle"></i> YES</span></td>
-    <td style="color:var(--muted)">${t.remarks||'—'}</td>
+    <td>${t.remarks||'—'}</td>
   </tr>`).join('');
+  renderWfPagination(arr.length,totalPages);
+}
+
+function renderWfPagination(total,totalPages){
+  let pg=document.getElementById('wf-pagination');
+  if(!pg){
+    pg=document.createElement('div');
+    pg.id='wf-pagination';
+    pg.style.cssText='display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-top:1px solid var(--border);flex-wrap:wrap';
+    document.querySelector('#wf-tbody').closest('table').parentElement.after(pg);
+  }
+  if(totalPages<=1){pg.innerHTML='';return;}
+  let html='';
+  html+=`<button onclick="wfGoPage(${wfPage-1})" ${wfPage===1?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${wfPage===1?'#f1f5f9':'#fff'};color:${wfPage===1?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${wfPage===1?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">◀ Prev</button>`;
+  let pages=[];
+  if(totalPages<=7){for(let i=1;i<=totalPages;i++)pages.push(i);}
+  else{
+    pages=[1];
+    if(wfPage>3)pages.push('...');
+    for(let i=Math.max(2,wfPage-1);i<=Math.min(totalPages-1,wfPage+1);i++)pages.push(i);
+    if(wfPage<totalPages-2)pages.push('...');
+    pages.push(totalPages);
+  }
+  pages.forEach(p=>{
+    if(p==='...'){html+=`<span style="color:var(--muted);font-size:.8rem;padding:0 4px">…</span>`;}
+    else{
+      const active=p===wfPage;
+      html+=`<button onclick="wfGoPage(${p})" style="padding:5px 11px;border:1.5px solid ${active?'var(--accent)':'var(--border)'};border-radius:7px;background:${active?'linear-gradient(135deg,#1a3a8f,#2196f3)':'#fff'};color:${active?'#fff':'var(--blue)'};font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.7rem">${p}</button>`;
+    }
+  });
+  html+=`<button onclick="wfGoPage(${wfPage+1})" ${wfPage===totalPages?'disabled':''} style="padding:5px 12px;border:1.5px solid var(--border);border-radius:7px;background:${wfPage===totalPages?'#f1f5f9':'#fff'};color:${wfPage===totalPages?'#b0bec5':'var(--blue)'};font-weight:800;cursor:${wfPage===totalPages?'default':'pointer'};font-family:'Montserrat',sans-serif;font-size:.7rem">Next ▶</button>`;
+  html+=`<span style="font-family:'Montserrat',sans-serif;font-size:.65rem;color:var(--muted);font-weight:700">Page ${wfPage} of ${totalPages} · ${total} total</span>`;
+  pg.innerHTML=html;
+}
+
+function wfGoPage(p){
+  wfPage=p;
+  renderWifi();
+  document.getElementById('page-wifi').scrollTop=0;
 }
 
 function updateFirebaseStatus(connected){
@@ -1801,6 +2045,7 @@ function clearMyFilters(){
   document.getElementById('mt-date').value='';
   document.getElementById('mt-search').value='';
   activeCat['mt-stats']='';
+  mtPage=1;
   renderMyTask();
 }
 
