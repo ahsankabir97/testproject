@@ -681,7 +681,7 @@ tbody tr:hover td{background:#f0f8ff}
               <span class="filter-bar-label"><i class="fas fa-filter"></i>Date:</span>
               <input type="date" id="mt-date" style="font-size:.76rem;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
               <button class="btn-go" onclick="mtPage=1;renderMyTask()"><i class="fas fa-search"></i> Go</button>
-              <button class="btn-today" onclick="setToday('mt-date');mtPage=1;renderMyTask()"><i class="fas fa-calendar-day"></i> Today</button>
+              
               <button class="btn-del-sel" onclick="clearMyFilters()"><i class="fas fa-times"></i> Clear</button>
             </div>
            <input type="text" id="mt-search" placeholder="Search ticket / engineer..." style="padding:5px 10px 5px 28px;border:1.5px solid var(--border);border-radius:7px;font-size:.82rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 9px center;outline:none;font-family:'Outfit',sans-serif;font-weight:800;color:#1a3a8f" oninput="mtPage=1;renderMyTask()">
@@ -1681,7 +1681,12 @@ function renderMyTask(){
     (!cat||t.cat===cat)
   );
   arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
-  buildStats(base,'Installation,Troubleshoot,CR,Survey'.split(','),'mt-stats');
+  // Filter করা arr দিয়ে stats build করবে, base দিয়ে নয়
+  const statBase = tickets.filter(t=>
+    (!df||t.date===df)&&
+    (!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s)))
+  ).filter(t=> currentUser.role==='admin' ? true : (t.eng===currentUser.name||t.submittedBy===currentUser.username));
+  buildStats(statBase,'Installation,Troubleshoot,CR,Survey'.split(','),'mt-stats');
   document.getElementById('mt-cnt').textContent=arr.length+' tickets';
   const totalPages=Math.max(1,Math.ceil(arr.length/MT_PER_PAGE));
   if(mtPage>totalPages) mtPage=totalPages;
@@ -1857,7 +1862,7 @@ function renderAll(){
     (!s||(t.ticket.toLowerCase().includes(s)||t.eng.toLowerCase().includes(s)))
   );
   arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
-  buildStats(tickets,'Installation,Troubleshoot,CR,Survey'.split(','),'at-stats');
+  buildStats(arr,'Installation,Troubleshoot,CR,Survey'.split(','),'at-stats');
   document.getElementById('at-cnt').textContent=arr.length+' tickets';
   const lbl=document.getElementById('at-export-label');
   lbl.textContent=(df||dt)?`Filtered: ${arr.length} of ${tickets.length} tickets`:`Total: ${tickets.length} tickets`;
