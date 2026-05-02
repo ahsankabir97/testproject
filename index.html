@@ -237,7 +237,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 .top-date{font-size:.72rem;color:#fff;font-weight:900;letter-spacing:1.2px;font-family:'Montserrat',sans-serif;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.25)}
 .top-time{font-size:.76rem;font-weight:800;color:#fff;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 14px;letter-spacing:.8px;font-family:'Montserrat',sans-serif;border:1.5px solid rgba(255,255,255,.35);text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(4px)}
 
-.content{flex:1;overflow-y:auto;padding:20px 16px 12px;display:flex;flex-direction:column;}
+.content{flex:1;overflow-y:auto;padding:4px 16px 12px;display:flex;flex-direction:column;}
 .page{display:none;flex:1;flex-direction:column;}.page.active{display:flex;}
 
 /* Task report specific full-height layout */
@@ -269,8 +269,8 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 #page-wifi .tbl-wrap{flex:1;overflow-x:auto;overflow-y:auto;}
 
 /* FORM CARD */
-.form-card{background:#fff;border-radius:16px;border:1px solid rgba(190,227,248,.75);padding:14px 18px;box-shadow:0 6px 20px rgba(26,58,143,.10);position:relative;overflow:hidden;margin-bottom:10px}
-.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0d1f5c,#1d4ed8,#2196f3,#64b5f6)}
+.form-card{background:#fff;border-radius:16px;border:1px solid rgba(190,227,248,.75);padding:30px 18px 14px 18px;box-shadow:0 6px 20px rgba(26,58,143,.10);position:relative;overflow:hidden;margin-bottom:10px;margin-top:20px}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,#0d1f5c,#1d4ed8,#2196f3,#64b5f6)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px}
 .fg{display:flex;flex-direction:column;gap:5px}
 .fg label{font-size:.75rem;font-weight:800;color:var(--blue);letter-spacing:.8px;display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;text-transform:uppercase}
@@ -448,7 +448,36 @@ tbody tr:hover td{background:#f0f8ff}
 }
 .inv-float-blue{background:linear-gradient(145deg,#1a3a8f,#2196f3);}
 .inv-float-green{background:linear-gradient(145deg,#047857,#34d399);}
+#page-devices td, #page-wifi td {
+  font-size: .78rem !important;
+}
+#page-mytask td, #page-alltask td {
+  font-size: .78rem !important;
+}
+#page-maindash .tbl-card {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7) !important;
+  border: 1.5px solid #bbf7d0 !important;
+}
+#page-dashboard .form-card {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+  border: 1.5px solid #bfdbfe !important;
+  margin-top: 30px !important;
+}
+#page-mytask .tbl-card,
+#page-taskreport .tbl-card,
+#page-alltask .tbl-card,
+#page-devices .tbl-card,
+#page-wifi .tbl-card,
+#page-mytask .form-card,
+#page-taskreport .form-card,
+#page-alltask .form-card,
+#page-devices .form-card,
+#page-wifi .form-card {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+  border: 1.5px solid #bfdbfe !important;
+}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -533,7 +562,8 @@ tbody tr:hover td{background:#f0f8ff}
   </div>
   <nav class="sb-nav">
     <div class="nav-sec"></div>
-    <div class="nav-item active" onclick="showPage('dashboard',this)"><div class="nav-icon-wrap"><i class="fas fa-tachometer-alt"></i></div><span class="nav-label">Dashboard</span></div>
+    <div class="nav-item" onclick="showPage('maindash',this)"><div class="nav-icon-wrap"><i class="fas fa-tachometer-alt"></i></div><span class="nav-label">Dashboard</span></div>
+<div class="nav-item active" onclick="showPage('dashboard',this)"><div class="nav-icon-wrap"><i class="fas fa-ticket-alt"></i></div><span class="nav-label">Ticket Entry</span></div>
     <div class="nav-item" onclick="showPage('mytask',this)"><div class="nav-icon-wrap"><i class="fas fa-calendar-check"></i></div><span class="nav-label">My Task</span></div>
     <div class="nav-item" onclick="showPage('taskreport',this)"><div class="nav-icon-wrap"><i class="fas fa-chart-bar"></i></div><span class="nav-label">Task Report</span></div>
     <div class="nav-item eng-visible" id="nav-alltask" onclick="showPage('alltask',this)"><div class="nav-icon-wrap"><i class="fas fa-clipboard-list"></i></div><span class="nav-label">All Completed Tasks</span></div>
@@ -571,7 +601,87 @@ tbody tr:hover td{background:#f0f8ff}
   </div>
 
   <div class="content">
+<!-- MAIN DASHBOARD -->
+<div class="page" id="page-maindash">
 
+  <!-- Filter Bar -->
+  <div class="form-card" style="padding:12px 18px;margin-bottom:10px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:800;color:var(--blue)"><i class="fas fa-filter"></i> FILTER</span>
+
+      <select id="db-month" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--navy)">
+        <option value="">All Months</option>
+        <option value="01">January</option><option value="02">February</option>
+        <option value="03">March</option><option value="04">April</option>
+        <option value="05">May</option><option value="06">June</option>
+        <option value="07">July</option><option value="08">August</option>
+        <option value="09">September</option><option value="10">October</option>
+        <option value="11">November</option><option value="12">December</option>
+      </select>
+
+      <input type="date" id="db-df" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="From Date">
+      <span style="font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;color:var(--muted)">→</span>
+      <input type="date" id="db-dt" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="To Date">
+
+      <select id="db-eng" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:var(--navy)">
+        <option value="">All Engineers</option>
+        <option>Ahsanul Kabir</option><option>Tamim</option><option>Nazrul Islam</option>
+        <option>Rupchan</option><option>Amit Hasan</option><option>Basudeb Roy</option>
+        <option>ATM Arifuzzaman</option><option>Maruf Hasan</option><option>Abu Sayed</option>
+      </select>
+
+      <select id="db-team" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:var(--navy)">
+        <option value="">All Teams</option>
+        <option>Engineer</option><option>Single Tech & Engineer</option><option>FI Team</option>
+      </select>
+
+      <select id="db-cat" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:var(--navy)">
+        <option value="">All Categories</option>
+        <option>Installation</option><option>Troubleshoot</option>
+        <option>CR</option><option>Survey</option><option>Non Ticket</option>
+      </select>
+
+      <select id="db-tt" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:var(--navy)">
+        <option value="">All Task Types</option>
+        <option>Phone support</option><option>Physical support</option>
+        <option>Back office support for Tech</option>
+      </select>
+
+      <button onclick="clearDashFilters()" style="padding:0 14px;height:30px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:7px;font-size:.65rem;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;display:flex;align-items:center;gap:5px"><i class="fas fa-times"></i> Clear</button>
+
+      <span id="db-total-badge" style="margin-left:auto;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:800;color:var(--blue);background:var(--light);border:1.5px solid var(--border);padding:3px 14px;border-radius:20px">0 tickets</span>
+    </div>
+  </div>
+
+  <!-- Summary Stat Cards -->
+  <div class="stat-row" style="grid-template-columns:repeat(6,1fr);margin-bottom:8px;height:44px" id="db-stat-row"></div>
+
+  <!-- Charts — সব একসাথে compact grid -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0">
+
+    <div class="tbl-card" style="padding:10px 14px;max-height:220px;overflow:hidden;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;">
+      <div style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fas fa-chart-pie" style="color:var(--accent)"></i> Category Wise</div>
+      <div style="height:170px;position:relative"><canvas id="chart-cat"></canvas></div>
+    </div>
+
+    <div class="tbl-card" style="padding:10px 14px;max-height:220px;overflow:hidden;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;">
+      <div style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fas fa-users" style="color:var(--accent)"></i> Engineer Wise Tasks</div>
+      <div style="height:170px;position:relative"><canvas id="chart-eng"></canvas></div>
+    </div>
+
+    <div class="tbl-card" style="padding:10px 14px;max-height:220px;overflow:hidden;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;">
+      <div style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fas fa-chart-line" style="color:var(--accent)"></i> Day Wise Trend</div>
+      <div style="height:170px;position:relative"><canvas id="chart-day"></canvas></div>
+    </div>
+
+    <div class="tbl-card" style="padding:10px 14px;max-height:220px;overflow:hidden;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;">
+      <div style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fas fa-toolbox" style="color:var(--accent)"></i> Task Type Wise</div>
+      <div style="height:170px;position:relative"><canvas id="chart-tt"></canvas></div>
+    </div>
+
+  </div>
+
+</div>
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="form-card">
@@ -740,14 +850,14 @@ tbody tr:hover td{background:#f0f8ff}
       <!-- Engineer Summary Table (the main report badge) -->
       <div class="tbl-card">
         <div class="tbl-top" style="background:linear-gradient(90deg,#0d1f5c,#1a3a8f,#2196f3)">
-          <span class="tbl-title" style="color:#fff"><i class="fas fa-users"></i>&nbsp;Engineer Task Summary</span>
-          <span id="tr-period-badge" style="font-size:.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:#ffd54f;letter-spacing:.5px;white-space:nowrap">—</span>
+          <span class="tbl-title" style="color:#fff;font-size:1rem;font-weight:900;letter-spacing:.5px"><i class="fas fa-users"></i>&nbsp;Engineer Task Summary</span>
+          <span id="tr-period-badge" style="font-size:.85rem;font-family:'Montserrat',sans-serif;font-weight:900;color:#ffd54f;letter-spacing:.5px;white-space:nowrap">—</span>
         </div>
         <div class="tbl-wrap">
           <table style="min-width:860px">
             <thead>
               <tr style="background:linear-gradient(90deg,#1a3a8f,#1565c0)">
-                <th style="color:#fff;border-bottom:2px solid rgba(255,255,255,.25);min-width:150px;text-align:left;font-family:'Montserrat',sans-serif;font-size:.72rem">Engineer Name</th>
+                <th style="color:#fff;border-bottom:2px solid rgba(255,255,255,.25);min-width:150px;text-align:center;font-family:'Montserrat',sans-serif;font-size:.78rem;letter-spacing:.3px">Engineer Name</th>
                 <th style="color:#fff;border-bottom:2px solid rgba(255,255,255,.25);text-align:center;font-family:'Montserrat',sans-serif;font-size:.72rem">Troubleshoot</th>
                 <th style="color:#fff;border-bottom:2px solid rgba(255,255,255,.25);text-align:center;font-family:'Montserrat',sans-serif;font-size:.72rem">Installation</th>
                 <th style="color:#fff;border-bottom:2px solid rgba(255,255,255,.25);text-align:center;font-family:'Montserrat',sans-serif;font-size:.72rem">CR</th>
@@ -1341,7 +1451,7 @@ function doDeleteUser(uname, displayName) {
 let tickets = [];
 
 const titles = {
-  dashboard:'Daily Work Dashboard', mytask:'My Task', taskreport:'Task Report',
+  maindash:'Dashboard', dashboard:'Ticket Entry', mytask:'My Task', taskreport:'Task Report',
   alltask:'All Completed Tasks', devices:'Used Devices', wifi:'WiFi Scoring',
   users:'User Management', import:'Import Data'
 };
@@ -1414,6 +1524,8 @@ function setDateDefaults(){
 // Script এর একদম শেষে যোগ করুন
 const _initMi = new Date().getMonth();
 document.getElementById('tr-month-sel').value = String(_initMi);
+const _lm = new Date().getMonth()===0 ? 12 : new Date().getMonth();
+document.getElementById('db-month').value = String(_lm).padStart(2,'0');
 }
 
 function showPage(pg,el){
@@ -1442,6 +1554,11 @@ function showPage(pg,el){
   if(pg==='devices')renderDevices();
   if(pg==='wifi')renderWifi();
   if(pg==='users')renderUserTable();
+  if(pg==='maindash'){
+  const _lm = new Date().getMonth()===0 ? 12 : new Date().getMonth();
+  document.getElementById('db-month').value = String(_lm).padStart(2,'0');
+  renderDash();
+}
 }
 
 function toast(msg){
@@ -1813,11 +1930,19 @@ function renderReport(){
     }
 
     totalTS+=ts;totalIN+=ins;totalCR+=cr;totalSV+=sv;totalBN+=bn;totalNT+=nt;totalTW+=tw;totalPS+=ps;
-    const cell=(v)=>`<td style="text-align:center;font-weight:700;font-size:.76rem;color:${v>0?'#0d1f5c':'#b0bec5'};font-family:'Outfit',sans-serif">${v}</td>`;
+    const cell=(v)=>`<td style="text-align:center;font-family:'Outfit',sans-serif;padding:3px 4px;">
+  <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-size:.82rem;font-weight:800;
+  background:${v>0?'linear-gradient(135deg,#dbeafe,#bfdbfe)':'#f1f5f9'};
+  color:${v>0?'#1d4ed8':'#b0bec5'};
+  border:1.5px solid ${v>0?'#93c5fd':'#e2e8f0'};">${v}</span></td>`;
     return `<tr>
-      <td style="font-weight:700;font-family:'Outfit',sans-serif;color:var(--navy);font-size:.9rem">${eng}</td>
+      <td style="font-weight:800;font-family:'Outfit',sans-serif;color:var(--navy);font-size:1rem;padding:4px 10px;">${eng}</td>
       ${cell(ts)}${cell(ins)}${cell(cr)}${cell(sv)}${cell(bn)}${cell(nt)}
-      <td style="text-align:center;font-weight:800;font-size:.82rem;color:${tw>0?'#e65100':'#90a4ae'};background:${tw>0?'rgba(255,140,0,.08)':'transparent'};font-family:'Outfit',sans-serif">${tw}</td>
+      <td style="text-align:center;font-family:'Outfit',sans-serif;padding:3px 4px;">
+  <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;height:36px;border-radius:50%;font-size:.9rem;font-weight:900;
+  background:${tw>0?'linear-gradient(135deg,#fed7aa,#fdba74)':'#f1f5f9'};
+  color:${tw>0?'#c2410c':'#90a4ae'};
+  border:2px solid ${tw>0?'#fb923c':'#e2e8f0'};">${tw}</span></td>
       ${cell(ps)}
     </tr>`;
   }).join('');
@@ -2201,7 +2326,236 @@ document.addEventListener('click', function(e) {
     zone.style.background = '';
   }
 });
+// ===== DASHBOARD CHARTS =====
+let chartEng=null, chartCat=null, chartDay=null, chartTt=null;
 
+const CHART_COLORS = ['#1d4ed8','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#65a30d','#db2777','#ea580c'];
+const ENG_COLORS   = ['#185FA5','#0F6E56','#BA7517','#A32D2D','#534AB7','#0891b2','#3B6D11','#D4537E','#EA580C'];
+const CAT_COLORS   = {'Installation':'#185FA5','Troubleshoot':'#A32D2D','CR':'#BA7517','Survey':'#3B6D11','Non Ticket':'#534AB7'};
+const TT_COLORS    = {'Phone support':'#0891b2','Physical support':'#185FA5','Back office support for Tech':'#534AB7'};
+
+function getDashFiltered(){
+  const month = document.getElementById('db-month').value;
+  const df    = document.getElementById('db-df').value;
+  const dt    = document.getElementById('db-dt').value;
+  const eng   = document.getElementById('db-eng').value;
+  const team  = document.getElementById('db-team').value;
+  const cat   = document.getElementById('db-cat').value;
+  const tt    = document.getElementById('db-tt').value;
+
+  return tickets.filter(t=>{
+    if(month && !t.date.startsWith(t.date.substring(0,4)+'-'+month)) return false;
+    if(df && t.date < df) return false;
+    if(dt && t.date > dt) return false;
+    if(eng  && t.eng !== eng)   return false;
+    if(team && t.tm  !== team)  return false;
+    if(cat  && t.cat !== cat)   return false;
+    if(tt   && t.tt  !== tt)    return false;
+    return true;
+  });
+}
+
+function clearDashFilters(){
+  ['db-month','db-eng','db-team','db-cat','db-tt'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('db-df').value='';
+  document.getElementById('db-dt').value='';
+  renderDash();
+}
+
+function destroyCharts(){
+  [chartEng,chartCat,chartDay,chartTt].forEach(c=>{ if(c) c.destroy(); });
+  chartEng=chartCat=chartDay=chartTt=null;
+}
+
+function renderDash(){
+  const arr = getDashFiltered();
+  document.getElementById('db-total-badge').textContent = arr.length+' tickets';
+
+  // Stat cards
+  const cats=['Installation','Troubleshoot','CR','Survey','Non Ticket'];
+  const statRow = document.getElementById('db-stat-row');
+  statRow.innerHTML = `
+    <div class="stat-card" style="height:40px"><div class="stat-num" style="font-size:.95rem">${arr.length}</div><div class="stat-lbl" style="font-size:.55rem">TOTAL</div></div>
+    ${cats.map(c=>`<div class="stat-card" style="height:40px"><div class="stat-num" style="font-size:.95rem">${arr.filter(t=>t.cat===c).length}</div><div class="stat-lbl" style="font-size:.55rem">${c.toUpperCase()}</div></div>`).join('')}
+  `;
+
+  destroyCharts();
+
+  // 1. Engineer wise bar chart
+  const engCounts = ENGINEERS.map(e=>arr.filter(t=>t.eng===e).length);
+  const engShort  = ENGINEERS.map(e=>e.split(' ')[0]);
+chartEng = new Chart(document.getElementById('chart-eng'),{
+  type:'bar',
+  data:{
+    labels: ENGINEERS,
+    datasets:[{
+      label:'Tasks',
+      data: engCounts,
+      backgroundColor: ENG_COLORS,
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{title:i=>ENGINEERS[i[0].dataIndex], label:ctx=>` ${ctx.parsed.y} tasks`}}
+    },
+    scales:{
+      y:{
+        beginAtZero:true,
+        ticks:{stepSize:50, font:{family:'Outfit',size:11}, color:'#5b7fa6'},
+        grid:{color:'rgba(0,0,0,.06)'}
+      },
+      x:{
+        ticks:{
+          font:{family:'Outfit',size:10},
+          color:'#5b7fa6',
+          maxRotation:40,
+          minRotation:30,
+          autoSkip:false,
+          callback:function(val,idx){
+            const name=ENGINEERS[idx];
+            const parts=name.split(' ');
+            if(parts.length>=3) return parts[0]+' '+parts[1];
+            return parts[0];
+          }
+        },
+        grid:{display:false}
+      }
+    }
+  }
+});
+
+  // 2. Category donut chart
+  const catLabels = cats.filter(c=>arr.filter(t=>t.cat===c).length>0);
+  const catData   = catLabels.map(c=>arr.filter(t=>t.cat===c).length);
+  const catColors = catLabels.map(c=>CAT_COLORS[c]||'#999');
+  chartCat = new Chart(document.getElementById('chart-cat'),{
+  type:'doughnut',
+  data:{
+    labels: catLabels,
+    datasets:[{
+      data:catData,
+      backgroundColor:catColors,
+      borderWidth:2,
+      borderColor:'#fff',
+      hoverOffset:4
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    cutout:'65%',
+    plugins:{
+      legend:{
+        display:true,
+        position:'right',
+        labels:{
+          font:{family:'Outfit',size:11},
+          padding:10,
+          boxWidth:12,
+          boxHeight:12,
+          color:'#1a2340'
+        }
+      },
+      tooltip:{
+        callbacks:{
+          label:ctx=>` ${ctx.label}: ${ctx.parsed}`
+        }
+      }
+    }
+  }
+});
+
+  // 3. Day wise line chart
+  const dayMap={};
+  arr.forEach(t=>{ dayMap[t.date]=(dayMap[t.date]||0)+1; });
+  const dayKeys = Object.keys(dayMap).sort();
+  const dayVals = dayKeys.map(k=>dayMap[k]);
+  const dayLabels = dayKeys.map(d=>fmtDateDisp(d));
+  chartDay = new Chart(document.getElementById('chart-day'),{
+  type:'line',
+  data:{
+    labels:dayLabels,
+    datasets:[{
+      label:'Tasks/Day',
+      data:dayVals,
+      borderColor:'#1d4ed8',
+      backgroundColor:'rgba(29,78,216,.08)',
+      fill:true,
+      tension:.4,
+      pointBackgroundColor:'#1d4ed8',
+      pointRadius:4,
+      pointHoverRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      y:{
+        beginAtZero:true,
+        ticks:{stepSize:1, font:{family:'Outfit',size:11}, color:'#5b7fa6'},
+        grid:{color:'rgba(0,0,0,.06)'}
+      },
+      x:{
+        ticks:{
+          font:{family:'Outfit',size:10},
+          color:'#5b7fa6',
+          maxRotation:40,
+          minRotation:30,
+          autoSkip:true,
+          maxTicksLimit:8
+        },
+        grid:{display:false}
+      }
+    }
+  }
+});
+
+  // 4. Task type horizontal bar
+  const ttList=['Phone support','Physical support','Back office support for Tech'];
+  const ttData = ttList.map(t=>arr.filter(r=>r.tt===t).length);
+  const ttColors = ttList.map(t=>TT_COLORS[t]||'#999');
+  chartTt = new Chart(document.getElementById('chart-tt'),{
+  type:'bar',
+  data:{
+    labels:['Phone support','Physical support','Back office support for Tech'],
+    datasets:[{
+      label:'Tasks',
+      data:ttData,
+      backgroundColor:ttColors,
+      borderRadius:6,
+      borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{
+        beginAtZero:true,
+        ticks:{stepSize:1, font:{family:'Outfit',size:11}, color:'#5b7fa6'},
+        grid:{color:'rgba(0,0,0,.06)'}
+      },
+      y:{
+        ticks:{
+          font:{family:'Outfit',size:11},
+          color:'#5b7fa6',
+          autoSkip:false
+        },
+        grid:{display:false}
+      }
+    }
+  }
+});
+}
 </script>
 </body>
 </html>
