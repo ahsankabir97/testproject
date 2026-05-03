@@ -9,7 +9,7 @@
 <!-- FIREBASE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, push, onValue, remove, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAUoyHQ8f53OjLbYZCDQpVNmtwlk2Wov0c",
@@ -24,6 +24,40 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const ticketsRef = ref(db, 'tickets');
+const usersRef = ref(db, 'users');
+
+window._fbSaveUser = async function(username, userData) {
+  try {
+    await set(ref(db, 'users/' + username), userData);
+    return true;
+  } catch(e) {
+    console.error(e);
+    return false;
+  }
+};
+
+window._fbGetUsers = async function() {
+  try {
+    const snapshot = await get(usersRef);
+    return snapshot.val() || {};
+  } catch(e) {
+    console.error(e);
+    return {};
+  }
+};
+
+window._fbInitUsers = async function(defaultUsers) {
+  try {
+    const snapshot = await get(usersRef);
+    if (!snapshot.val()) {
+      for (const [uname, udata] of Object.entries(defaultUsers)) {
+        await set(ref(db, 'users/' + uname), udata);
+      }
+    }
+  } catch(e) {
+    console.error(e);
+  }
+};
 
 onValue(ticketsRef, (snapshot) => {
     const data = snapshot.val();
@@ -152,7 +186,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 .sidebar{width:var(--nav-w);min-height:100vh;background:linear-gradient(180deg,#0d1f5c 0%,#1a3a8f 45%,#2354c7 100%);display:flex;flex-direction:column;flex-shrink:0;position:relative;box-shadow:5px 0 28px rgba(13,31,92,.38);overflow:visible;}
 .sb-logo{padding:12px 16px 12px;border-bottom:2px solid rgba(255,255,255,.18);display:flex;align-items:center;gap:13px;background:rgba(0,0,0,.18);position:relative;}
 .sb-logo::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,.8),transparent);}
-.sb-logo-box{background:transparent;border-radius:10px;width:70px;height:70px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2.5px solid rgba(255,255,255,.95);box-shadow:0 0 0 3px rgba(33,150,243,.4),0 4px 16px rgba(0,0,0,.4);overflow:hidden;padding:0;}
+.sb-logo-box{background:transparent;border-radius:10px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2.5px solid rgba(255,255,255,.95);box-shadow:0 0 0 3px rgba(33,150,243,.4),0 4px 16px rgba(0,0,0,.4);overflow:hidden;padding:0;}
 .sb-logo-box span{font-size:12px;font-weight:900;color:var(--navy);text-align:center;font-family:'Montserrat',sans-serif}
 .sb-logo-info{flex:1}
 .sb-co{font-size:.93rem;font-weight:900;color:#fff;font-family:'Outfit',sans-serif;line-height:1.2;text-shadow:0 1px 6px rgba(0,0,0,.3)}
@@ -162,7 +196,15 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 .sb-uname{font-size:.73rem;font-weight:700;color:#fff;font-family:'Montserrat',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sb-urole{font-size:.54rem;color:rgba(255,255,255,.55);letter-spacing:.6px;font-family:'Montserrat',sans-serif;font-weight:600;text-transform:uppercase}
 
-.sb-nav{flex:1;padding:28px 0 6px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;gap:1px;}
+.sb-nav{
+  flex:1;
+  padding:12px 0 6px;     /* 28px → 12px */
+  + overflow-y:auto;          /* এটাই সবচেয়ে গুরুত্বপূর্ণ */
+  + overflow-x:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+}
 .nav-sec{display:none}
 .nav-sep{display:none}
 .nav-item{margin:0 8px;padding:0 10px;height:38px;flex-shrink:0;display:flex;align-items:center;gap:10px;cursor:pointer;border-radius:10px;border-left:3px solid transparent;position:relative;overflow:hidden;transition:background .3s ease,border-color .3s ease,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;text-decoration:none;}
@@ -182,17 +224,17 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 .nav-item.active::after{width:70%}
 
 /* Icon wrap transition */
-.nav-icon-wrap{width:30px;height:30px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.13);transition:background .3s ease,transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;}
+.nav-icon-wrap{width:24px;height:24px;border-radius:6px;;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.13);transition:background .3s ease,transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;}
 .nav-item:hover .nav-icon-wrap{background:rgba(255,255,255,.22);transform:scale(1.15) rotate(-3deg);box-shadow:0 3px 10px rgba(0,0,0,.2);}
 .nav-item.active .nav-icon-wrap{background:linear-gradient(135deg,rgba(100,181,246,.4),rgba(33,150,243,.25));box-shadow:0 0 10px rgba(100,181,246,.3);}
-.nav-icon-wrap i{font-size:.85rem;color:rgba(255,255,255,.85);transition:color .25s,transform .3s;}
+.nav-icon-wrap i{font-size:.75rem;color:rgba(255,255,255,.85);transition:color .25s,transform .3s;}
 .nav-item:hover .nav-icon-wrap i{color:#fff;transform:scale(1.1);}
 .nav-item.active .nav-icon-wrap i{color:#fff;}
 
 /* Label transition */
-.nav-label{font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.3px;white-space:nowrap;transition:color .25s,letter-spacing .25s,text-shadow .25s;}
-.nav-item:hover .nav-label{color:#fff;letter-spacing:.5px;text-shadow:0 0 12px rgba(100,181,246,.6);}
-.nav-item.active .nav-label{color:#fff;text-shadow:0 0 8px rgba(100,181,246,.4);}
+.nav-label{font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.3px;white-space:nowrap;transition:color .25s,letter-spacing .25s,text-shadow .25s;text-shadow:0 1px 3px rgba(0,0,0,.4);}
+.nav-item:hover .nav-label{color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.5),0 0 12px rgba(100,181,246,.7);}
+.nav-item.active .nav-label{color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5),0 0 10px rgba(100,181,246,.6),0 2px 8px rgba(0,0,0,.3);}
 
 /* Click ripple effect */
 @keyframes navRipple{0%{transform:scale(0);opacity:.6}100%{transform:scale(4);opacity:0}}
@@ -205,7 +247,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 .nav-item.admin-only{display:none}
 .nav-item.eng-visible{display:none}
 .sb-bottom{padding:4px 10px;border-top:1px solid rgba(255,255,255,.1)}
-.sb-link{margin:0;padding:0 12px;height:30px;display:flex;align-items:center;gap:11px;cursor:pointer;border-radius:11px;border:1px solid transparent;transition:all .22s;font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.65);}
+.sb-link{margin:0;padding:0 10px;height:24px;display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:11px;border:1px solid transparent;transition:all .22s;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;color:rgba(255,255,255,.65);}
 .sb-link:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
 .sb-link i{font-size:.75rem;min-width:20px;text-align:center}
 .sb-link.logout:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4)}
@@ -237,7 +279,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 .top-date{font-size:.72rem;color:#fff;font-weight:900;letter-spacing:1.2px;font-family:'Montserrat',sans-serif;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.25)}
 .top-time{font-size:.76rem;font-weight:800;color:#fff;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 14px;letter-spacing:.8px;font-family:'Montserrat',sans-serif;border:1.5px solid rgba(255,255,255,.35);text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(4px)}
 
-.content{flex:1;overflow-y:auto;padding:4px 16px 12px;display:flex;flex-direction:column;}
+.content{flex:1;overflow-y:auto;padding:2px 16px 12px;display:flex;flex-direction:column;}
 .page{display:none;flex:1;flex-direction:column;}.page.active{display:flex;}
 
 /* Task report specific full-height layout */
@@ -269,7 +311,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
 #page-wifi .tbl-wrap{flex:1;overflow-x:auto;overflow-y:auto;}
 
 /* FORM CARD */
-.form-card{background:#fff;border-radius:16px;border:1px solid rgba(190,227,248,.75);padding:30px 18px 14px 18px;box-shadow:0 6px 20px rgba(26,58,143,.10);position:relative;overflow:hidden;margin-bottom:10px;margin-top:20px}
+.form-card{background:#fff;border-radius:16px;border:1px solid rgba(190,227,248,.75);padding:30px 18px 14px 18px;box-shadow:0 6px 20px rgba(26,58,143,.10);position:relative;overflow:hidden;margin-bottom:10px;margin-top:4px}
 .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,#0d1f5c,#1d4ed8,#2196f3,#64b5f6)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px}
 .fg{display:flex;flex-direction:column;gap:5px}
@@ -468,14 +510,29 @@ tbody tr:hover td{background:#f0f8ff}
 #page-alltask .tbl-card,
 #page-devices .tbl-card,
 #page-wifi .tbl-card,
-#page-mytask .form-card,
-#page-taskreport .form-card,
+#page-mytask .form-card{padding:8px 18px !important;margin-top:4px !important;}
+#page-taskreport .form-card{padding:8px 18px !important;margin-top:4px !important;}
 #page-alltask .form-card,
 #page-devices .form-card,
 #page-wifi .form-card {
   background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
   border: 1.5px solid #bfdbfe !important;
 }
+#page-alltask .form-card{padding:8px 18px !important;margin-top:4px !important;}
+#page-wifi .tbl-top{display:none;}
+#page-devices .tbl-top{display:none;}
+#page-mytask .tbl-top{display:none;}
+#tr-summary-tbody td{padding:0px 2px !important;line-height:1.2;}
+#tr-summary-tbody tr td span{width:14px;height:14px;font-size:.58rem;}
+#page-alltask .tbl-top{display:none !important;}
+.fg label{font-weight:900 !important;font-size:.72rem !important;color:var(--navy) !important;letter-spacing:.8px !important;}
+.fg input,.fg select,.fg textarea{font-weight:800 !important;color:var(--navy) !important;font-size:.85rem !important;}
+#f-eng{font-weight:900 !important;font-size:.85rem !important;color:var(--navy) !important;}
+.toggle-single .ts-val{font-weight:900 !important;font-size:.85rem !important;}
+.cdd-btn{font-weight:900 !important;color:var(--navy) !important;font-size:.85rem !important;}
+.cdd-btn span#cdd-cat-label,
+.cdd-btn span#cdd-tt-label,
+.cdd-btn span#cdd-tm-label{font-weight:900 !important;color:var(--navy) !important;font-size:.85rem !important;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
@@ -850,8 +907,8 @@ tbody tr:hover td{background:#f0f8ff}
       <!-- Engineer Summary Table (the main report badge) -->
       <div class="tbl-card">
         <div class="tbl-top" style="background:linear-gradient(90deg,#0d1f5c,#1a3a8f,#2196f3)">
-          <span class="tbl-title" style="color:#fff;font-size:1rem;font-weight:900;letter-spacing:.5px"><i class="fas fa-users"></i>&nbsp;Engineer Task Summary</span>
-          <span id="tr-period-badge" style="font-size:.85rem;font-family:'Montserrat',sans-serif;font-weight:900;color:#ffd54f;letter-spacing:.5px;white-space:nowrap">—</span>
+          <span class="tbl-title" style="color:#fff;font-size:.88rem;font-weight:900;letter-spacing:.5px"><i class="fas fa-users"></i>&nbsp;Engineer Task Summary</span>
+          <span id="tr-period-badge" style="font-size:.72rem;font-family:'Montserrat',sans-serif;font-weight:900;color:#ffd54f;letter-spacing:.5px;white-space:nowrap">—</span>
         </div>
         <div class="tbl-wrap">
           <table style="min-width:860px">
@@ -898,22 +955,21 @@ tbody tr:hover td{background:#f0f8ff}
               <option value="">All Teams</option>
               <option>Engineer</option><option>Single Tech &amp; Engineer</option><option>FI Team</option>
             </select>
-            <input type="text" id="at-search" placeholder="Search..." oninput="atPage=1;renderAll()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:#1a3a8f;min-width:140px">
+<button id="btn-excel-export" onclick="exportAtExcel()" style="display:none;align-items:center;gap:6px;padding:5px 16px;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;border:none;border-radius:7px;font-size:.72rem;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;letter-spacing:.3px;box-shadow:0 3px 10px rgba(22,163,74,.3);transition:all .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''"><i class="fas fa-file-excel"></i> Download Excel</button>
+            <span id="at-export-label" style="display:none"></span>
+<button onclick="toggleSelectMode()" id="btn-toggle-sel" style="display:none;align-items:center;gap:5px;padding:0 14px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:7px;font-size:.65rem;font-weight:800;cursor:pointer;height:30px;font-family:'Montserrat',sans-serif;box-shadow:0 3px 8px rgba(220,38,38,.28)"><i class="fas fa-check-square"></i> Delete</button>
+<button id="btn-del-selected" onclick="deleteSelected()" style="display:none;align-items:center;gap:6px;padding:0 14px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:7px;font-size:.65rem;font-weight:800;cursor:pointer;height:30px;font-family:'Montserrat',sans-serif;box-shadow:0 3px 8px rgba(220,38,38,.28)"><i class="fas fa-trash"></i> Delete Selected (<span id="sel-count">0</span>)</button>            
+<input type="text" id="at-search"placeholder="Search..." oninput="atPage=1;renderAll()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:#1a3a8f;min-width:140px">
           </div>
         </div>
-        <!-- Excel Download Row -->
-        <div style="display:flex;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--border)">
-          <button id="btn-excel-export" onclick="exportAtExcel()" style="display:none;align-items:center;gap:6px;padding:5px 16px;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;border:none;border-radius:7px;font-size:.72rem;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif;letter-spacing:.3px;box-shadow:0 3px 10px rgba(22,163,74,.3);transition:all .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
-            <i class="fas fa-file-excel"></i> Download Excel
-          </button>
-          <span id="at-export-label" style="font-size:.65rem;color:var(--muted);font-family:'Outfit',sans-serif;font-style:italic"></span>
-        </div>
+       
       </div>
       <div class="stat-row" id="at-stats"></div>
       <div class="tbl-card">
         <div class="tbl-top"><span class="tbl-title"><i class="fas fa-check-double"></i>Completed Task List</span><span class="tbl-badge" id="at-cnt">0 tickets</span></div>
         <div class="tbl-wrap"><table>
           <thead><tr>
+  <th id="at-sel-th" style="display:none;width:36px"><input type="checkbox" id="chk-all" onchange="toggleSelectAll(this)" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer"></th>
   <th>#</th>
   <th>Date</th>
   <th>Ticket ID</th>
@@ -937,11 +993,15 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
           <div class="page-ttl"><i class="fas fa-network-wired"></i>Used Devices List</div>
+          <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d1f5c,#1d4ed8);border-radius:10px;padding:6px 16px">
+            <i class="fas fa-network-wired" style="color:#64b5f6;font-size:.8rem"></i>
+            <span style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.5px">TOTAL USED DEVICE</span>
+            <span id="dv-total-badge" style="font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:900;color:#fff">0</span>
+          </div>
           <input type="text" id="dv-search" placeholder="Search MAC address..." oninput="dvPage=1;renderDevices()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:#1a3a8f;min-width:180px">
         </div>
       </div>
       <div class="tbl-card">
-        <div class="tbl-top"><span class="tbl-title"><i class="fas fa-router"></i>ONU MAC Address Log</span><span class="tbl-badge" id="dv-cnt">0 devices</span></div>
         <div class="tbl-wrap"><table>
           <thead><tr><th>#</th><th>Date</th><th>Ticket ID</th><th>ONU MAC Address</th><th>Engineer</th><th>Team</th><th>Remarks</th></tr></thead>
           <tbody id="dv-tbody"></tbody>
@@ -954,6 +1014,11 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="form-card" style="padding:14px 18px;margin-bottom:12px">
         <div class="page-header" style="margin-bottom:0">
           <div class="page-ttl"><i class="fas fa-wifi"></i>WiFi Scoring Data</div>
+          <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d1f5c,#1d4ed8);border-radius:10px;padding:6px 16px">
+            <i class="fas fa-wifi" style="color:#64b5f6;font-size:.8rem"></i>
+            <span style="font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.5px">TOTAL SCORED</span>
+            <span id="wf-total-badge" style="font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:900;color:#fff">0</span>
+          </div>
           <input type="text" id="wf-search" placeholder="Search..." oninput="wfPage=1;renderWifi()" style="padding:4px 8px 4px 26px;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem;height:30px;background:#e8f4fd url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E\") no-repeat 7px center;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:#1a3a8f;min-width:180px">
         </div>
       </div>
@@ -1119,20 +1184,56 @@ const DEFAULT_USERS = {
   basudeb:     { name:'Basudeb Roy',     role:'engineer', pass:'basudeb123' }
 };
 
+let _cachedUsers = null;
+
 function getUsers() {
+  if (_cachedUsers) return _cachedUsers;
   const stored = localStorage.getItem('l3_users');
-  if (!stored) { localStorage.setItem('l3_users', JSON.stringify(DEFAULT_USERS)); return DEFAULT_USERS; }
-  return JSON.parse(stored);
+  if (stored) {
+    _cachedUsers = JSON.parse(stored);
+    return _cachedUsers;
+  }
+  _cachedUsers = JSON.parse(JSON.stringify(DEFAULT_USERS));
+  return _cachedUsers;
 }
-function saveUsers(u) { localStorage.setItem('l3_users', JSON.stringify(u)); }
+
+function saveUsers(u) {
+  _cachedUsers = u;
+  localStorage.setItem('l3_users', JSON.stringify(u));
+}
+
+async function saveUsersToFirebase(u) {
+  _cachedUsers = u;
+  localStorage.setItem('l3_users', JSON.stringify(u));
+  for (const [uname, udata] of Object.entries(u)) {
+    await window._fbSaveUser(uname, udata);
+  }
+}
+
+async function syncUsersFromFirebase() {
+  try {
+    const fbUsers = await window._fbGetUsers();
+    if (fbUsers && Object.keys(fbUsers).length > 0) {
+      _cachedUsers = fbUsers;
+      localStorage.setItem('l3_users', JSON.stringify(fbUsers));
+    } else {
+      const local = getUsers();
+      await window._fbInitUsers(local);
+    }
+  } catch(e) {
+    console.error('Firebase user sync failed:', e);
+  }
+}
 
 let currentUser = null;
 
-function doLogin() {
+async function doLogin() {
   const uname = document.getElementById('l-user').value.trim().toLowerCase();
   const pass   = document.getElementById('l-pass').value;
-  const users  = getUsers();
   const err    = document.getElementById('login-err');
+
+  await syncUsersFromFirebase();
+  const users = getUsers();
 
   if (users[uname] && users[uname].pass === pass) {
     err.classList.remove('show');
@@ -1198,7 +1299,7 @@ if (zoneBadge) {
     zoneBadge.onclick = null;
   }
 }
-  if (u.role === 'engineer') {
+  if (u.role === 'engineer' || u.username === 'ahsan') {
     const sel = document.getElementById('f-eng');
     for (let opt of sel.options) {
       if (opt.value === u.name || opt.text === u.name) { sel.value = opt.value; sel.disabled = true; break; }
@@ -1206,7 +1307,11 @@ if (zoneBadge) {
   } else {
     document.getElementById('f-eng').disabled = false;
   }
-}
+ const toggleSelBtn = document.getElementById('btn-toggle-sel');
+  if(toggleSelBtn) toggleSelBtn.style.display = canExcelDownload() ? 'flex' : 'none';
+
+} // ← setupUserUI এর closing bracket
+
 
 function doLogout() {
   currentUser = null;
@@ -1332,7 +1437,7 @@ function openChpw() {
 }
 function closeChpw() { document.getElementById('chpw-modal').classList.remove('show'); }
 
-function savePassword() {
+async function savePassword() {
   const oldP    = document.getElementById('cp-old').value;
   const newP    = document.getElementById('cp-new').value;
   const confirm = document.getElementById('cp-confirm').value;
@@ -1350,10 +1455,16 @@ function savePassword() {
 
   const users = getUsers();
   users[currentUser.username].pass = newP;
-  saveUsers(users);
   currentUser.pass = newP;
+  sessionStorage.setItem('l3_session', JSON.stringify(currentUser));
+
+  saveUsers(users);
   closeChpw();
-  toast('✅ Password changed successfully!');
+  toast('⏳ Password saving to Firebase...');
+
+  const ok = await window._fbSaveUser(currentUser.username, users[currentUser.username]);
+  if (ok) toast('✅ Password changed & saved to Firebase!');
+  else toast('⚠ Locally saved, Firebase sync failed!');
 }
 
 // ===== USER TABLE (Admin) =====
@@ -1396,7 +1507,7 @@ function openCreateUser() {
 }
 function closeCreateUser() { document.getElementById('um-modal').style.display='none'; }
 
-function doCreateUser() {
+async function doCreateUser() {
   const name  = document.getElementById('um-name').value.trim();
   const uname = document.getElementById('um-uname').value.trim().toLowerCase().replace(/\s+/g,'');
   const pass  = document.getElementById('um-pass').value;
@@ -1412,7 +1523,10 @@ function doCreateUser() {
   saveUsers(users);
   closeCreateUser();
   renderUserTable();
-  toast(`✅ User "${name}" created successfully!`);
+  toast('⏳ User saving to Firebase...');
+  const ok = await window._fbSaveUser(uname, {name,role,pass});
+  if(ok) toast(`✅ User "${name}" created & saved to Firebase!`);
+  else toast(`⚠ User created locally, Firebase sync failed!`);
 }
 
 function openResetModal(uname, displayName) {
@@ -1424,7 +1538,7 @@ function openResetModal(uname, displayName) {
 }
 function closeResetModal() { document.getElementById('um-reset-modal').style.display='none'; resetTargetKey=null; }
 
-function doResetPW() {
+async function doResetPW() {
   const newP = document.getElementById('um-reset-pass').value;
   const errEl = document.getElementById('um-reset-err');
   errEl.style.display='none';
@@ -1435,7 +1549,10 @@ function doResetPW() {
   if(currentUser.username===resetTargetKey) currentUser.pass=newP;
   saveUsers(users);
   closeResetModal();
-  toast(`✅ Password reset successfully!`);
+  toast('⏳ Password saving to Firebase...');
+  const ok = await window._fbSaveUser(resetTargetKey, users[resetTargetKey]);
+  if(ok) toast('✅ Password reset & saved to Firebase!');
+  else toast('⚠ Locally saved, Firebase sync failed!');
 }
 
 function doDeleteUser(uname, displayName) {
@@ -1610,7 +1727,10 @@ function pickCdd(key,cb){
   document.getElementById('f-'+nameMap[key]).value=val;
   const lbl=document.getElementById('cdd-'+key+'-label');
   lbl.textContent=val||(key==='cat'?'Select Category':key==='tt'?'Select Task Type':'Select Team Type');
-  lbl.style.color=val?'var(--text)':'';
+lbl.style.color=val?'var(--navy)':'';
+lbl.style.fontWeight=val?'900':'';
+lbl.style.fontSize=val?'.85rem':'';
+lbl.style.fontFamily=val?'\'Outfit\',sans-serif':'';
   document.getElementById('cdd-'+key+'-list').style.display='none';
   document.getElementById('cdd-'+key+'-btn').classList.remove('open');
 }
@@ -1738,8 +1858,9 @@ function filterByCat(el,cat,statsId){
 
 function buildRows(arr,tbodyId,withDel,isMyTask,startIdx=0){
   const tb=document.getElementById(tbodyId);
+  const isAt = tbodyId === 'at-tbody';
   if(!arr.length){
-    tb.innerHTML=`<tr><td colspan="12"><div class="empty-box"><span class="ei">📂</span><p>No tasks found.</p></div></td></tr>`;
+    tb.innerHTML=`<tr><td colspan="${selMode && isAt ? 13 : 12}"><div class="empty-box"><span class="ei">📂</span><p>No tasks found.</p></div></td></tr>`;
     return;
   }
   tb.innerHTML=arr.map((t,i)=>{
@@ -1748,7 +1869,11 @@ function buildRows(arr,tbodyId,withDel,isMyTask,startIdx=0){
       if(isMyTask) showDel=canDeleteMyTask(t);
       else showDel=canDeleteAllTask(t);
     }
+    const chkCell=(selMode && isAt)
+      ?`<td style="text-align:center;padding:4px 2px"><input type="checkbox" class="at-row-chk" data-key="${t.firebaseKey||t.id}" ${selectedKeys.has(t.firebaseKey||t.id)?'checked':''} onchange="onRowCheck(this)" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer"></td>`
+      :'';
     return `<tr>
+    ${chkCell}
     <td>${startIdx+i+1}</td>
     <td style="padding:5px 4px">${fmtDateDisp(t.date)}</td>
     <td style="white-space:nowrap">${t.ticket}</td>
@@ -1780,7 +1905,7 @@ async function delTicket(fk, fromMyTask){
 
 function getMyTickets(){
   if(!currentUser) return [];
-  if(currentUser.role==='admin') return tickets;
+  if(currentUser.role==='admin' && currentUser.username!=='ahsan') return tickets;
   return tickets.filter(t=>t.eng===currentUser.name || t.submittedBy===currentUser.username);
 }
 
@@ -1931,7 +2056,7 @@ function renderReport(){
 
     totalTS+=ts;totalIN+=ins;totalCR+=cr;totalSV+=sv;totalBN+=bn;totalNT+=nt;totalTW+=tw;totalPS+=ps;
     const cell=(v)=>`<td style="text-align:center;font-family:'Outfit',sans-serif;padding:3px 4px;">
-  <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-size:.82rem;font-weight:800;
+  <span style="display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;font-size:.82rem;font-weight:800;
   background:${v>0?'linear-gradient(135deg,#dbeafe,#bfdbfe)':'#f1f5f9'};
   color:${v>0?'#1d4ed8':'#b0bec5'};
   border:1.5px solid ${v>0?'#93c5fd':'#e2e8f0'};">${v}</span></td>`;
@@ -1939,7 +2064,7 @@ function renderReport(){
       <td style="font-weight:800;font-family:'Outfit',sans-serif;color:var(--navy);font-size:1rem;padding:4px 10px;">${eng}</td>
       ${cell(ts)}${cell(ins)}${cell(cr)}${cell(sv)}${cell(bn)}${cell(nt)}
       <td style="text-align:center;font-family:'Outfit',sans-serif;padding:3px 4px;">
-  <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;height:36px;border-radius:50%;font-size:.9rem;font-weight:900;
+  <span style="display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;height:32px;border-radius:50%;font-size:.9rem;font-weight:900;
   background:${tw>0?'linear-gradient(135deg,#fed7aa,#fdba74)':'#f1f5f9'};
   color:${tw>0?'#c2410c':'#90a4ae'};
   border:2px solid ${tw>0?'#fb923c':'#e2e8f0'};">${tw}</span></td>
@@ -1950,13 +2075,13 @@ function renderReport(){
   // Total row
   sb.innerHTML+=`<tr style="background:linear-gradient(90deg,#f0fdf4,#dcfce7);border-top:2px solid #16a34a">
     <td style="font-weight:900;font-family:'Outfit',sans-serif;color:#14532d;font-size:.84rem;letter-spacing:.5px">TOTAL</td>
-    <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalTS}</td>
+    <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:1.3rem">${totalTS}</td>
     <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalIN}</td>
     <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalCR}</td>
     <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalSV}</td>
     <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalBN}</td>
     <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalNT}</td>
-    <td style="text-align:center;font-weight:900;color:#14532d;background:rgba(22,163,74,.15);font-family:'Outfit',sans-serif;font-size:.94rem">${totalTW}</td>
+    <td style="text-align:center;font-weight:900;color:#14532d;background:rgba(22,163,74,.15);font-family:'Outfit',sans-serif;font-size:1.3rem">${totalTW}</td>
     <td style="text-align:center;font-weight:900;color:#15803d;font-family:'Outfit',sans-serif;font-size:.88rem">${totalPS}</td>
   </tr>`;
 }
@@ -1971,6 +2096,67 @@ function clearAtDates(){
 let atPage = 1;
 const AT_PER_PAGE = 50;
 
+let selMode = false;
+let selectedKeys = new Set();
+
+function toggleSelectMode(){
+  selMode = !selMode;
+  selectedKeys.clear();
+  const btn = document.getElementById('btn-del-selected');
+  const th = document.getElementById('at-sel-th');
+  const chkAll = document.getElementById('chk-all');
+  if(btn) btn.style.display = selMode ? 'flex' : 'none';
+  if(th) th.style.display = selMode ? '' : 'none';
+  if(chkAll) chkAll.checked = false;
+  document.getElementById('sel-count').textContent = '0';
+  renderAll();
+}
+
+function toggleSelectAll(el){
+  selectedKeys.clear();
+  if(el.checked){
+    document.querySelectorAll('.at-row-chk').forEach(c=>{
+      c.checked=true;
+      selectedKeys.add(c.dataset.key);
+    });
+  } else {
+    document.querySelectorAll('.at-row-chk').forEach(c=>c.checked=false);
+  }
+  document.getElementById('sel-count').textContent = selectedKeys.size;
+}
+
+function onRowCheck(el){
+  if(el.checked) selectedKeys.add(el.dataset.key);
+  else selectedKeys.delete(el.dataset.key);
+  document.getElementById('sel-count').textContent = selectedKeys.size;
+  const all = document.querySelectorAll('.at-row-chk');
+  const allChecked = [...all].every(c=>c.checked);
+  const chkAll = document.getElementById('chk-all');
+  if(chkAll) chkAll.checked = allChecked && all.length > 0;
+}
+
+async function deleteSelected(){
+  if(!canDeleteAllTask()){ toast('❌ Permission denied!'); return; }
+  if(selectedKeys.size===0){ toast('⚠ কোনো ticket select করা হয়নি!'); return; }
+  if(!confirm(`${selectedKeys.size}টি ticket delete করবেন?`)) return;
+  const btn = document.getElementById('btn-del-selected');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Deleting...';
+  btn.disabled=true;
+  let done=0;
+  for(const key of selectedKeys){
+    await window._fbDelete(key);
+    done++;
+  }
+  selectedKeys.clear();
+  selMode=false;
+  const th=document.getElementById('at-sel-th');
+  if(th) th.style.display='none';
+  btn.style.display='none';
+  btn.disabled=false;
+  btn.innerHTML='<i class="fas fa-trash"></i> Delete Selected (<span id="sel-count">0</span>)';
+  toast(`✅ ${done}টি ticket delete করা হয়েছে!`);
+  renderAll();
+}
 function renderAll(){
   const eng=document.getElementById('at-eng').value;
   const team=document.getElementById('at-team').value;
@@ -2107,7 +2293,8 @@ function renderDevices(){
   const s=document.getElementById('dv-search').value.toLowerCase();
   let arr=tickets.filter(t=>t.mac&&(!s||t.mac.toLowerCase().includes(s)||t.ticket.toLowerCase().includes(s)));
   arr.sort((a,b)=>b.date.localeCompare(a.date)||(b.id||0)-(a.id||0));
-  document.getElementById('dv-cnt').textContent=arr.length+' devices';
+  const dvTotal=document.getElementById('dv-total-badge');
+if(dvTotal) dvTotal.textContent=arr.length;
   const totalPages=Math.max(1,Math.ceil(arr.length/DV_PER_PAGE));
   if(dvPage>totalPages) dvPage=totalPages;
   const start=(dvPage-1)*DV_PER_PAGE;
