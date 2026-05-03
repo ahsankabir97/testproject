@@ -2569,7 +2569,18 @@ function renderDash(){
   destroyCharts();
 
   // 1. Engineer wise bar chart
-  const engCounts = ENGINEERS.map(e=>arr.filter(t=>t.eng===e).length);
+  const ahsanName = 'Ahsanul Kabir';
+const extraBnoc = arr.filter(t=>t.bnoc==='YES' && t.eng!==ahsanName).length;
+const engCounts = ENGINEERS.map(e=>{
+  const et = arr.filter(t=>t.eng===e);
+  const ts = et.filter(t=>t.cat==='Troubleshoot').length;
+  const ins = et.filter(t=>t.cat==='Installation').length;
+  const cr = et.filter(t=>t.cat==='CR').length;
+  const sv = et.filter(t=>t.cat==='Survey').length;
+  const nt = et.filter(t=>t.cat==='Non Ticket').length;
+  if(e===ahsanName) return ts+ins+cr+sv+nt+extraBnoc;
+  return ts+ins+cr+sv+nt;
+});
   const engShort  = ENGINEERS.map(e=>e.split(' ')[0]);
 chartEng = new Chart(document.getElementById('chart-eng'),{
   type:'bar',
