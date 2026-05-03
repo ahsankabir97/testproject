@@ -1199,19 +1199,29 @@ tr.provided-highlight:hover{background:rgba(239,108,0,.30) !important;}
 <script>
 // ── FIREBASE INIT ─────────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey: "AIzaSyDemX_T3bzB4-ONiCMTEoJOMP-JphJR_H0",
-  authDomain: "link3-motijheel-inventory.firebaseapp.com",
-  databaseURL: "https://link3-motijheel-inventory-default-rtdb.firebaseio.com",
-  projectId: "link3-motijheel-inventory",
-  storageBucket: "link3-motijheel-inventory.firebasestorage.app",
-  messagingSenderId: "9224551617",
-  appId: "1:9224551617:web:a19f5abeb41f6f532f6840"
+  apiKey: "AIzaSyCE_5uda7oCy1YFMpka8YjBOJzPpI-4nr0",
+  authDomain: "inventoryofmotijheel.firebaseapp.com",
+  databaseURL: "https://inventoryofmotijheel-default-rtdb.firebaseio.com",
+  projectId: "inventoryofmotijheel",
+  storageBucket: "inventoryofmotijheel.firebasestorage.app",
+  messagingSenderId: "548817669976",
+  appId: "1:548817669976:web:37488b39fb594e537e5f2d",
+  measurementId: "G-L5GSSKBV8C"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const INV_REF = db.ref('inventory');
 const LAN_REF = db.ref('lan_data');
-
+// Connection test
+db.ref('.info/connected').on('value', function(snap) {
+  if (snap.val() === true) {
+    console.log('✅ Firebase connected');
+    setSyncIndicator('ok');
+  } else {
+    console.log('❌ Firebase disconnected');
+    setSyncIndicator('error');
+  }
+});
 // ── এরপর আগের code যেমন ছিল ──────────────────────────────────────
 const ENGS=['rupchan','amit','tamim','nazrul'];
 function gid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
@@ -1240,6 +1250,7 @@ function save() {
   if(!D.deleted) D.deleted = [];
   if(!D.done) D.done = [];
   ENGS.forEach(eng => { if(!D[eng]) D[eng] = []; });
+console.log('Firebase data loaded:', JSON.stringify(D).substring(0,200));
   localStorage.setItem('inv7', JSON.stringify(D));
   INV_REF.set(D);
 }
