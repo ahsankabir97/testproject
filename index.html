@@ -1772,17 +1772,30 @@ document.getElementById('provModal').addEventListener('click',ev=>{if(ev.target=
 
 // ── STARTUP ──────────────────────────────────────────────────────────
 
+setSyncIndicator('idle');
+document.getElementById('tab-manage').style.display='none';
+
+// Firebase থেকে data আসার আগে loading দেখাও
+document.getElementById('allWrap').innerHTML = 
+  `<div class="empty"><div class="ico">⏳</div>
+  <div>Loading data from Firebase...</div></div>`;
+
+// Local থেকে আপাতত load করো
 const _local=JSON.parse(localStorage.getItem('inv7')||'null');
 if(_local){D=_local;_lastVersion=_local._version||0;}
 
-setSyncIndicator('idle');
-document.getElementById('tab-manage').style.display='none';
 go('all');
 
 // ── FIREBASE REAL-TIME LISTENER ──────────────────────────────────
+// নতুন:
 INV_REF.on('value', snapshot => {
   const remote = snapshot.val();
-  if (!remote) return;
+  if (!remote) {
+    // Firebase এ কোনো data নেই
+    renderAll();
+    return;
+  }
+  // Remote data সবসময় priority পাবে
   D = remote;
   localStorage.setItem('inv7', JSON.stringify(D));
   renderAll();
