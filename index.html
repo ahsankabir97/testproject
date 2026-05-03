@@ -1964,24 +1964,25 @@ function doLogin(){
   const uname = document.getElementById('loginUser').value.trim().toLowerCase();
   const pass   = document.getElementById('loginPass').value;
   const err    = document.getElementById('loginErr');
-  const pws    = getPasswords();
   if(!uname||!pass){err.textContent='⚠️ Please enter Username and Password.';return;}
-  if(!pws.hasOwnProperty(uname)||pws[uname]!==pass){
-    err.textContent='❌ Incorrect Username or Password.';
-    err.style.animation='none';
-    requestAnimationFrame(()=>{err.style.animation='';err.style.animation='shake .3s ease';});
+  getPasswords(pws => {
+    if(!pws.hasOwnProperty(uname)||pws[uname]!==pass){
+      err.textContent='❌ Incorrect Username or Password.';
+      err.style.animation='none';
+      requestAnimationFrame(()=>{err.style.animation='';err.style.animation='shake .3s ease';});
+      document.getElementById('loginPass').value='';
+      document.getElementById('loginPass').focus();
+      return;
+    }
+    _currentUser = uname;
+    localStorage.setItem('inv_session', JSON.stringify({user: uname}));
+    document.getElementById('loginOverlay').style.display='none';
+    document.getElementById('loginErr').textContent='';
+    document.getElementById('loginUser').value='';
     document.getElementById('loginPass').value='';
-    document.getElementById('loginPass').focus();
-    return;
-  }
-  _currentUser = uname;
-  localStorage.setItem('inv_session', JSON.stringify({user: uname}));
-  document.getElementById('loginOverlay').style.display='none';
-  document.getElementById('loginErr').textContent='';
-  document.getElementById('loginUser').value='';
-  document.getElementById('loginPass').value='';
-  applyRoleUI();
-  toast(`👋 Welcome, ${uname.charAt(0).toUpperCase()+uname.slice(1)}!`);
+    applyRoleUI();
+    toast(`👋 Welcome, ${uname.charAt(0).toUpperCase()+uname.slice(1)}!`);
+  });
 }
 
 function doLogout(){
@@ -2049,15 +2050,18 @@ function saveChPw(){
   const err    = document.getElementById('chpwErr');
   const ok     = document.getElementById('chpwOk');
   err.textContent=''; ok.textContent='';
-  const pws = getPasswords();
   if(!uname||!oldPw||!newPw||!confPw){err.textContent='⚠️ Please fill in all fields.';return;}
-  if(!pws.hasOwnProperty(uname)||pws[uname]!==oldPw){err.textContent='❌ Incorrect Username or current Password.';return;}
   if(newPw.length<6){err.textContent='⚠️ New password must be at least 6 characters.';return;}
   if(newPw!==confPw){err.textContent='❌ New passwords do not match.';return;}
-  pws[uname]=newPw;
-  savePasswords(pws);
-  ok.textContent='✅ Password changed successfully!';
-  setTimeout(()=>closeChPw(),1600);
+  getPasswords(pws => {
+    if(!pws.hasOwnProperty(uname)||pws[uname]!==oldPw){
+      err.textContent='❌ Incorrect Username or current Password.';return;
+    }
+    pws[uname]=newPw;
+    savePasswords(pws);
+    ok.textContent='✅ Password changed successfully!';
+    setTimeout(()=>closeChPw(),1600);
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════
