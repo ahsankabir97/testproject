@@ -1210,11 +1210,18 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+let _currentUser = null;
+const DEFAULT_PASSWORDS = {
+  admin:   '78773597in',
+  rupchan: 'Rupchan@123',
+  amit:    'Amit@123',
+  tamim:   'Tamim@123',
+  nazrul:  'Nazrul@123'
+};
 const INV_REF = db.ref('inventory');
 const LAN_REF = db.ref('lan_data');
-const META_REF = db.ref('meta'); // ← এই line যোগ করুন
+const META_REF = db.ref('meta');
 const PWD_REF = db.ref('passwords');
-
 function getPasswords(callback){
   PWD_REF.once('value', snap => {
     const saved = snap.val() || {};
@@ -1928,15 +1935,6 @@ META_REF.on('value', snapshot => {
 
 <script>
 // ── AUTH SYSTEM ────────────────────────────────────────────────────────────
-const DEFAULT_PASSWORDS = {
-  admin:   '78773597in',
-  rupchan: 'Rupchan@123',
-  amit:    'Amit@123',
-  tamim:   'Tamim@123',
-  nazrul:  'Nazrul@123'
-};
-
-let _currentUser = null;
 
 (function restoreSession(){
   const saved = localStorage.getItem('inv_session');
