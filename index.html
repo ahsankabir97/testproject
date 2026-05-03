@@ -1235,6 +1235,11 @@ function fd(iso){
 let _lastVersion=0;
 function save() {
   D._version = Date.now();
+  // Empty array গুলো null হওয়া থেকে বাঁচাতে placeholder দিই
+  if(!D.unassigned) D.unassigned = [];
+  if(!D.deleted) D.deleted = [];
+  if(!D.done) D.done = [];
+  ENGS.forEach(eng => { if(!D[eng]) D[eng] = []; });
   localStorage.setItem('inv7', JSON.stringify(D));
   INV_REF.set(D);
 }
@@ -1791,12 +1796,15 @@ go('all');
 INV_REF.on('value', snapshot => {
   const remote = snapshot.val();
   if (!remote) {
-    // Firebase এ কোনো data নেই
     renderAll();
     return;
   }
-  // Remote data সবসময় priority পাবে
+  // Firebase থেকে আসা data এ missing array গুলো fix করো
   D = remote;
+  if(!D.unassigned) D.unassigned = [];
+  if(!D.deleted) D.deleted = [];
+  if(!D.done) D.done = [];
+  ENGS.forEach(eng => { if(!D[eng]) D[eng] = []; });
   localStorage.setItem('inv7', JSON.stringify(D));
   renderAll();
   if(_currentUser) applyRoleUI();
