@@ -105,7 +105,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLrnx5cLKn1jP1W4sEK
             taskType:    ticketData.tt,
             teamType:    ticketData.tm,
             engineer:    ticketData.eng,
-            backend:     ticketData.bnoc === 'YES' ? ticketData.eng : '',
+            backend: ticketData.bnoc === 'YES' ? 'Ahsanul Kabir' : '',
             onuMac:      ticketData.mac  || '',
             wifiScoring: ticketData.wifi === 'YES' ? 'Yes' : 'No',
             remarks:     ticketData.remarks || ''
@@ -1881,7 +1881,10 @@ function buildRows(arr,tbodyId,withDel,isMyTask,startIdx=0){
     <td>${t.tt}</td>
     <td>${t.tm}</td>
     <td style="color:var(--blue);font-weight:700">${t.eng}</td>
-    <td><span class="chip ${t.bnoc==='YES'?'chip-yes':'chip-no'}">${t.bnoc}</span></td>
+    <td>${t.bnoc==='YES'
+      ? `<span class="chip chip-yes" style="font-size:.6rem">Ahsanul Kabir</span>`
+      : `<span class="chip chip-no">NO</span>`}
+    </td>
     <td style="font-family:'JetBrains Mono',monospace;padding:5px 4px">${t.mac||'—'}</td>
     <td><span class="chip ${t.wifi==='YES'?'chip-yes':'chip-no'}">${t.wifi}</span></td>
     <td style="max-width:150px;white-space:normal">${t.remarks||'—'}</td>
