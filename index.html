@@ -1212,6 +1212,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const INV_REF = db.ref('inventory');
 const LAN_REF = db.ref('lan_data');
+const META_REF = db.ref('meta'); // ← এই line যোগ করুন
 // Connection test
 db.ref('.info/connected').on('value', function(snap) {
   if (snap.val() === true) {
@@ -1226,11 +1227,15 @@ db.ref('.info/connected').on('value', function(snap) {
 const ENGS=['rupchan','amit','tamim','nazrul'];
 function gid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
 
-let CUSTOM_ITEMS=JSON.parse(localStorage.getItem('customItems')||'[]');
-function saveCustomItems(){localStorage.setItem('customItems',JSON.stringify(CUSTOM_ITEMS));}
+let CUSTOM_ITEMS = [];
+function saveCustomItems(){
+  META_REF.child('customItems').set(CUSTOM_ITEMS);
+}
 
-let HIDDEN_ITEMS=JSON.parse(localStorage.getItem('hiddenItems')||'[]');
-function saveHiddenItems(){localStorage.setItem('hiddenItems',JSON.stringify(HIDDEN_ITEMS));}
+let HIDDEN_ITEMS = [];
+function saveHiddenItems(){
+  META_REF.child('hiddenItems').set(HIDDEN_ITEMS);
+}
 
 let D={unassigned:[],deleted:[],rupchan:[],amit:[],tamim:[],nazrul:[],done:[]};
 let _lanData = {};
@@ -1250,7 +1255,6 @@ function save() {
   if(!D.deleted) D.deleted = [];
   if(!D.done) D.done = [];
   ENGS.forEach(eng => { if(!D[eng]) D[eng] = []; });
-console.log('Firebase data loaded:', JSON.stringify(D).substring(0,200));
   localStorage.setItem('inv7', JSON.stringify(D));
   INV_REF.set(D);
 }
@@ -1830,6 +1834,13 @@ LAN_REF.on('value', snapshot => {
   _lanData = remote;  // ← এই line টা নতুন add করলেন
   localStorage.setItem('lan_data', JSON.stringify(remote));
   if (_lanActive) renderLAN();
+});
+META_REF.on('value', snapshot => {
+  const meta = snapshot.val();
+  if(!meta) return;
+  if(meta.customItems) CUSTOM_ITEMS = meta.customItems;
+  if(meta.hiddenItems) HIDDEN_ITEMS = meta.hiddenItems;
+  renderAll();
 });
 </script>
 
