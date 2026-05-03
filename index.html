@@ -1213,6 +1213,23 @@ const db = firebase.database();
 const INV_REF = db.ref('inventory');
 const LAN_REF = db.ref('lan_data');
 const META_REF = db.ref('meta'); // ← এই line যোগ করুন
+const PWD_REF = db.ref('passwords');
+
+function getPasswords(callback){
+  PWD_REF.once('value', snap => {
+    const saved = snap.val() || {};
+    callback({...DEFAULT_PASSWORDS, ...saved});
+  });
+}
+
+function savePasswords(pwObj){
+  // DEFAULT বাদ দিয়ে শুধু changed passwords save করো
+  const toSave = {};
+  Object.keys(pwObj).forEach(k => {
+    if(pwObj[k] !== DEFAULT_PASSWORDS[k]) toSave[k] = pwObj[k];
+  });
+  PWD_REF.set(toSave);
+}
 // Connection test
 db.ref('.info/connected').on('value', function(snap) {
   if (snap.val() === true) {
@@ -1837,9 +1854,8 @@ LAN_REF.on('value', snapshot => {
 });
 META_REF.on('value', snapshot => {
   const meta = snapshot.val();
-  if(!meta) return;
-  if(meta.customItems) CUSTOM_ITEMS = meta.customItems;
-  if(meta.hiddenItems) HIDDEN_ITEMS = meta.hiddenItems;
+  CUSTOM_ITEMS = (meta && Array.isArray(meta.customItems)) ? meta.customItems : [];
+  HIDDEN_ITEMS = (meta && Array.isArray(meta.hiddenItems)) ? meta.hiddenItems : [];
   renderAll();
 });
 </script>
@@ -1936,17 +1952,6 @@ let _currentUser = null;
   }
 })();
 
-function getPasswords(){
-  try{
-    const saved = localStorage.getItem('inv_passwords');
-    if(saved) return {...DEFAULT_PASSWORDS,...JSON.parse(saved)};
-  }catch(e){}
-  return {...DEFAULT_PASSWORDS};
-}
-
-function savePasswords(pwObj){
-  localStorage.setItem('inv_passwords', JSON.stringify(pwObj));
-}
 
 function toggleVis(inputId, btn){
   const inp = document.getElementById(inputId);
