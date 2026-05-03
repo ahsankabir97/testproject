@@ -1228,7 +1228,16 @@ function getPasswords(callback){
     callback({...DEFAULT_PASSWORDS, ...saved});
   });
 }
-
+function canAct(action, engKey){
+  const u = _currentUser;
+  if(!u) return false;
+  if(u==='admin') return true;
+  if(u==='rupchan'){
+    if(!engKey || engKey==='rupchan') return true;
+    return false;
+  }
+  return engKey===u;
+}
 function savePasswords(pwObj){
   // DEFAULT বাদ দিয়ে শুধু changed passwords save করো
   const toSave = {};
@@ -2009,16 +2018,6 @@ function applyRoleUI(){
   renderAll();
 }
 
-function canAct(action, engKey){
-  const u = _currentUser;
-  if(!u) return false;
-  if(u==='admin') return true;
-  if(u==='rupchan'){
-    if(!engKey || engKey==='rupchan') return true;
-    return false;
-  }
-  return engKey===u;
-}
 
 function authError(){
   const t = document.getElementById('authErrorToast');
