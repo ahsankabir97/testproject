@@ -1223,6 +1223,7 @@ let HIDDEN_ITEMS=JSON.parse(localStorage.getItem('hiddenItems')||'[]');
 function saveHiddenItems(){localStorage.setItem('hiddenItems',JSON.stringify(HIDDEN_ITEMS));}
 
 let D={unassigned:[],deleted:[],rupchan:[],amit:[],tamim:[],nazrul:[],done:[]};
+let _lanData = {};
 
 function fd(iso){
   if(!iso)return '';
@@ -1794,6 +1795,7 @@ INV_REF.on('value', snapshot => {
 LAN_REF.on('value', snapshot => {
   const remote = snapshot.val();
   if (!remote) return;
+  _lanData = remote;  // ← এই line টা নতুন add করলেন
   localStorage.setItem('lan_data', JSON.stringify(remote));
   if (_lanActive) renderLAN();
 });
@@ -2020,7 +2022,9 @@ const LAN_CFG = {
 };
 
 function getLAN(){
-  try{ return JSON.parse(localStorage.getItem('lan_data')||'{}'); } catch(e){ return {}; }
+  return _lanData && Object.keys(_lanData).length > 0 
+    ? _lanData 
+    : (JSON.parse(localStorage.getItem('lan_data')||'{}'));
 }
 function saveLAN(lan) {
   localStorage.setItem('lan_data', JSON.stringify(lan));
