@@ -1785,6 +1785,8 @@ INV_REF.on('value', snapshot => {
   D = remote;
   localStorage.setItem('inv7', JSON.stringify(D));
   renderAll();
+  if(_currentUser) applyRoleUI();
+  if(_lanActive) renderLAN();
   setSyncIndicator('ok');
   setTimeout(() => setSyncIndicator('idle'), 3000);
 });
