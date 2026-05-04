@@ -3197,8 +3197,6 @@ function _showSheetDot(state) {
 }
 
 // ── save() override — Firebase save এর পর Sheets sync ────────────
-const _origSave = save;
-window.save = function() { _origSave(); syncToGoogleSheets(); };
 
 // ── saveLAN() override ────────────────────────────────────────────
 const _origSaveLAN = saveLAN;
