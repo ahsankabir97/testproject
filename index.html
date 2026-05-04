@@ -3142,26 +3142,32 @@ async function _doSheetSync() {
   SHEETS_SYNC._syncing = true;
   _showSheetDot('syncing');
   try {
-    await _sheetsFetch({
+    const payload = {
       action: 'sync_all',
       data: {
-        rupchan:    D.rupchan    || [],
-        amit:       D.amit       || [],
-        tamim:      D.tamim      || [],
-        nazrul:     D.nazrul     || [],
-        unassigned: D.unassigned || [],
-        done:       D.done       || [],
-        deleted:    D.deleted    || [],
+        rupchan:    Array.isArray(D.rupchan)    ? D.rupchan    : [],
+        amit:       Array.isArray(D.amit)       ? D.amit       : [],
+        tamim:      Array.isArray(D.tamim)      ? D.tamim      : [],
+        nazrul:     Array.isArray(D.nazrul)     ? D.nazrul     : [],
+        unassigned: Array.isArray(D.unassigned) ? D.unassigned : [],
+        done:       Array.isArray(D.done)       ? D.done       : [],
+        deleted:    Array.isArray(D.deleted)    ? D.deleted    : [],
       }
-    });
-    const lan = getLAN ? getLAN() : {};
-    if (lan && Object.keys(lan).length > 0) {
-      await _sheetsFetch({ action: 'lan_sync', lan });
-    }
+    };
+    console.log('[Sheets] Syncing:', 
+      'rupchan='+payload.data.rupchan.length,
+      'amit='+payload.data.amit.length,
+      'tamim='+payload.data.tamim.length,
+      'nazrul='+payload.data.nazrul.length,
+      'unassigned='+payload.data.unassigned.length,
+      'done='+payload.data.done.length,
+      'deleted='+payload.data.deleted.length
+    );
+    await _sheetsFetch(payload);
     _showSheetDot('ok');
   } catch (err) {
     _showSheetDot('error');
-    console.warn('Sheets sync failed:', err.message);
+    console.warn('[Sheets] Sync failed:', err.message);
   } finally {
     SHEETS_SYNC._syncing = false;
     setTimeout(() => _showSheetDot('idle'), 4000);
