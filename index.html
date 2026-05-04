@@ -807,7 +807,7 @@ tr.provided-highlight:hover{background:rgba(239,108,0,.30) !important;}
 <div class="nav">
   <div class="nav-left">
   <div class="link3-logo-wrap" style="display:flex;align-items:center;gap:10px;">
-    <img src="1777483914703_image.png" alt="Link3 Logo"
+    <img src="link3logo.png" alt="Link3 Logo"
       style="width:48px;height:48px;border-radius:10px;
              border:2px solid rgba(255,255,255,0.35);
              box-shadow:0 2px 12px rgba(0,0,0,0.3);
@@ -1218,6 +1218,7 @@ const DEFAULT_PASSWORDS = {
   tamim:   'Tamim@123',
   nazrul:  'Nazrul@123'
 };
+const SHEETS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbz-WRrS3RMejsNr4fn-MWuR06rmA8GwnnVRakIki7BbLSu7Lv3NsOWBmzSYSk0AlnWr/exec';
 const INV_REF = db.ref('inventory');
 const LAN_REF = db.ref('lan_data');
 const META_REF = db.ref('meta');
@@ -3120,6 +3121,95 @@ function pdfFull(){
     </div>
   </div>
 </div>
+<script>
+// ── GOOGLE SHEETS SYNC ────────────────────────────────────────────
+const SHEETS_SYNC = {
+  enabled: true,
+  debounceMs: 2000,
+  _timer: null,
+  _lanTimer: null,
+  _syncing: false,
+};
 
+function syncToGoogleSheets() {
+  if (!SHEETS_SYNC.enabled || !SHEETS_WEBHOOK_URL || SHEETS_WEBHOOK_URL.includes('YOUR_APPS')) return;
+  clearTimeout(SHEETS_SYNC._timer);
+  SHEETS_SYNC._timer = setTimeout(() => { _doSheetSync(); }, SHEETS_SYNC.debounceMs);
+}
+
+async function _doSheetSync() {
+  if (SHEETS_SYNC._syncing) return;
+  SHEETS_SYNC._syncing = true;
+  _showSheetDot('syncing');
+  try {
+    await _sheetsFetch({
+      action: 'sync_all',
+      data: {
+        rupchan:    D.rupchan    || [],
+        amit:       D.amit       || [],
+        tamim:      D.tamim      || [],
+        nazrul:     D.nazrul     || [],
+        unassigned: D.unassigned || [],
+        done:       D.done       || [],
+        deleted:    D.deleted    || [],
+      }
+    });
+    const lan = getLAN ? getLAN() : {};
+    if (lan && Object.keys(lan).length > 0) {
+      await _sheetsFetch({ action: 'lan_sync', lan });
+    }
+    _showSheetDot('ok');
+  } catch (err) {
+    _showSheetDot('error');
+    console.warn('Sheets sync failed:', err.message);
+  } finally {
+    SHEETS_SYNC._syncing = false;
+    setTimeout(() => _showSheetDot('idle'), 4000);
+  }
+}
+
+async function _sheetsFetch(body) {
+  await fetch(SHEETS_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
+
+function _showSheetDot(state) {
+  let el = document.getElementById('sheetSyncDot');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'sheetSyncDot';
+    el.style.cssText = 'display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;font-family:Outfit,sans-serif;color:#fff;transition:all .3s;';
+    const nr = document.querySelector('.nav-right');
+    if (nr) nr.insertBefore(el, nr.firstChild);
+  }
+  const cfg = {
+    idle:    { bg:'rgba(52,211,153,.22)', text:'📊 Sheets' },
+    syncing: { bg:'rgba(59,130,246,.35)', text:'📊 Syncing...' },
+    ok:      { bg:'rgba(52,211,153,.4)',  text:'📊 Synced ✓' },
+    error:   { bg:'rgba(239,68,68,.35)', text:'📊 Sync ⚠' },
+  }[state] || { bg:'transparent', text:'' };
+  el.style.background = cfg.bg;
+  el.textContent = cfg.text;
+  el.style.display = 'flex';
+}
+
+// ── save() override — Firebase save এর পর Sheets sync ────────────
+const _origSave = save;
+window.save = function() { _origSave(); syncToGoogleSheets(); };
+
+// ── saveLAN() override ────────────────────────────────────────────
+const _origSaveLAN = saveLAN;
+window.saveLAN = function(lan) {
+  _origSaveLAN(lan);
+  clearTimeout(SHEETS_SYNC._lanTimer);
+  SHEETS_SYNC._lanTimer = setTimeout(() => {
+    _sheetsFetch({ action: 'lan_sync', lan }).catch(e => console.warn('LAN Sheets sync:', e));
+  }, SHEETS_SYNC.debounceMs);
+};
+</script>
 </body>
 </html>
