@@ -1284,13 +1284,13 @@ function fd(iso){
 let _lastVersion=0;
 function save() {
   D._version = Date.now();
-  // Empty array গুলো null হওয়া থেকে বাঁচাতে placeholder দিই
   if(!D.unassigned) D.unassigned = [];
   if(!D.deleted) D.deleted = [];
   if(!D.done) D.done = [];
   ENGS.forEach(eng => { if(!D[eng]) D[eng] = []; });
   localStorage.setItem('inv7', JSON.stringify(D));
   INV_REF.set(D);
+  syncToGoogleSheets(); // ← এই line যোগ করুন
 }
 function setSyncIndicator(state) {
   const el = document.getElementById('syncDot');
@@ -3197,19 +3197,6 @@ function _showSheetDot(state) {
   el.style.display = 'flex';
 }
 
-// ── save() override — Firebase save এর পর Sheets sync ────────────
-const _origSave = save;
-window.save = function() { _origSave(); syncToGoogleSheets(); };
-
-// ── saveLAN() override ────────────────────────────────────────────
-const _origSaveLAN = saveLAN;
-window.saveLAN = function(lan) {
-  _origSaveLAN(lan);
-  clearTimeout(SHEETS_SYNC._lanTimer);
-  SHEETS_SYNC._lanTimer = setTimeout(() => {
-    _sheetsFetch({ action: 'lan_sync', lan }).catch(e => console.warn('LAN Sheets sync:', e));
-  }, SHEETS_SYNC.debounceMs);
-};
 </script>
 </body>
 </html>
