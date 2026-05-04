@@ -3142,32 +3142,26 @@ async function _doSheetSync() {
   SHEETS_SYNC._syncing = true;
   _showSheetDot('syncing');
   try {
-    const payload = {
+    await _sheetsFetch({
       action: 'sync_all',
       data: {
-        rupchan:    Array.isArray(D.rupchan)    ? D.rupchan    : [],
-        amit:       Array.isArray(D.amit)       ? D.amit       : [],
-        tamim:      Array.isArray(D.tamim)      ? D.tamim      : [],
-        nazrul:     Array.isArray(D.nazrul)     ? D.nazrul     : [],
-        unassigned: Array.isArray(D.unassigned) ? D.unassigned : [],
-        done:       Array.isArray(D.done)       ? D.done       : [],
-        deleted:    Array.isArray(D.deleted)    ? D.deleted    : [],
+        rupchan:    D.rupchan    || [],
+        amit:       D.amit       || [],
+        tamim:      D.tamim      || [],
+        nazrul:     D.nazrul     || [],
+        unassigned: D.unassigned || [],
+        done:       D.done       || [],
+        deleted:    D.deleted    || [],
       }
-    };
-    console.log('[Sheets] Syncing:', 
-      'rupchan='+payload.data.rupchan.length,
-      'amit='+payload.data.amit.length,
-      'tamim='+payload.data.tamim.length,
-      'nazrul='+payload.data.nazrul.length,
-      'unassigned='+payload.data.unassigned.length,
-      'done='+payload.data.done.length,
-      'deleted='+payload.data.deleted.length
-    );
-    await _sheetsFetch(payload);
+    });
+    const lan = getLAN ? getLAN() : {};
+    if (lan && Object.keys(lan).length > 0) {
+      await _sheetsFetch({ action: 'lan_sync', lan });
+    }
     _showSheetDot('ok');
   } catch (err) {
     _showSheetDot('error');
-    console.warn('[Sheets] Sync failed:', err.message);
+    console.warn('Sheets sync failed:', err.message);
   } finally {
     SHEETS_SYNC._syncing = false;
     setTimeout(() => _showSheetDot('idle'), 4000);
@@ -3203,6 +3197,19 @@ function _showSheetDot(state) {
   el.style.display = 'flex';
 }
 
+// ── save() override — Firebase save এর পর Sheets sync ────────────
+const _origSave = save;
+window.save = function() { _origSave(); syncToGoogleSheets(); };
+
+// ── saveLAN() override ────────────────────────────────────────────
+const _origSaveLAN = saveLAN;
+window.saveLAN = function(lan) {
+  _origSaveLAN(lan);
+  clearTimeout(SHEETS_SYNC._lanTimer);
+  SHEETS_SYNC._lanTimer = setTimeout(() => {
+    _sheetsFetch({ action: 'lan_sync', lan }).catch(e => console.warn('LAN Sheets sync:', e));
+  }, SHEETS_SYNC.debounceMs);
+};
 </script>
 </body>
 </html>
