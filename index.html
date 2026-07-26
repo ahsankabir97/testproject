@@ -420,6 +420,8 @@ html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden}
 
 /* Label transition */
 .nav-label{font-family:'Exo 2',sans-serif;font-size:.88rem;font-weight:800;color:rgba(255,255,255,.93);letter-spacing:.8px;white-space:nowrap;text-transform:uppercase;transition:color .25s,letter-spacing .25s,text-shadow .25s;text-shadow:0 1px 5px rgba(0,0,0,.45);}
+.nav-tooltip{position:fixed;top:0;left:0;display:none;transform:translateY(-50%) translateX(-6px);background:var(--tip-bg,linear-gradient(135deg,#0d1f5c,#1a3a8f));color:#fff;font-family:'Exo 2',sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;white-space:nowrap;padding:6px 13px;border-radius:8px;box-shadow:0 8px 22px rgba(13,31,92,.4),0 0 0 1px rgba(255,255,255,.14);pointer-events:none;z-index:99999;opacity:0;transition:opacity .16s ease,transform .16s ease,background .1s ease;}
+.nav-tooltip::before{content:'';position:absolute;top:50%;left:-4px;width:8px;height:8px;background:var(--tip-arrow,#0d1f5c);border-radius:2px;transform:translateY(-50%) rotate(45deg);}
 .nav-item:hover .nav-label{color:#fff;letter-spacing:1.1px;text-shadow:0 0 12px rgba(255,255,255,.6),0 2px 4px rgba(0,0,0,.4);}
 .nav-item.active .nav-label{color:#fff;font-weight:900;letter-spacing:1.1px;text-shadow:0 0 16px rgba(255,255,255,.75),0 2px 5px rgba(0,0,0,.45);}
 
@@ -1748,7 +1750,6 @@ tbody tr:hover td{background:#f0f8ff}
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
           <div class="page-ttl" style="margin-bottom:0"><i class="fas fa-users-cog"></i>User Management</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button onclick="restoreStandardUsers()" title="মিসিং স্ট্যান্ডার্ড ইউজারদের ফিরিয়ে আনবে — কোনো বিদ্যমান ইউজার ডিলিট/টাচ করবে না" style="background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-size:.75rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;letter-spacing:.5px;font-family:'Montserrat',sans-serif;box-shadow:0 4px 14px rgba(22,163,74,.3);transition:all .22s" onmouseover="this.style.filter='brightness(1.12)'" onmouseout="this.style.filter=''"><i class="fas fa-user-shield"></i> Restore Missing Users</button>
             <button onclick="openCreateUser()" style="background:linear-gradient(135deg,#0d1f5c,#1d4ed8,#2196f3);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-size:.75rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;letter-spacing:.5px;font-family:'Montserrat',sans-serif;box-shadow:0 4px 14px rgba(26,58,143,.3);transition:all .22s" onmouseover="this.style.filter='brightness(1.12)'" onmouseout="this.style.filter=''"><i class="fas fa-user-plus"></i> Create User</button>
           </div>
         </div>
@@ -2616,8 +2617,8 @@ function toggleSidebarCollapse(force){
     if(window.innerWidth <= 900) return; // মোবাইলে এই ফিচার প্রযোজ্য না, ওখানে আলাদা off-canvas মেনু আছে
     let saved = null;
     try{ saved = localStorage.getItem('navCollapsed'); }catch(e){}
-    // ডিফল্টভাবে (কোনো preference সেভ না থাকলে) নেভিগেশন বার auto collapse হয়ে থাকবে — শুধু আইকন দেখাবে
-    const collapsed = saved === null ? true : saved === '1';
+    // ডিফল্টভাবে (কোনো preference সেভ না থাকলে) নেভিগেশন বার প্রথমে full/expanded অবস্থায় থাকবে (label সহ)
+    const collapsed = saved === null ? false : saved === '1';
     toggleSidebarCollapse(collapsed);
   }
   if(document.readyState === 'loading'){
@@ -2634,6 +2635,83 @@ function toggleSidebarCollapse(force){
       apply();
     }
   });
+})();
+
+// ===== NAV ICON TOOLTIP (collapsed sidebar) =====
+// Sidebar collapse করা থাকলে শুধু আইকন দেখা যায় — hover করলে navigation bar এর নিজস্ব font
+// (Exo 2) দিয়ে, কিন্তু একটু ছোট সাইজে, একটা themed tooltip এ আইকনের নাম দেখানো হয়
+(function initNavTooltips(){
+  function getTip(){
+    let tip = document.getElementById('nav-tooltip');
+    if(!tip){
+      tip = document.createElement('div');
+      tip.id = 'nav-tooltip';
+      tip.className = 'nav-tooltip';
+      document.body.appendChild(tip);
+    }
+    return tip;
+  }
+  function showTip(el){
+    const sb = document.getElementById('app-sidebar');
+    if(!sb || !sb.classList.contains('collapsed') || window.innerWidth <= 900) return;
+    const labelEl = el.querySelector('.nav-label');
+    const text = (labelEl ? labelEl.textContent : el.getAttribute('title') || '').trim();
+    if(!text) return;
+    // Native browser title tooltip বন্ধ রাখা হচ্ছে যাতে custom tooltip এর সাথে দুইটা একসাথে না দেখায়
+    if(el.hasAttribute('title')){
+      el.dataset.titleBackup = el.getAttribute('title');
+      el.removeAttribute('title');
+    }
+    const tip = getTip();
+    tip.textContent = text;
+    // আইকনের নিজস্ব রঙ (ic-dash, ic-ticket, ic-running... ইত্যাদি) tooltip এর background/arrow এ বসানো হচ্ছে,
+    // যাতে tooltip টা সবসময় সেই আইকনের সাথে মিলে যাওয়া রঙেই দেখা যায়
+    const iconWrap = el.querySelector('.nav-icon-wrap');
+    if(iconWrap){
+      const bgImage = getComputedStyle(iconWrap).backgroundImage;
+      if(bgImage && bgImage !== 'none'){
+        tip.style.setProperty('--tip-bg', bgImage);
+        const colorMatch = bgImage.match(/#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)/);
+        tip.style.setProperty('--tip-arrow', colorMatch ? colorMatch[0] : '#0d1f5c');
+      } else {
+        tip.style.removeProperty('--tip-bg');
+        tip.style.removeProperty('--tip-arrow');
+      }
+    }
+    const rect = el.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.top = (rect.top + rect.height/2) + 'px';
+    tip.style.left = (rect.right + 12) + 'px';
+    tip.style.transform = 'translateY(-50%) translateX(-6px)';
+    tip.style.opacity = '0';
+    requestAnimationFrame(()=>{
+      tip.style.transform = 'translateY(-50%) translateX(0)';
+      tip.style.opacity = '1';
+    });
+  }
+  function hideTip(el){
+    const tip = document.getElementById('nav-tooltip');
+    if(tip){
+      tip.style.opacity = '0';
+      tip.style.transform = 'translateY(-50%) translateX(-6px)';
+      setTimeout(()=>{ if(tip.style.opacity==='0') tip.style.display='none'; },160);
+    }
+    if(el && el.dataset.titleBackup){
+      el.setAttribute('title', el.dataset.titleBackup);
+      delete el.dataset.titleBackup;
+    }
+  }
+  function bind(){
+    document.querySelectorAll('.sb-nav .nav-item').forEach(el=>{
+      el.addEventListener('mouseenter', ()=>showTip(el));
+      el.addEventListener('mouseleave', ()=>hideTip(el));
+    });
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
 })();
 
 function toast(msg){
