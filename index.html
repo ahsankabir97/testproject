@@ -516,7 +516,7 @@ html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden}
    কলামের লেখা পাশের কলামে উপচে গিয়ে এলোমেলো/overlap না হয়ে যায় */
 #rt-table{table-layout:auto;width:100%;min-width:980px}
 #rt-table th,#rt-table td{overflow:visible;text-overflow:clip;white-space:nowrap}
-#rt-table th{white-space:normal;line-height:1.25}
+#rt-table th{white-space:normal;line-height:1.25;background:linear-gradient(135deg,#0d1f5c 0%,#152a6b 30%,#1b1b1f 65%,#000 100%) !important;color:#fff !important;text-shadow:0 1px 2px rgba(0,0,0,.5) !important;border-right:1px solid rgba(255,255,255,.14) !important;border-bottom:2px solid rgba(255,255,255,.18) !important}
 #rt-table td:nth-child(3),#rt-table td:nth-child(7){overflow:visible;text-overflow:clip;white-space:normal}
 #rt-table td:nth-child(10){overflow:visible;text-overflow:clip}
 #rt-table td:nth-child(6),#rt-table td:nth-child(7){padding:2px 4px !important;font-size:.66rem !important}
@@ -1190,9 +1190,13 @@ tbody tr:hover td{background:#f0f8ff}
         <option value="11">November</option><option value="12">December</option>
       </select>
 
-      <input type="date" lang="en-GB" id="db-df" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="From Date">
-      <span style="font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;color:var(--muted)">→</span>
-      <input type="date" lang="en-GB" id="db-dt" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="To Date">
+      <div style="flex-shrink:0;display:flex;align-items:center;gap:5px;background:rgba(33,150,243,.08);border:1.5px solid var(--border);border-radius:8px;padding:3px 8px;height:30px">
+        <i class="fas fa-calendar-alt" style="flex-shrink:0;color:var(--accent);font-size:.72rem"></i>
+        <input type="date" lang="en-GB" id="db-df" onchange="renderDash()" title="From Date" style="flex-shrink:0;border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
+        <span style="flex-shrink:0;color:var(--muted);font-size:.7rem;font-weight:700">→</span>
+        <input type="date" lang="en-GB" id="db-dt" onchange="renderDash()" title="To Date" style="flex-shrink:0;border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:110px;font-family:'Montserrat',sans-serif;padding:0">
+        <button onclick="clearDbDates()" title="Clear dates" style="flex-shrink:0;border:none;background:none;cursor:pointer;color:var(--muted);font-size:.7rem;padding:0 2px" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'"><i class="fas fa-times"></i></button>
+      </div>
 
       <select id="db-eng" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:var(--navy)">
         <option value="">All Engineers</option>
@@ -1447,20 +1451,20 @@ tbody tr:hover td{background:#f0f8ff}
       </div>
       <div class="tbl-card">
         <div class="tbl-top">
-          <span class="tbl-title"><i class="fas fa-network-wired"></i>Running Tasks</span>
+          <span class="tbl-title"><i class="fas fa-network-wired"></i>Back Office Support Assign</span>
         </div>
         <div class="tbl-wrap"><table id="rt-table">
           <colgroup>
             <col style="width:2.5%">
             <col style="width:9%">
-            <col style="width:20%">
+            <col style="width:28%">
             <col style="width:7%">
             <col style="width:7%">
             <col style="width:7%">
             <col style="width:9%">
             <col style="width:7%">
             <col style="width:7%">
-            <col style="width:24.5%">
+            <col style="width:16.5%">
           </colgroup>
           <thead><tr>
   <th>#</th>
@@ -3110,7 +3114,7 @@ async function submitFiberTeamTicket(){
     clientCat: clientCat || 'N/A',
     fwdDate: fwdDate || 'N/A',
     area, assignEng, assignTech,
-    status:'pending',
+    status:'running',
     submittedBy: currentUser ? currentUser.username : 'unknown'
   };
 
@@ -3255,13 +3259,9 @@ function formatClientCodeName(code, name){
   code = (code||'').trim();
   name = (name||'').trim();
   if(!code && !name) return '—';
-  const idx = name.indexOf(':');
-  const nameLine1 = idx===-1 ? name : name.slice(0, idx+1).trim();
-  const nameLine2 = idx===-1 ? '' : name.slice(idx+1).trim();
   let html = '';
-  if(code) html += `<div style="font-weight:700;color:inherit">${escapeHtml(toTitleCase(code))}</div>`;
-  if(nameLine1) html += `<div style="color:inherit;font-weight:700;${code?'opacity:.85':''}">${escapeHtml(toTitleCase(nameLine1))}</div>`;
-  if(nameLine2) html += `<div style="color:inherit;font-weight:700;opacity:.85">${escapeHtml(toTitleCase(nameLine2))}</div>`;
+  if(code) html += `<div style="font-weight:700;color:inherit;white-space:nowrap">${escapeHtml(toTitleCase(code))}</div>`;
+  if(name) html += `<div style="color:inherit;font-weight:700;${code?'opacity:.85;':''}white-space:normal;word-break:break-word;line-height:1.3">${escapeHtml(toTitleCase(name))}</div>`;
   return html || '—';
 }
 
@@ -3330,19 +3330,18 @@ function renderFiberTeamTickets(){
       <td style="color:var(--blue);font-weight:700">${t.assignEng||'—'}</td>
       <td>${t.assignTech||'—'}</td>
       <td style="white-space:nowrap">
-        ${canEditDeleteRunningTask() ? `
-        ${t.status!=='done' ? `<button class="btn-row-edit" onclick="openFiberAssignEdit('${t.firebaseKey}')" title="Edit Engineer/Technician" style="margin-right:6px;vertical-align:middle"><i class="fas fa-pen"></i></button>` : ''}
-        <button class="btn-row-del" onclick="deleteFiberEntry('${t.firebaseKey}')" title="Delete this entry" style="margin-right:6px;vertical-align:middle"><i class="fas fa-trash"></i></button>
-        ` : ''}
         ${t.status==='done' ? `
         <span class="rt-done-badge" style="display:inline-flex;align-items:center;justify-content:center;background:#fff9f0;color:#9a3412;font-weight:800;font-size:.65rem;padding:1px 10px;border-radius:20px">Done</span>
         ` : `
         <div class="rt-action-group" style="vertical-align:middle">
           <button onclick="handlePendingClick('${t.firebaseKey}', this)" onmouseenter="if(this.dataset.comment) showPendingCommentPopup(this.dataset.comment, this)" data-comment="${escapeHtml((!t.status||t.status==='pending') ? (t.pendingComment||'') : '')}" class="rt-status-btn" style="${(!t.status||t.status==='pending')?'background:linear-gradient(135deg,#64748b,#475569);color:#fff':'background:#fff;color:#64748b;border:1px solid #cbd5e1'}">Pending</button>
-          <button onclick="setFiberStatus('${t.firebaseKey}','running')" class="rt-status-btn ${t.status==='running'?'rt-running-live':''}" style="${t.status==='running'?'':'background:#fff;color:#f97316;border:1px solid #fed7aa'}">Running</button>
           <button onclick="markFiberTaskDone('${t.firebaseKey}')" class="rt-status-btn" style="background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff">Done</button>
         </div>
         `}
+        ${canEditDeleteRunningTask() ? `
+        ${t.status!=='done' ? `<button class="btn-row-edit" onclick="openFiberAssignEdit('${t.firebaseKey}')" title="Edit Engineer/Technician" style="margin-left:6px;vertical-align:middle"><i class="fas fa-pen"></i></button>` : ''}
+        <button class="btn-row-del" onclick="deleteFiberEntry('${t.firebaseKey}')" title="Delete this entry" style="margin-left:6px;vertical-align:middle"><i class="fas fa-trash"></i></button>
+        ` : ''}
       </td>
     </tr>`).join('');
 
@@ -4085,6 +4084,12 @@ function clearAtDates(){
   setDateInputValue('at-date-to', '');
   atPage=1;
   renderAll();
+}
+
+function clearDbDates(){
+  setDateInputValue('db-df', '');
+  setDateInputValue('db-dt', '');
+  renderDash();
 }
 
 let atPage = 1;
@@ -4903,7 +4908,7 @@ document.addEventListener('DOMContentLoaded', function(){
   if (typeof flatpickr === 'undefined') return;
   var ids = ['te-date','db-df','db-dt','f-date','mt-date','tr-df','tr-dt','at-date-from','at-date-to'];
   // "All Completed Tasks" এর From/To বক্সে dd/mm/yyyy placeholder দেখানোর জন্য
-  var ddmmyyyyPlaceholderIds = ['at-date-from','at-date-to'];
+  var ddmmyyyyPlaceholderIds = ['db-df','db-dt','at-date-from','at-date-to'];
   ids.forEach(function(id){
     var el = document.getElementById(id);
     if(!el) return;
