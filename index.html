@@ -359,12 +359,15 @@ html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden}
 .sb-logo-box span{font-size:12px;font-weight:900;color:var(--navy);text-align:center;font-family:'Montserrat',sans-serif}
 .sb-logo-info{flex:1}
 .sb-co{font-size:0.97rem;font-weight:900;color:#0a1a4a;font-family:'Outfit',sans-serif;line-height:1.25;letter-spacing:.1px;white-space:normal;word-break:break-word;
-  -webkit-text-stroke:.4px #0a1a4a;
+  -webkit-text-stroke:1px #ffffff;
+  paint-order:stroke fill;
   text-shadow:
-    -1px -1px 0 rgba(255,255,255,.55), 1px -1px 0 rgba(255,255,255,.55), -1px 1px 0 rgba(255,255,255,.55), 1px 1px 0 rgba(255,255,255,.55),
-    0 2px 6px rgba(0,0,0,.25);
+    -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff,
+    -1.5px 0 0 #fff, 1.5px 0 0 #fff, 0 -1.5px 0 #fff, 0 1.5px 0 #fff,
+    0 2px 6px rgba(0,0,0,.35);
 }
-.sb-zone{display:inline-flex;align-items:center;gap:5px;margin-top:4px;font-family:'Montserrat',sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,#1a3a8f,#2196f3);border:2px solid rgba(29,78,216,.4);padding:2px 8px;border-radius:20px;box-shadow:0 2px 8px rgba(13,31,92,.25);white-space:nowrap;text-shadow:0 3px 2px #0d1f5c;}
+.sb-zone{display:inline-flex;align-items:center;gap:5px;margin-top:4px;font-family:'Montserrat',sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,#1a3a8f,#2196f3);border:2px solid rgba(125,211,252,.55);padding:2px 8px;border-radius:0;box-shadow:0 2px 8px rgba(13,31,92,.25),0 0 8px 1px rgba(125,211,252,.55),0 0 18px 3px rgba(79,195,247,.35);white-space:nowrap;text-shadow:0 3px 2px #0d1f5c;animation:sbZoneGlow 2.6s ease-in-out infinite;}
+@keyframes sbZoneGlow{0%,100%{box-shadow:0 2px 8px rgba(13,31,92,.25),0 0 8px 1px rgba(125,211,252,.55),0 0 18px 3px rgba(79,195,247,.35);}50%{box-shadow:0 2px 8px rgba(13,31,92,.25),0 0 12px 2px rgba(125,211,252,.8),0 0 26px 6px rgba(79,195,247,.5);}}
 .sb-user{margin:10px 10px 0;padding:8px 15px;border-radius:11px;background:linear-gradient(135deg,#0d1f5c,#1a3a8f);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px rgba(13,31,92,.35);}
 .sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2196f3,#64b5f6);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900;color:#fff;flex-shrink:0;font-family:'Montserrat',sans-serif;}
 .sb-uname{font-size:.73rem;font-weight:700;color:#fff;font-family:'Montserrat',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -584,14 +587,14 @@ html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden}
 .fg label i{font-size:.8rem;color:var(--accent);min-width:16px;text-align:center}
 .fg input,.fg select,.fg textarea{width:100%;padding:7px 11px;border:1.5px solid var(--border);border-radius:9px;font-size:.8rem;color:var(--text);background:rgba(235,245,255,.75);transition:all .25s;font-family:'Outfit',sans-serif;height:34px;outline:none}
 .fg select{font-size:.65rem;box-shadow:0 3px 10px rgba(26,58,143,.13),inset 0 1px 3px rgba(255,255,255,.8);text-shadow:0 1px 2px rgba(26,58,143,.15)}
-#f-eng{font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:800;color:var(--blue);letter-spacing:.3px}
-#f-eng option{font-weight:700;color:var(--navy);font-family:'Montserrat',sans-serif;background:#f0f8ff}
-input[type=date]{font-family:'Montserrat',sans-serif;font-size:.84rem;color:var(--navy);font-weight:800;letter-spacing:.3px}
-input[type=date]::-webkit-datetime-edit{font-family:'Montserrat',sans-serif;font-weight:800;color:var(--navy)}
-input[type=date]::-webkit-datetime-edit-fields-wrapper{font-family:'Montserrat',sans-serif;font-weight:800}
+#f-eng{font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:500;color:var(--blue);letter-spacing:.3px}
+#f-eng option{font-weight:500;color:var(--navy);font-family:'Montserrat',sans-serif;background:#f0f8ff}
+input[type=date]{font-family:'Montserrat',sans-serif;font-size:.84rem;color:var(--navy);font-weight:600;letter-spacing:.3px}
+input[type=date]::-webkit-datetime-edit{font-family:'Montserrat',sans-serif;font-weight:600;color:var(--navy)}
+input[type=date]::-webkit-datetime-edit-fields-wrapper{font-family:'Montserrat',sans-serif;font-weight:600}
 input[type=date]::-webkit-datetime-edit-day-field,
 input[type=date]::-webkit-datetime-edit-month-field,
-input[type=date]::-webkit-datetime-edit-year-field{color:var(--navy);font-weight:800;font-family:'Montserrat',sans-serif}
+input[type=date]::-webkit-datetime-edit-year-field{color:var(--navy);font-weight:600;font-family:'Montserrat',sans-serif}
 input[type=date]::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer;filter:invert(20%) sepia(80%) saturate(500%) hue-rotate(200deg)}
 .fg select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231a3a8f' d='M6 9L1 4h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;background-color:rgba(235,245,255,.75);}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(33,150,243,.15);transform:translateY(-1px)}
@@ -625,7 +628,7 @@ input[type=date]::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer;fi
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--accent)}
 .filter-bar input[type=text]{min-width:160px;background:#e8f4fd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235b7fa6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 9px center;padding-left:28px;font-family:'Montserrat',sans-serif;font-weight:800;color:#0d1f5c}
 .filter-bar input::placeholder{color:#5b7fa6;font-family:'Outfit',sans-serif;font-weight:500}
-#mt-search,#at-search,#dv-search,#wf-search{font-family:'Montserrat',sans-serif !important;font-weight:700 !important;color:#0d1f5c !important}
+#mt-search,#at-search,#dv-search,#wf-search{font-family:'Montserrat',sans-serif !important;font-weight:500 !important;color:#0d1f5c !important}
 #mt-search::placeholder,#at-search::placeholder,#dv-search::placeholder,#wf-search::placeholder{font-family:'Montserrat',sans-serif !important;font-weight:700 !important;color:#0d1f5c !important}
 .btn-go{background:linear-gradient(135deg,#1a3a8f,#2196f3);color:#fff;border:none;padding:0 14px;border-radius:7px;font-size:.65rem;font-weight:800;cursor:pointer;height:30px;transition:all .25s;display:flex;align-items:center;gap:5px;box-shadow:0 3px 8px rgba(26,58,143,.22);font-family:'Montserrat',sans-serif;letter-spacing:.3px}
 .btn-go:hover{transform:translateY(-1px);filter:brightness(1.1)}
@@ -831,7 +834,13 @@ tbody tr:hover td{background:#f0f8ff}
 #tr-tech-tbody tr td span{width:14px;height:14px;font-size:.58rem;}
 #page-alltask .tbl-top{display:none !important;}
 .fg label{font-weight:900 !important;font-size:.72rem !important;color:var(--navy) !important;letter-spacing:.8px !important;}
-.fg input,.fg select,.fg textarea{font-weight:800 !important;color:var(--navy) !important;font-size:.85rem !important;}
+.fg input,.fg select,.fg textarea{font-weight:500 !important;color:var(--navy) !important;font-size:.85rem !important;}
+.fg input[type=date]{font-weight:700 !important;text-shadow:0.35px 0 0 currentColor,-0.35px 0 0 currentColor !important;}
+.fg input[type=date]::-webkit-datetime-edit,
+.fg input[type=date]::-webkit-datetime-edit-fields-wrapper,
+.fg input[type=date]::-webkit-datetime-edit-day-field,
+.fg input[type=date]::-webkit-datetime-edit-month-field,
+.fg input[type=date]::-webkit-datetime-edit-year-field{font-weight:900 !important;text-shadow:0.35px 0 0 currentColor,-0.35px 0 0 currentColor !important;color:var(--navy) !important;}
 #f-eng{font-weight:900 !important;font-size:.85rem !important;color:var(--navy) !important;}
 .toggle-single .ts-val{font-weight:900 !important;font-size:.85rem !important;}
 .cdd-btn{font-weight:900 !important;color:var(--navy) !important;font-size:.85rem !important;}
@@ -908,6 +917,17 @@ tbody tr:hover td{background:#f0f8ff}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<style>
+/* flatpickr: match the existing date-input look */
+.flatpickr-input{cursor:pointer}
+.flatpickr-calendar{font-family:'Montserrat',sans-serif;}
+/* flatpickr replaces the real <input type=date> with a visible text box (altInput)
+   that does NOT inherit the original inline style, so we style it explicitly here */
+.fp-alt-date{font-family:'Montserrat',sans-serif !important;font-weight:800 !important;color:var(--navy) !important;cursor:pointer;caret-color:var(--accent)}
+.fp-alt-date::placeholder{font-family:'Montserrat',sans-serif;font-weight:700;color:var(--muted);opacity:.8}
+</style>
 </head>
 <body>
 
@@ -978,7 +998,7 @@ tbody tr:hover td{background:#f0f8ff}
   <div class="modal-box" style="width:460px;max-height:88vh;overflow-y:auto">
     <div class="modal-title"><i class="fas fa-user-edit"></i>Edit Ticket<span id="te-ticket-label" style="margin-left:6px;color:var(--muted);font-weight:700;font-size:.72rem"></span></div>
     <input type="hidden" id="te-fk">
-    <div class="modal-field"><label>Work Date</label><input type="date" id="te-date"></div>
+    <div class="modal-field"><label>Work Date</label><input type="date" lang="en-GB" id="te-date"></div>
     <div class="modal-field"><label>Ticket ID</label><input type="text" id="te-ticket"></div>
     <div class="modal-field"><label>Task Category</label>
       <select id="te-cat">
@@ -1170,9 +1190,9 @@ tbody tr:hover td{background:#f0f8ff}
         <option value="11">November</option><option value="12">December</option>
       </select>
 
-      <input type="date" id="db-df" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="From Date">
+      <input type="date" lang="en-GB" id="db-df" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="From Date">
       <span style="font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;color:var(--muted)">→</span>
-      <input type="date" id="db-dt" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="To Date">
+      <input type="date" lang="en-GB" id="db-dt" onchange="renderDash()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy)" title="To Date">
 
       <select id="db-eng" onchange="renderDash()" style="font-size:.76rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:600;color:var(--navy)">
         <option value="">All Engineers</option>
@@ -1246,7 +1266,7 @@ tbody tr:hover td{background:#f0f8ff}
       <div class="dash-subtab" id="dashsub-daily">
       <div class="form-card">
         <div class="form-grid">
-          <div class="fg"><label><i class="fas fa-calendar-alt"></i>Work Date</label><input type="date" id="f-date"></div>
+          <div class="fg"><label><i class="fas fa-calendar-alt"></i>Work Date</label><input type="date" lang="en-GB" id="f-date"></div>
           <div class="fg"><label><i class="fas fa-ticket-alt"></i>Ticket ID</label><input type="text" id="f-ticket" placeholder="e.g. L3-31Jan26-1234, L3-31Jan26-5678"></div>
           <!-- TASK CATEGORY -->
           <div class="fg" style="position:relative">
@@ -1433,14 +1453,14 @@ tbody tr:hover td{background:#f0f8ff}
           <colgroup>
             <col style="width:2.5%">
             <col style="width:9%">
-            <col style="width:13%">
+            <col style="width:20%">
             <col style="width:7%">
             <col style="width:7%">
             <col style="width:7%">
             <col style="width:9%">
             <col style="width:7%">
             <col style="width:7%">
-            <col style="width:31.5%">
+            <col style="width:24.5%">
           </colgroup>
           <thead><tr>
   <th>#</th>
@@ -1467,7 +1487,7 @@ tbody tr:hover td{background:#f0f8ff}
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <div class="filter-bar" style="margin-bottom:0;padding:5px 12px">
               <span class="filter-bar-label"><i class="fas fa-filter"></i>Date:</span>
-              <input type="date" id="mt-date" style="font-size:.76rem;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
+              <input type="date" lang="en-GB" id="mt-date" style="font-size:.76rem;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
               <button class="btn-go" onclick="mtPage=1;renderMyTask()"><i class="fas fa-search"></i> Go</button>
               
               <button class="btn-del-sel" onclick="clearMyFilters()"><i class="fas fa-times"></i> Clear</button>
@@ -1517,9 +1537,9 @@ tbody tr:hover td{background:#f0f8ff}
               <option value="10">November</option><option value="11">December</option>
             </select>
             <span style="font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;color:var(--blue)">FROM</span>
-            <input type="date" id="tr-df" oninput="renderReport()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
+            <input type="date" lang="en-GB" id="tr-df" oninput="renderReport()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
             <span style="font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;color:var(--blue)">TO</span>
-            <input type="date" id="tr-dt" oninput="renderReport()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
+            <input type="date" lang="en-GB" id="tr-dt" oninput="renderReport()" style="font-size:.76rem;height:30px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:#e8f4fd;outline:none;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--navy)">
           </div>
         </div>
         <div style="display:flex;gap:8px;margin-top:12px">
@@ -1586,9 +1606,9 @@ tbody tr:hover td{background:#f0f8ff}
             <!-- Date Range Filter -->
             <div style="flex-shrink:0;display:flex;align-items:center;gap:5px;background:rgba(33,150,243,.08);border:1.5px solid var(--border);border-radius:8px;padding:3px 8px;height:30px">
               <i class="fas fa-calendar-alt" style="flex-shrink:0;color:var(--accent);font-size:.72rem"></i>
-              <input type="date" id="at-date-from" onchange="atPage=1;renderAll()" title="From Date" style="flex-shrink:0;border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:118px;font-family:'Montserrat',sans-serif;padding:0">
+              <input type="date" lang="en-GB" id="at-date-from" onchange="atPage=1;renderAll()" title="From Date" style="flex-shrink:0;border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:118px;font-family:'Montserrat',sans-serif;padding:0">
               <span style="flex-shrink:0;color:var(--muted);font-size:.7rem;font-weight:700">→</span>
-              <input type="date" id="at-date-to" onchange="atPage=1;renderAll()" title="To Date" style="flex-shrink:0;border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:118px;font-family:'Montserrat',sans-serif;padding:0">
+              <input type="date" lang="en-GB" id="at-date-to" onchange="atPage=1;renderAll()" title="To Date" style="flex-shrink:0;border:none;background:transparent;font-size:.74rem;color:var(--navy);font-weight:700;outline:none;width:118px;font-family:'Montserrat',sans-serif;padding:0">
               <button onclick="clearAtDates()" title="Clear dates" style="flex-shrink:0;border:none;background:none;cursor:pointer;color:var(--muted);font-size:.7rem;padding:0 2px" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'"><i class="fas fa-times"></i></button>
             </div>
             <select id="at-eng" onchange="atPage=1;renderAll()" style="flex-shrink:0;font-size:.8rem;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;height:30px;background:#e8f4fd;outline:none;font-family:'Outfit',sans-serif;font-weight:700;color:#0d1f5c">
@@ -2205,7 +2225,7 @@ function openTicketFullEdit(fk){
   if(!t) return;
   document.getElementById("te-fk").value = fk;
   document.getElementById("te-ticket-label").textContent = "- " + t.ticket;
-  document.getElementById("te-date").value = t.date || "";
+  setDateInputValue("te-date", t.date || "");
   document.getElementById("te-ticket").value = t.ticket || "";
   document.getElementById("te-cat").value = t.cat || "Troubleshoot";
   document.getElementById("te-tt").value = fmtTaskType(t.tt) || "Phone support";
@@ -2475,17 +2495,17 @@ function updateClock(){
   const todayLocal=d.toLocaleDateString('en-CA');
   const fDate=document.getElementById('f-date');
   if(fDate && fDate._autoDate && fDate.value===fDate._autoDate && fDate.value!==todayLocal){
-    fDate.value=todayLocal; fDate._autoDate=todayLocal;
+    setDateInputValue('f-date', todayLocal); fDate._autoDate=todayLocal;
   }
 
   const trDf=document.getElementById('tr-df');
   if(trDf && trDf.value!==todayLocal){
-    trDf.value=todayLocal;
+    setDateInputValue('tr-df', todayLocal);
     // TO date ও সেই মাসের শেষ দিনে update
     const y=d.getFullYear(), mi=d.getMonth();
     const last=new Date(y,mi+1,0).getDate();
     const m=String(mi+1).padStart(2,'0');
-    document.getElementById('tr-dt').value=`${y}-${m}-${String(last).padStart(2,'0')}`;
+    setDateInputValue('tr-dt', `${y}-${m}-${String(last).padStart(2,'0')}`);
     document.getElementById('tr-month-sel').value=String(mi);
     if(document.getElementById('page-taskreport').classList.contains('active')) renderReport();
   }
@@ -2511,6 +2531,18 @@ function updateClock(){
   if(mtDate && mtDate.value){
     // mt-date শুধু তখনই update করব যদি সে আগের দিনের today তে থাকে
     // (user manually change করলে ছুঁব না)
+  }
+}
+// flatpickr দিয়ে সাজানো date input-এ প্রোগ্রাম্যাটিকভাবে ভ্যালু সেট করার হেল্পার,
+// যাতে dd/mm/yyyy ডিসপ্লে সবসময় ভ্যালুর সাথে sync থাকে
+function setDateInputValue(id, val){
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(el._flatpickr){
+    if(val){ el._flatpickr.setDate(val, true); }
+    else { el._flatpickr.clear(); }
+  } else {
+    el.value = val || '';
   }
 }
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -2549,9 +2581,9 @@ function dateTimeCell(t){
 function setDateDefaults(){
   const today = new Date().toLocaleDateString('en-CA');
   const fd = document.getElementById('f-date');
-  fd.value=today;
+  setDateInputValue('f-date', today);
   fd._autoDate=today;
-  document.getElementById('mt-date').value=today;
+  setDateInputValue('mt-date', today);
 // Script এর একদম শেষে যোগ করুন
 const _initMi = new Date().getMonth();
 document.getElementById('tr-month-sel').value = String(_initMi);
@@ -3299,7 +3331,7 @@ function renderFiberTeamTickets(){
       <td>${t.assignTech||'—'}</td>
       <td style="white-space:nowrap">
         ${canEditDeleteRunningTask() ? `
-        <button class="btn-row-edit" onclick="openFiberAssignEdit('${t.firebaseKey}')" title="Edit Engineer/Technician" style="margin-right:6px;vertical-align:middle"><i class="fas fa-pen"></i></button>
+        ${t.status!=='done' ? `<button class="btn-row-edit" onclick="openFiberAssignEdit('${t.firebaseKey}')" title="Edit Engineer/Technician" style="margin-right:6px;vertical-align:middle"><i class="fas fa-pen"></i></button>` : ''}
         <button class="btn-row-del" onclick="deleteFiberEntry('${t.firebaseKey}')" title="Delete this entry" style="margin-right:6px;vertical-align:middle"><i class="fas fa-trash"></i></button>
         ` : ''}
         ${t.status==='done' ? `
@@ -3465,7 +3497,7 @@ function markFiberTaskDone(firebaseKey){
     if(techSel && Array.from(techSel.options).some(o=>o.value===t.assignTech)) techSel.value = t.assignTech;
   }
   if(!document.getElementById('f-date').value){
-    document.getElementById('f-date').value = new Date().toLocaleDateString('en-CA');
+    setDateInputValue('f-date', new Date().toLocaleDateString('en-CA'));
   }
 
   // Task Type সবসময় "Back office support" ডিফল্ট থাকবে, যা Team Type-কে Single Technician/FI Team এ ফিল্টার করে দেয়
@@ -3861,8 +3893,8 @@ function setThisMonth(){
   const m=String(mi+1).padStart(2,'0');
   // FROM = আজকের তারিখ (dynamic), TO = month এর শেষ দিন
   const todayLocal=n.toLocaleDateString('en-CA');
-  document.getElementById('tr-df').value=todayLocal;
-  document.getElementById('tr-dt').value=`${y}-${m}-${String(last).padStart(2,'0')}`;
+  setDateInputValue('tr-df', todayLocal);
+  setDateInputValue('tr-dt', `${y}-${m}-${String(last).padStart(2,'0')}`);
   document.getElementById('tr-month-sel').value=String(mi);
 }
 
@@ -3873,8 +3905,8 @@ function applyMonthPreset(){
   const n=new Date(); const y=n.getFullYear();
   const last=new Date(y,mi+1,0).getDate();
   const m=String(mi+1).padStart(2,'0');
-  document.getElementById('tr-df').value=`${y}-${m}-01`;
-  document.getElementById('tr-dt').value=`${y}-${m}-${String(last).padStart(2,'0')}`;
+  setDateInputValue('tr-df', `${y}-${m}-01`);
+  setDateInputValue('tr-dt', `${y}-${m}-${String(last).padStart(2,'0')}`);
   renderReport();
 }
 
@@ -4049,8 +4081,8 @@ function switchReportView(view){
 }
 
 function clearAtDates(){
-  document.getElementById('at-date-from').value='';
-  document.getElementById('at-date-to').value='';
+  setDateInputValue('at-date-from', '');
+  setDateInputValue('at-date-to', '');
   atPage=1;
   renderAll();
 }
@@ -4402,7 +4434,7 @@ function updateFirebaseStatus(connected){
 }
 
 function clearMyFilters(){
-  document.getElementById('mt-date').value='';
+  setDateInputValue('mt-date', '');
   document.getElementById('mt-search').value='';
   activeCat['mt-stats']='';
   mtPage=1;
@@ -4539,8 +4571,8 @@ function getDashFiltered(){
 
 function clearDashFilters(){
   ['db-month','db-eng','db-team','db-cat','db-tt'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('db-df').value='';
-  document.getElementById('db-dt').value='';
+  setDateInputValue('db-df', '');
+  setDateInputValue('db-dt', '');
   renderDash();
 }
 
@@ -4863,6 +4895,44 @@ chartTt = new Chart(document.getElementById('chart-tt'),{
 
 // প্রতি 1 ঘণ্টা পর পর page auto refresh হবে
 setInterval(function(){ window.location.reload(); }, 60 * 60 * 1000);
+</script>
+<script>
+// সব date input কে dd/mm/yyyy ফরম্যাটে দেখানোর জন্য (browser/OS locale নির্বিশেষে)
+// আসল value (yyyy-mm-dd) অপরিবর্তিত থাকে, তাই বাকি সব JS লজিক ঠিকভাবে কাজ করবে
+document.addEventListener('DOMContentLoaded', function(){
+  if (typeof flatpickr === 'undefined') return;
+  var ids = ['te-date','db-df','db-dt','f-date','mt-date','tr-df','tr-dt','at-date-from','at-date-to'];
+  // "All Completed Tasks" এর From/To বক্সে dd/mm/yyyy placeholder দেখানোর জন্য
+  var ddmmyyyyPlaceholderIds = ['at-date-from','at-date-to'];
+  ids.forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var originalStyle = el.getAttribute('style') || '';
+    var fp = flatpickr(el, {
+      dateFormat: 'Y-m-d',
+      altInput: true,
+      altInputClass: 'fp-alt-date',
+      altFormat: 'd/m/Y',
+      allowInput: true,
+      onChange: function(selectedDates, dateStr, instance){
+        // পুরনো onchange/oninput হ্যান্ডলারগুলো ঠিকভাবে ট্রিগার করার জন্য
+        instance.input.dispatchEvent(new Event('input', {bubbles:true}));
+        instance.input.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+    });
+    // flatpickr এর তৈরি করা visible altInput-এ আসল style/placeholder বসানো হচ্ছে,
+    // কারণ altInput মূল input এর inline style/placeholder নিজে থেকে নেয় না
+    if (fp && fp.altInput) {
+      if (originalStyle) fp.altInput.setAttribute('style', originalStyle);
+      fp.altInput.style.fontFamily = "'Montserrat',sans-serif";
+      fp.altInput.style.fontWeight = '800';
+      fp.altInput.style.color = 'var(--navy)';
+      if (ddmmyyyyPlaceholderIds.indexOf(id) !== -1) {
+        fp.altInput.placeholder = 'dd/mm/yyyy';
+      }
+    }
+  });
+});
 </script>
 </body>
 </html>
