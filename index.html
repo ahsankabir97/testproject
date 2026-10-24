@@ -1821,6 +1821,7 @@ body:not(.show-epon) .docs-grp-epon { display: none !important; }
     .docs-subnav .docs-sub-group-header::after { content: '\25B6' !important; font-size: 0.6em !important; }
     .docs-subnav .docs-sub-group-header.open::after { transform: none !important; }
 }
+#radioBtsTabs.pop-pad { padding-bottom: 75vh !important; }
 #epon-toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: rgba(15,23,42,.92); color: #fff; padding: 9px 16px; border-radius: 20px; font: 600 .85rem 'Exo 2', sans-serif; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 #epon-toast.show { opacity: 1; }
 </style>
@@ -3056,7 +3057,7 @@ initRadio();
     function radioPopItemsHtml(id) {
         if (id === RADIO_DELETED_ID) {
             if (!radioDeleted.length) return '<div class="radio-acc-empty">No deleted radios</div>';
-            return radioPopFilterHtml(radioDeleted.length) + radioDeleted.map((d, i) => `<div class="radio-sub-item" onclick="selectDeletedRadio(this, ${i})"><span class="radio-sub-name">${escapeHtml(d.client.name)}</span></div>`).join('');
+            return radioDeleted.map((d, i) => `<div class="radio-sub-item" onclick="selectDeletedRadio(this, ${i})"><span class="radio-sub-name">${escapeHtml(d.client.name)}</span></div>`).join('');
         }
         const clients = radioData[id].clients;
         if (!clients.length) return '<div class="radio-acc-empty">No clients</div>';
@@ -3105,12 +3106,23 @@ initRadio();
     function toggleRadioPop(id) {
         radioPopId = (radioPopId === id) ? null : id;
         document.querySelectorAll('#radioBtsTabs .radio-bts-cell').forEach(c => c.classList.toggle('pop-open', c.dataset.id === radioPopId));
+        const tabsEl = document.getElementById('radioBtsTabs');
+        if (tabsEl) tabsEl.classList.toggle('pop-pad', radioPopId === RADIO_DELETED_ID);
         if (radioPopId) {
+            if (radioPopId === RADIO_DELETED_ID) {
+                // bring the Deleted Radio button up so the name list opens DOWNWARD with plenty of room
+                const cell = document.querySelector('#radioBtsTabs .radio-bts-cell.pop-open');
+                if (cell) { cell.style.scrollMarginTop = '12px'; try { cell.scrollIntoView({ block: 'start' }); } catch (e) {} }
+                requestAnimationFrame(positionRadioPop);
+                setTimeout(positionRadioPop, 120);
+            }
             positionRadioPop();
         }
     }
     function closeRadioPop() {
         radioPopId = null;
+        const tabsEl = document.getElementById('radioBtsTabs');
+        if (tabsEl) tabsEl.classList.remove('pop-pad');
         document.querySelectorAll('#radioBtsTabs .radio-bts-cell.pop-open').forEach(c => c.classList.remove('pop-open'));
     }
     // float the dropdown over the page, keep it inside the screen
@@ -3129,12 +3141,13 @@ initRadio();
         pop.style.position = 'fixed';
         pop.style.width = w + 'px';
         pop.style.left = Math.min(Math.max(r.left, 8), vw - w - 8) + 'px';
-        if (below < 260 && above > below) {
+        const forceDown = cell.classList.contains('radio-deleted-cell');
+        if (!forceDown && below < 260 && above > below) {
             pop.style.top = 'auto'; pop.style.bottom = (vh - r.top + 6) + 'px';
             pop.style.maxHeight = Math.max(140, above) + 'px';
         } else {
             pop.style.bottom = 'auto'; pop.style.top = (r.bottom + 6) + 'px';
-            pop.style.maxHeight = Math.max(160, below) + 'px';
+            pop.style.maxHeight = Math.max(160, Math.min(below, vh * 0.75)) + 'px';
         }
     }
     window.addEventListener('scroll', () => { if (radioPopId) positionRadioPop(); }, true);
@@ -5343,6 +5356,42 @@ document.addEventListener('click', function(e) {
             if (r.right > window.innerWidth - 6) items.classList.add('flip-left');
         }
     };
+})();
+/* MOBILE: single tap = default page, double tap = show sub menu (OLT TASK / OLT DOCS) */
+(function () {
+    var olt = document.getElementById('nav-olt-group'), docs = document.getElementById('nav-docs-group');
+    if (!olt || !docs) return;
+    olt.removeAttribute('onclick'); docs.removeAttribute('onclick');
+    olt.style.touchAction = 'manipulation'; docs.style.touchAction = 'manipulation';
+    var last = { olt: 0, docs: 0 }, GAP = 380;
+
+    function oltSingle() {            // default ONU ADD page, sub menu closed
+        document.getElementById('olt-children').classList.remove('open');
+        closeDocsSubnav();
+        document.getElementById('nav-docs-group').classList.remove('open');
+        switchTab('app-onu', document.getElementById('nav-onu'));
+        olt.classList.remove('open'); olt.classList.add('active');
+    }
+    function docsSingle() {           // default OLT IP Info page, sub menu closed
+        document.getElementById('olt-children').classList.remove('open');
+        document.getElementById('nav-olt-group').classList.remove('open');
+        if (!document.body.classList.contains('docs-mode')) switchToDocsTab(docs);
+        else { ensureDocsSubnavPlacement(); showDocsContent('d_olt_ips', null); }
+        closeDocsSubnav();
+        docs.classList.remove('open'); docs.classList.add('active');
+    }
+    olt.addEventListener('click', function () {
+        if (window.innerWidth > 700) { toggleOltGroup(olt); return; }
+        var now = Date.now();
+        if (now - last.olt < GAP) { last.olt = 0; toggleOltGroup(olt); }   // 2nd tap -> open sub menu
+        else { last.olt = now; oltSingle(); }
+    });
+    docs.addEventListener('click', function () {
+        if (window.innerWidth > 700) { toggleDocsGroup(docs); return; }
+        var now = Date.now();
+        if (now - last.docs < GAP) { last.docs = 0; toggleDocsGroup(docs); }  // 2nd tap -> open sub menu
+        else { last.docs = now; docsSingle(); }
+    });
 })();
 </script>
 </body>
