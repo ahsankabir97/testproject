@@ -500,6 +500,10 @@
         #app-bts > .card { padding: 12px 16px; margin-bottom: 10px !important; }
         #app-bts > .card > .card-head { margin-bottom: 8px; padding-bottom: 8px; }
         #app-bts #bts-search-result-count:empty { display: none; }
+        #app-bts .docs-card { padding: 14px 20px 16px; margin-bottom: 16px; }
+        #app-bts .docs-card-header { margin-bottom: 10px; padding-bottom: 8px; }
+        #app-bts .docs-card-title { font-size: 1.15rem; }
+        #app-bts .docs-card-title::before { height: 20px; }
         .olt-bts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 4px; }
         .olt-bts-btn { display: flex; align-items: center; gap: 10px; text-align: left; padding: 14px 14px; background: #fff; border: 2px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-family: 'Exo 2', sans-serif; transition: all .2s ease; }
         .olt-bts-btn .material-icons { font-size: 22px; color: #00A36C; background: rgba(0,212,255,0.12); border-radius: 8px; padding: 6px; }
@@ -507,6 +511,13 @@
         .olt-bts-btn .obb-count { display: block; font-size: 0.72rem; color: #64748b; margin-top: 2px; }
         .olt-bts-btn:hover { border-color: #00d4ff; box-shadow: 0 4px 14px rgba(0,212,255,0.2); transform: translateY(-1px); }
         .olt-bts-btn:active { transform: translateY(0); }
+        /* Deep blue-teal BTS name boxes (OLT IP + BTS INFO) */
+        .olt-bts-btn { background: linear-gradient(135deg, #0b3d91 0%, #0e6ba8 55%, #0a8f8f 100%); border: 1.5px solid #0a2f6b; box-shadow: 0 3px 10px rgba(11,61,145,0.28); }
+        .olt-bts-btn .material-icons { color: #fff; background: rgba(255,255,255,0.18); }
+        .olt-bts-btn .obb-name { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+        .olt-bts-btn .obb-count { color: #bfe9ff; }
+        .olt-bts-btn:hover { border-color: #5eead4; box-shadow: 0 6px 18px rgba(14,107,168,0.45); filter: brightness(1.08); transform: translateY(-1px); }
+        .olt-bts-btn:active { transform: scale(0.98); filter: brightness(0.95); }
         .olt-detail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
         .olt-back-btn { display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; border: 2px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: 'Exo 2', sans-serif; }
         .olt-back-btn .material-icons { font-size: 18px; }
@@ -1205,9 +1216,17 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
             .olt-bts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 2px; }
             .olt-bts-btn { gap: 7px; padding: 8px 8px; border-width: 1.5px; border-radius: 9px; min-width: 0; }
             .olt-bts-btn .material-icons { font-size: 17px; padding: 4px; border-radius: 6px; flex-shrink: 0; }
-            .olt-bts-btn .obb-name { font-size: 0.78rem; line-height: 1.15; overflow-wrap: anywhere; }
-            .olt-bts-btn .obb-count { font-size: 0.64rem; margin-top: 1px; }
+            .olt-bts-btn { overflow: hidden; }
+            .olt-bts-btn .material-icons { display: none; }
+            .olt-bts-btn .obb-name { font-size: 0.9rem; line-height: 1.2; overflow-wrap: break-word; word-break: normal; hyphens: none; }
+            .olt-bts-btn .obb-count { font-size: 0.7rem; margin-top: 1px; }
+            .olt-bts-btn > span:not(.material-icons) { min-width: 0; }
+            #bts-table-card { display: none; }
+            #app-bts .docs-card { padding: 10px; }
             #d_olt_ips .docs-card { padding: 10px; }
+        }
+        @media (max-width: 360px) {
+            .olt-bts-btn .obb-name { font-size: 0.8rem; }
         }
 
         .cloud-status { margin-top: 8px; font-family: 'Rajdhani', sans-serif; font-size: 0.72em; font-weight: 700; letter-spacing: 1px; color: rgba(196,181,253,0.6); }
@@ -1309,6 +1328,331 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
         #radioModalOverlay .radio-modal-header h3 { font-family: 'Orbitron', monospace; letter-spacing: 2px; font-size: 13px; }
         #radioModalOverlay .radio-form-group input:focus, #radioModalOverlay .radio-form-group select:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.15); }
         #radioModalOverlay .radio-modal-btn.save { background: linear-gradient(135deg, #10b981, #059669); }
+    
+        /* ════ RADIO — BTS button grid (same style as BTS INFO) ════ */
+        #app-radio .radio-bts-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin: 0; padding: 10px; overflow-y: auto; flex: 1; align-content: start; background: #f5f3ff; }
+        #app-radio .radio-bts-grid .olt-bts-btn { padding: 10px 10px; gap: 8px; min-width: 0; overflow: hidden; border-radius: 10px; }
+        #app-radio .radio-bts-grid .olt-bts-btn .material-icons { display: none; }
+        #app-radio .radio-bts-grid .olt-bts-btn .obb-name { font-size: 0.85rem; line-height: 1.2; overflow-wrap: break-word; }
+        #app-radio .radio-bts-grid .olt-bts-btn .obb-count { font-size: 0.68rem; }
+        #app-radio .radio-bts-grid .olt-bts-btn.radio-deleted-btn { background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 55%, #dc2626 100%); border-color: #7f1d1d; grid-column: 1 / -1; }
+        #app-radio .radio-back-bar { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #f5f3ff; border-bottom: 1px solid rgba(139,92,246,0.14); flex-shrink: 0; }
+
+        /* ════ RADIO — accordion list + full-page detail ════ */
+        #app-radio .radio-client-panel { width: 100%; flex: 1; border-right: none; min-width: 0; }
+        #app-radio .radio-detail-panel { display: none; width: 100%; }
+        #app-radio.detail-open .radio-client-panel { display: none; }
+        #app-radio.detail-open .radio-detail-panel { display: flex; }
+        #app-radio .radio-bts-grid { display: flex; flex-direction: column; gap: 8px; padding: 12px; max-width: 760px; width: 100%; margin: 0 auto; background: transparent; }
+        #app-radio .radio-client-list { max-height: none; width: 100%; max-width: 760px; margin: 0 auto; }
+        #app-radio .radio-acc .olt-bts-btn { width: 100%; justify-content: space-between; }
+        #app-radio .radio-acc .olt-bts-btn .acc-arrow { margin-left: auto; font-size: 0.8em; color: #fff; transition: transform .25s ease; }
+        #app-radio .radio-acc.open .olt-bts-btn .acc-arrow { transform: rotate(180deg); }
+        #app-radio .radio-acc.open > .olt-bts-btn { border-radius: 10px 10px 0 0; }
+        #app-radio .radio-acc-sub { display: none; background: #fff; border: 1px solid rgba(139,92,246,0.18); border-top: none; border-radius: 0 0 10px 10px; padding: 6px; }
+        #app-radio .radio-acc.open > .radio-acc-sub { display: block; }
+        #app-radio .radio-acc-sub .radio-client-card { margin-bottom: 4px; }
+        #app-radio .radio-acc-empty { padding: 12px; text-align: center; color: #a78bfa; font-size: 12px; }
+        #app-radio .radio-detail-back { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.4); flex-shrink: 0; }
+        #app-radio .radio-detail-back:hover { background: rgba(255,255,255,0.26); color: #fff; }
+        @media (max-width: 700px) { #app-radio .radio-bts-grid { padding: 8px; } #app-radio .radio-detail-back { padding: 5px 8px; } }
+
+        /* ════ RADIO — sidebar-style (OLT TASK like) sub menu ════ */
+        #app-radio .radio-acc { background: var(--sb-bg); border: 1px solid var(--sb-border); border-radius: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(10,37,87,0.22); }
+        #app-radio .radio-acc-head { width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: transparent; border: none; cursor: pointer; text-align: left; color: #7dd3fc; transition: background .25s ease; }
+        #app-radio .radio-acc-head:hover { background: rgba(0,212,255,0.12); }
+        #app-radio .radio-acc.open > .radio-acc-head { background: rgba(0,212,255,0.16); }
+        #app-radio .radio-acc-ico { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: rgba(56,189,248,0.18); color: #7dd3fc; flex-shrink: 0; transition: transform .3s cubic-bezier(.34,1.5,.64,1); }
+        #app-radio .radio-acc-ico .material-icons { font-size: 16px; }
+        #app-radio .radio-acc-head:hover .radio-acc-ico { transform: scale(1.15) rotate(-5deg); }
+        #app-radio .radio-acc-txt { display: flex; flex-direction: column; min-width: 0; }
+        #app-radio .radio-acc-head .obb-name { font-family: 'Orbitron', monospace; font-size: 0.8em; font-weight: 900; letter-spacing: 1.8px; color: #7dd3fc; text-shadow: 0 0 12px rgba(0,212,255,0.35); }
+        #app-radio .radio-acc-head .obb-count { font-family: 'Exo 2', sans-serif; font-size: 0.72em; font-weight: 600; opacity: .6; color: #bae6fd; margin-top: 2px; }
+        #app-radio .radio-acc-head .acc-arrow { margin-left: auto; font-size: 0.65em; color: rgba(125,211,252,0.6); transition: transform .3s cubic-bezier(.34,1.2,.64,1); }
+        #app-radio .radio-acc.open > .radio-acc-head .acc-arrow { transform: rotate(180deg); color: #7dd3fc; }
+        #app-radio .radio-acc-deleted .radio-acc-ico { background: rgba(248,113,113,0.2); color: #fca5a5; }
+        #app-radio .radio-acc-deleted .obb-name { color: #fca5a5; text-shadow: 0 0 12px rgba(248,113,113,0.35); }
+        #app-radio .radio-acc-sub { display: none; flex-direction: column; gap: 3px; background: rgba(167,139,250,0.07); border: none; border-top: 1px solid rgba(167,139,250,0.2); border-radius: 0; padding: 6px 8px 8px; }
+        #app-radio .radio-acc.open > .radio-acc-sub { display: flex; }
+        #app-radio .radio-acc.open > .radio-acc-head { border-radius: 0; }
+        #app-radio .radio-sub-item { position: relative; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid transparent; border-radius: 8px; cursor: pointer; color: rgba(224,242,254,0.85); transition: background .22s ease, border-color .22s ease, color .22s ease, transform .28s cubic-bezier(.34,1.3,.64,1); }
+        #app-radio .radio-sub-item:hover { background: rgba(125,211,252,0.14); border-color: rgba(125,211,252,0.28); color: #fff; transform: translateX(4px); }
+        #app-radio .radio-sub-item.active { background: rgba(167,139,250,0.22); border-color: rgba(167,139,250,0.4); color: #c4b5fd; }
+        #app-radio .radio-sub-item:hover::before, #app-radio .radio-sub-item.active::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; background: #7dd3fc; border-radius: 0 2px 2px 0; }
+        #app-radio .radio-sub-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(56,189,248,0.15); color: #7dd3fc; flex-shrink: 0; }
+        #app-radio .radio-sub-icon .material-icons { font-size: 13px; }
+        #app-radio .radio-sub-name { flex: 1; min-width: 0; font-family: 'Exo 2', sans-serif; font-size: 0.85em; font-weight: 700; letter-spacing: 0.3px; line-height: 1.3; }
+        #app-radio .radio-sub-name small { display: block; font-size: 0.78em; font-weight: 600; opacity: .6; margin-top: 1px; }
+        #app-radio .radio-sub-item .radio-card-actions { margin: 0; }
+        #app-radio .radio-sub-item .radio-card-icon-btn { background: rgba(125,211,252,0.16); color: #bae6fd; }
+        #app-radio .radio-sub-item .radio-card-icon-btn:hover { background: rgba(125,211,252,0.3); }
+        #app-radio .radio-sub-item .radio-card-icon-btn.del { background: rgba(248,113,113,0.2); color: #fca5a5; }
+        #app-radio .radio-sub-item .radio-card-icon-btn.restore { background: rgba(52,211,153,0.2); color: #6ee7b7; }
+        #app-radio .radio-sub-item:hover .radio-card-icon-btn { opacity: 1; }
+        @media (hover: none) { #app-radio .radio-sub-item .radio-card-icon-btn { opacity: 1; } }
+        #app-radio .radio-acc-empty { color: rgba(224,242,254,0.6); padding: 10px; }
+
+        /* ════ RADIO — extra organisation + mobile ════ */
+        #app-radio .radio-sub-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 4px; }
+        #app-radio .radio-sub-meta em { font-style: normal; font-size: 0.78em; font-weight: 700; padding: 1px 8px; border-radius: 20px; letter-spacing: .4px; }
+        #app-radio .rsm-chip.p2p { background: rgba(56,189,248,0.2); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.4); }
+        #app-radio .rsm-chip.p2m { background: rgba(251,191,36,0.2); color: #fcd34d; border: 1px solid rgba(251,191,36,0.4); }
+        #app-radio .rsm-chip.vl { background: rgba(167,139,250,0.2); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.4); }
+        #app-radio .rsm-ip { font-family: 'Space Mono', monospace !important; color: rgba(224,242,254,0.75); background: rgba(255,255,255,0.08); }
+        #app-radio .radio-sub-filter-wrap { position: relative; margin: 2px 2px 6px; }
+        #app-radio .radio-sub-filter-wrap .material-icons { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #7dd3fc; pointer-events: none; }
+        #app-radio .radio-sub-filter { width: 100%; padding: 7px 10px 7px 32px; border-radius: 9px; border: 1px solid rgba(125,211,252,0.3); background: rgba(255,255,255,0.1); color: #e0f2fe; font-size: 0.85em; outline: none; }
+        #app-radio .radio-sub-filter::placeholder { color: rgba(186,230,253,0.55); }
+        #app-radio .radio-sub-filter:focus { border-color: #7dd3fc; box-shadow: 0 0 0 3px rgba(125,211,252,0.15); }
+        #app-radio .radio-search-wrap { position: sticky; top: 0; z-index: 5; }
+        @media (max-width: 700px) {
+            #app-radio .radio-panel-header { padding: 12px 14px; }
+            #app-radio .radio-panel-title { font-size: 14px; }
+            #app-radio .radio-add-btn { top: 50%; transform: translateY(-50%); padding: 8px 12px; }
+            #app-radio .radio-add-btn:hover { transform: translateY(-50%); }
+            #app-radio .radio-bts-grid { padding: 8px; gap: 7px; }
+            #app-radio .radio-acc-head { padding: 9px 11px; gap: 10px; }
+            #app-radio .radio-acc-head .obb-name { font-size: 0.74em; letter-spacing: 1.2px; }
+            #app-radio .radio-acc-head .obb-count { font-size: 0.68em; }
+            #app-radio .radio-acc-sub { padding: 5px 5px 7px; }
+            #app-radio .radio-sub-item { padding: 9px 8px; gap: 8px; }
+            #app-radio .radio-sub-item:hover { transform: none; }
+            #app-radio .radio-sub-name { font-size: 0.82em; }
+            #app-radio .radio-sub-item .radio-card-icon-btn { width: 30px; height: 30px; font-size: 13px; opacity: 1; }
+            #app-radio .radio-sub-item .radio-card-actions { gap: 5px; }
+            #app-radio .radio-client-list { padding: 8px; }
+            #app-radio .radio-detail-header { height: auto; min-height: 46px; padding: 6px 10px; }
+            #app-radio .radio-detail-header h1 { font-size: 11px; letter-spacing: 1.5px; }
+            #app-radio .radio-header-pulse { display: none; }
+            #app-radio .radio-detail-body { padding: 8px; }
+            #app-radio .rdc-header { flex-direction: column; gap: 10px; padding: 14px; }
+            #app-radio .rdc-header > div:last-child { flex-wrap: wrap; gap: 8px; align-items: center !important; }
+            #app-radio .rdc-header .rdc-link-badge, #app-radio .rdc-header .rdc-actions { margin: 0; }
+            #app-radio .rdc-action-btn { padding: 8px 12px; font-size: 12px; }
+            #app-radio .rdc-table { grid-template-columns: 100px 1fr; }
+            #app-radio .rdc-cell { padding: 9px 10px; word-break: break-word; overflow-wrap: anywhere; }
+            #app-radio .rdc-cell.lbl, #app-radio .rdc-cell.lbl-wide { font-size: 9px; letter-spacing: 1px; }
+            #app-radio .radio-ip-link { max-width: 100%; }
+        }
+
+        /* ════ RADIO — final: BTS button grid -> client list -> full-page detail (no overflow) ════ */
+        #app-radio { max-width: 100%; overflow-x: hidden; }
+        #app-radio .radio-client-panel { height: auto; min-height: 100%; min-width: 0; max-width: 100%; }
+        #app-radio .radio-bts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; padding: 14px; max-width: 900px; width: 100%; margin: 0 auto; align-content: start; background: transparent; overflow: visible; flex: none; }
+        #app-radio .radio-bts-grid .olt-bts-btn { padding: 14px; min-width: 0; overflow: hidden; }
+        #app-radio .radio-bts-grid .olt-bts-btn .material-icons { display: block; }
+        #app-radio .radio-bts-grid .olt-bts-btn .obb-name { overflow-wrap: anywhere; }
+        #app-radio .radio-client-list { overflow: visible; flex: none; padding: 12px; }
+        #app-radio .radio-client-card { min-width: 0; }
+        #app-radio .radio-client-name { overflow-wrap: anywhere; word-break: break-word; min-width: 0; }
+        #app-radio .radio-back-bar { max-width: 760px; width: 100%; margin: 0 auto; background: transparent; border-bottom: none; padding: 12px 12px 0; }
+        #app-radio .radio-detail-panel { min-width: 0; max-width: 100%; }
+        #app-radio .radio-detail-card { max-width: 100%; }
+        #app-radio .rdc-cell { min-width: 0; overflow-wrap: anywhere; }
+        @media (max-width: 700px) {
+            #app-radio .radio-bts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 10px; }
+            #app-radio .radio-bts-grid .olt-bts-btn { padding: 11px 10px; gap: 8px; border-radius: 10px; }
+            #app-radio .radio-bts-grid .olt-bts-btn .material-icons { display: none; }
+            #app-radio .radio-bts-grid .olt-bts-btn .obb-name { font-size: 0.88rem; }
+            #app-radio .radio-bts-grid .olt-bts-btn .obb-count { font-size: 0.7rem; }
+            #app-radio .radio-client-list { padding: 8px 10px 14px; }
+            #app-radio .radio-client-card { padding: 12px 12px 12px 14px; }
+            #app-radio .radio-card-icon-btn { opacity: 1; width: 28px; height: 28px; font-size: 13px; }
+            #app-radio .radio-back-bar { padding: 10px 10px 0; }
+            #app-radio .radio-detail-card { overflow: hidden; }
+        }
+
+        /* ════ RADIO — BTS dropdown (floats over the page) ════ */
+        #app-radio { overflow-x: clip; overflow-y: visible; }
+        #app-radio .radio-bts-cell { position: relative; min-width: 0; }
+        #app-radio .radio-bts-cell .olt-bts-btn { width: 100%; }
+        #app-radio .radio-bts-cell.radio-deleted-cell { grid-column: 1 / -1; }
+        #app-radio .radio-bts-cell.pop-open { z-index: 60; }
+        #app-radio .radio-bts-cell.pop-open > .olt-bts-btn { border-color: #5eead4; box-shadow: 0 0 0 3px rgba(94,234,212,0.35), 0 6px 18px rgba(14,107,168,0.45); }
+        #app-radio .radio-pop { display: none; position: absolute; left: 0; top: calc(100% + 6px); z-index: 70; flex-direction: column; gap: 3px; padding: 6px; overflow-y: auto; overscroll-behavior: contain; background: var(--sb-bg); border: 1px solid rgba(125,211,252,0.4); border-radius: 12px; box-shadow: 0 14px 40px rgba(5,11,30,0.55); animation: radioPopIn .18s ease; }
+        #app-radio .radio-bts-cell.pop-open > .radio-pop { display: flex; }
+        @keyframes radioPopIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+        #app-radio .radio-pop-title { font-family: 'Orbitron', monospace; font-size: 0.62em; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: rgba(125,211,252,0.75); padding: 6px 8px 5px; border-bottom: 1px solid rgba(125,211,252,0.2); margin-bottom: 3px; }
+
+        /* ════ RADIO — light dropdown (names only) ════ */
+        #app-radio .radio-pop { background: #f4f8ff; border: 1.5px solid #93c5fd; box-shadow: 0 14px 36px rgba(30,64,175,0.25); gap: 2px; }
+        #app-radio .radio-pop-title { color: #1d4ed8; border-bottom: 1px solid #bfdbfe; }
+        #app-radio .radio-pop .radio-sub-item { color: #1e3a8a; padding: 9px 11px; border-radius: 8px; background: transparent; border: 1px solid transparent; }
+        #app-radio .radio-pop .radio-sub-item:hover { background: #dbeafe; border-color: #93c5fd; color: #1e3a8a; transform: translateX(3px); }
+        #app-radio .radio-pop .radio-sub-item:hover::before { background: #2563eb; }
+        #app-radio .radio-pop .radio-sub-name { font-weight: 700; font-size: 0.86em; }
+        #app-radio .radio-pop .radio-acc-empty { color: #64748b; }
+        #app-radio .radio-pop .radio-sub-filter-wrap .material-icons { color: #2563eb; }
+        #app-radio .radio-pop .radio-sub-filter { background: #fff; border: 1px solid #93c5fd; color: #1e3a8a; }
+        #app-radio .radio-pop .radio-sub-filter::placeholder { color: #94a3b8; }
+        #app-radio .radio-pop .radio-sub-filter:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+        @media (max-width: 700px) { #app-radio .radio-pop .radio-sub-item { padding: 11px 11px; } #app-radio .radio-pop .radio-sub-item:hover { transform: none; } }
+
+        /* ════ MOBILE: OLT DOCS sub menu = dropdown (like OLT TASK), page stays visible ════ */
+        @media (max-width: 700px) {
+            .docs-subnav-backdrop, .docs-subnav-backdrop.open { display: none !important; }
+            .docs-mobile-back { display: none !important; position: fixed !important; top: auto !important; right: 14px !important; bottom: calc(var(--mobile-nav-height, 60px) + 10px) !important; z-index: 160; }
+            .docs-mobile-back.show { display: block !important; }
+            .docs-mobile-back button { width: 30px !important; height: 30px !important; }
+            .docs-mobile-back button .material-icons { font-size: 17px !important; }
+            .docs-subnav-close-btn { display: none !important; }
+            .docs-subnav {
+                display: none;
+                position: fixed !important;
+                top: auto !important; right: auto !important;
+                left: var(--docs-menu-left, 8px) !important;
+                bottom: calc(var(--mobile-nav-height, 60px) + 6px) !important;
+                width: min(86vw, 300px) !important;
+                max-height: 62vh !important;
+                padding: 6px !important;
+                border: 1px solid rgba(125,211,252,0.35) !important;
+                border-radius: 12px !important;
+                box-shadow: 0 -6px 24px rgba(0,0,0,0.55) !important;
+                transition: none !important;
+                flex-direction: column;
+            }
+            .docs-subnav.open { display: flex !important; right: auto !important; }
+            .docs-subnav-inner { padding: 0 !important; }
+        }
+
+        /* ════ OLT DOCS — GPON OLT / EPON OLT -> models -> Troubleshoot / Installation (all collapsible) ════ */
+        .docs-sub-group-items { display: none !important; }
+        .docs-sub-group-items.open { display: flex !important; }
+        .docs-sub-group-header { cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; border-radius: 8px; padding: 8px 10px; margin: 1px 0; transition: background .2s ease, color .2s ease; }
+        .docs-sub-group-header::after { content: '\25BC'; font-size: 0.7em; color: rgba(0,255,157,0.45); transition: transform .25s ease; }
+        .docs-sub-group-header:hover { background: rgba(0,212,255,0.1); color: #fff; }
+        .docs-sub-group-header.open { background: rgba(0,212,255,0.14); color: #7dd3fc; }
+        .docs-sub-group-header.open::after { transform: rotate(180deg); color: #7dd3fc; }
+        .docs-sub-group-items { padding-top: 4px !important; }
+
+        /* ════ Desktop: BTS buttons 4 per row (OLT IP Info + BTS INFO) ════ */
+        @media (min-width: 701px) {
+            #d_olt_ips .olt-bts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            #bts-buttons.olt-bts-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            #d_olt_ips .olt-bts-btn, #bts-buttons .olt-bts-btn { min-width: 0; }
+        }
+
+        /* ════ DESKTOP: OLT DOCS tree menu (GPON/EPON → model → Troubleshoot/Installation) — polished look ════ */
+        @media (min-width: 701px) {
+            .docs-subnav {
+                margin: 6px 0 4px 10px; padding: 8px 8px 8px 10px;
+                background: linear-gradient(180deg, rgba(8,28,64,0.55) 0%, rgba(6,22,52,0.35) 100%);
+                border: 1px solid rgba(125,211,252,0.16);
+                border-left: 3px solid #00d4ff;
+                border-radius: 12px;
+                box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 14px rgba(0,0,0,0.22);
+            }
+            .docs-subnav-inner { display: flex; flex-direction: column; gap: 6px; }
+            /* Level 1: GPON OLT / EPON OLT */
+            .docs-subnav-header {
+                font-size: 0.68em; letter-spacing: 1.8px; color: #8be9ff;
+                padding: 9px 10px; border-radius: 9px;
+                background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.18);
+                transition: background .2s ease, border-color .2s ease, color .2s ease;
+            }
+            .docs-subnav-header:hover { background: rgba(0,212,255,0.16); border-color: rgba(0,212,255,0.4); color: #fff; }
+            .docs-subnav-header.open { background: rgba(0,212,255,0.18); border-color: rgba(0,212,255,0.5); color: #fff; }
+            .docs-subnav-header .sub-arrow {
+                width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+                display: inline-flex; align-items: center; justify-content: center;
+                font-size: 0.7em; color: #00ff9d; background: rgba(0,255,157,0.12);
+            }
+            /* Level 2: models — tree line + cards */
+            .docs-subnav-items { padding: 6px 0 4px 6px; gap: 4px; }
+            .docs-subnav-items.open { margin-left: 8px; border-left: 1px dashed rgba(125,211,252,0.3); padding-left: 10px; }
+            .docs-sub-group { margin: 0; position: relative; }
+            .docs-sub-group::before {
+                content: ''; position: absolute; left: -10px; top: 17px; width: 8px; height: 1px;
+                background: rgba(125,211,252,0.3);
+            }
+            .docs-sub-group-header {
+                font-size: 0.84em; font-weight: 700; letter-spacing: 0.7px; color: #d7f6ff;
+                padding: 8px 10px; margin: 0; border-radius: 8px;
+                background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+                border-left: 3px solid rgba(0,212,255,0.55);
+            }
+            .docs-sub-group-header { font-size: 0.78em; letter-spacing: 0.4px; white-space: nowrap; padding: 8px 8px; gap: 4px; }
+            .docs-sub-group-header > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+            .docs-sub-group-header:hover { background: rgba(0,212,255,0.14); border-left-color: #00d4ff; color: #fff; }
+            .docs-sub-group-header.open { background: rgba(0,212,255,0.2); border-left-color: #00ff9d; color: #fff; }
+            .docs-sub-group-header::after { color: #00ff9d; opacity: .8; }
+            /* Level 3: leaf links — tidy bullets */
+            .docs-sub-group-items { margin-left: 8px !important; border-left: 1px dashed rgba(125,211,252,0.28) !important; padding: 4px 0 4px 10px !important; gap: 3px !important; }
+            .docs-sub-btn-leaf {
+                font-family: 'Rajdhani', sans-serif !important; font-size: 0.86em !important;
+                letter-spacing: 0.6px !important; font-weight: 700 !important;
+                color: rgba(190,235,255,0.85) !important;
+                padding: 6px 10px 6px 22px !important; border-radius: 7px !important;
+                position: relative; border-left: none !important;
+            }
+            .docs-sub-btn-leaf::before {
+                content: ''; position: absolute; left: 9px; top: 50%; width: 6px; height: 6px;
+                border-radius: 50%; transform: translateY(-50%);
+                background: rgba(0,212,255,0.55); transition: all .18s ease;
+            }
+            .docs-sub-btn-leaf:hover { background: rgba(0,255,157,0.1) !important; color: #fff !important; padding-left: 25px !important; }
+            .docs-sub-btn-leaf:hover::before { background: #00ff9d; box-shadow: 0 0 6px #00ff9d; }
+            .docs-sub-btn-leaf.active { background: rgba(0,255,157,0.16) !important; color: #00ff9d !important; }
+            .docs-sub-btn-leaf.active::before { background: #00ff9d; box-shadow: 0 0 6px #00ff9d; }
+        }
+
+        /* ════ MOBILE: OLT DOCS dropdown — light simple list ════ */
+        @media (max-width: 700px) {
+            .docs-subnav {
+                width: max-content !important; min-width: 190px !important; max-width: min(86vw, 300px) !important;
+                background: #dce9fc !important;
+                border: 1px solid #b4cbef !important;
+                box-shadow: 0 -6px 24px rgba(15,40,100,0.25) !important;
+            }
+            .docs-subnav-inner { gap: 0 !important; }
+            .docs-subnav-header {
+                color: #1e3a8a !important; background: transparent !important; border: none !important;
+                border-bottom: 1px solid #b9cdee !important; border-radius: 0 !important;
+                padding: 10px 8px !important; font-size: 0.72em !important;
+            }
+            .docs-subnav-header .sub-arrow { color: #2563eb !important; background: none !important; }
+            .docs-subnav-items.open { margin: 0 !important; border: none !important; padding: 2px 0 6px 8px !important; }
+            .docs-sub-group::before { display: none !important; }
+            .docs-sub-group-header {
+                color: #1e3a8a !important; background: transparent !important; border: none !important;
+                border-radius: 6px !important; padding: 9px 8px !important; font-size: 0.82rem !important; white-space: nowrap !important;
+                font-family: 'Exo 2', sans-serif !important; font-weight: 700 !important; letter-spacing: 0 !important; text-transform: none !important;
+            }
+            .docs-sub-group-header.open { background: #bcd3f6 !important; }
+            .docs-sub-group-header::after { color: #2563eb !important; }
+            .docs-sub-group-items { margin: 0 0 4px 10px !important; padding: 2px 0 2px 10px !important; border-left: 2px solid #9db9e6 !important; flex-direction: column !important; flex-wrap: nowrap !important; gap: 0 !important; }
+            .docs-sub-btn-leaf {
+                flex: none !important; width: 100%; text-align: left !important;
+                background: transparent !important; border: none !important; border-radius: 6px !important;
+                color: #334e8c !important; font-family: 'Exo 2', sans-serif !important;
+                font-size: 0.82rem !important; letter-spacing: 0 !important; font-weight: 700 !important;
+                padding: 7px 8px !important; white-space: nowrap;
+            }
+            .docs-sub-btn-leaf::before { display: none !important; }
+            .docs-sub-btn-leaf.active { background: #c4d8f8 !important; color: #1d4ed8 !important; }
+        }
+    
+        /* ════ DESKTOP: GPON above EPON, bigger fixed-size model rows ════ */
+        @media (min-width: 701px) {
+            .docs-subnav-inner > .docs-subnav-group:last-child { order: 1; }
+            .docs-subnav-inner > .docs-subnav-group:first-child { order: 2; }
+            .docs-subnav-items { gap: 6px !important; }
+            .docs-sub-group-header {
+                font-size: 0.9em !important; letter-spacing: 0.3px !important;
+                height: 38px; min-height: 38px; box-sizing: border-box;
+                padding: 0 10px !important; white-space: nowrap !important;
+            }
+            .docs-sub-group-header > span { flex: 1 1 auto; text-align: left; }
+        }
+    
+        /* ════ DESKTOP: sidebar just wide enough for full model names ════ */
+        @media (min-width: 701px) {
+            .sidebar { width: 240px; min-width: 240px; }
+            .docs-subnav { margin-left: 4px !important; padding: 6px 6px 6px 8px !important; }
+            .docs-subnav-items.open { margin-left: 4px !important; padding-left: 8px !important; }
+            .docs-sub-group-items { margin-left: 4px !important; padding-left: 8px !important; }
+            .docs-sub-group-header { padding: 0 8px !important; }
+        }
     </style>
 </head>
 <body>
@@ -1371,9 +1715,32 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
                         <button onclick="closeDocsSubnav()" aria-label="Close">✕</button>
                     </div>
                     <div class="docs-subnav-inner">
-                    <div class="docs-subnav-group">
-                        <div class="docs-subnav-header active" onclick="showDocsContent('d_olt_ips', this); closeDocsSubnav();">
-                            <span>📡 OLT IPs</span>
+<div class="docs-subnav-group">
+                        <div class="docs-subnav-header" onclick="toggleDocsSub(this)">
+                            <span>🟢 EPON OLT</span><span class="sub-arrow">▼</span>
+                        </div>
+                        <div class="docs-subnav-items">
+                            <div class="docs-sub-group">
+                                <div class="docs-sub-group-header" onclick="toggleSubGroup(this)"><span>EPON UTSTAR</span></div>
+                                <div class="docs-sub-group-items">
+                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_utstar_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
+                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_utstar_installation', this); closeDocsSubnav();">Installation</button>
+                                </div>
+                            </div>
+                            <div class="docs-sub-group">
+                                <div class="docs-sub-group-header" onclick="toggleSubGroup(this)"><span>EPON PHYHOME</span></div>
+                                <div class="docs-sub-group-items">
+                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_phyhome_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
+                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_phyhome_installation', this); closeDocsSubnav();">Installation</button>
+                                </div>
+                            </div>
+                            <div class="docs-sub-group">
+                                <div class="docs-sub-group-header" onclick="toggleSubGroup(this)"><span>EPON FHNET</span></div>
+                                <div class="docs-sub-group-items">
+                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_fhnet_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
+                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_fhnet_installation', this); closeDocsSubnav();">Installation</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="docs-subnav-group">
@@ -1382,52 +1749,24 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
                         </div>
                         <div class="docs-subnav-items">
                             <div class="docs-sub-group">
-                                <div class="docs-sub-group-header"><span>CDATA GPON 16</span></div>
+                                <div class="docs-sub-group-header" onclick="toggleSubGroup(this)"><span>CDATA GPON 16</span></div>
                                 <div class="docs-sub-group-items">
                                     <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_cdata_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
                                     <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_cdata_installation', this); closeDocsSubnav();">Installation</button>
                                 </div>
                             </div>
                             <div class="docs-sub-group">
-                                <div class="docs-sub-group-header"><span>VSOL / ATOP</span></div>
+                                <div class="docs-sub-group-header" onclick="toggleSubGroup(this)"><span>VSOL / ATOP</span></div>
                                 <div class="docs-sub-group-items">
                                     <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_vsol_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
                                     <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_vsol_installation', this); closeDocsSubnav();">Installation</button>
                                 </div>
                             </div>
                             <div class="docs-sub-group">
-                                <div class="docs-sub-group-header"><span>CDATA GPON 8</span></div>
+                                <div class="docs-sub-group-header" onclick="toggleSubGroup(this)"><span>CDATA GPON 8</span></div>
                                 <div class="docs-sub-group-items">
                                     <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_gpon8_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
                                     <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_gpon8_installation', this); closeDocsSubnav();">Installation</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="docs-subnav-group">
-                        <div class="docs-subnav-header" onclick="toggleDocsSub(this)">
-                            <span>🟢 EPON OLT</span><span class="sub-arrow">▼</span>
-                        </div>
-                        <div class="docs-subnav-items">
-                            <div class="docs-sub-group">
-                                <div class="docs-sub-group-header"><span>EPON UTSTAR</span></div>
-                                <div class="docs-sub-group-items">
-                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_utstar_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
-                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_utstar_installation', this); closeDocsSubnav();">Installation</button>
-                                </div>
-                            </div>
-                            <div class="docs-sub-group">
-                                <div class="docs-sub-group-header"><span>EPON PHYHOME</span></div>
-                                <div class="docs-sub-group-items">
-                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_phyhome_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
-                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_phyhome_installation', this); closeDocsSubnav();">Installation</button>
-                                </div>
-                            </div>
-                            <div class="docs-sub-group">
-                                <div class="docs-sub-group-header"><span>EPON FHNET</span></div>
-                                <div class="docs-sub-group-items">
-                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_fhnet_troubleshoot', this); closeDocsSubnav();">Troubleshoot</button>
-                                    <button class="docs-sub-btn docs-sub-btn-leaf" onclick="showDocsContent('d_fhnet_installation', this); closeDocsSubnav();">Installation</button>
                                 </div>
                             </div>
                         </div>
@@ -1684,7 +2023,7 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
         <!-- APP 3: OLT DOCS -->
         <div id="app-docs" class="app-wrapper">
             <div class="docs-mobile-back">
-                <button type="button" onclick="openDocsSubnav()" aria-label="Docs menu" title="Docs menu"><span class="material-icons">arrow_back</span><span>DOCS MENU</span></button>
+                <button type="button" onclick="docsGoBack()" aria-label="Back" title="Back"><span class="material-icons">arrow_back</span><span>BACK</span></button>
             </div>
             <div class="docs-content-scroll" id="docs-content-scroll">
                 <!-- OLT IPs -->
@@ -2006,14 +2345,17 @@ system\configure# pon on 1 1</code>
                 <div class="radio-search-wrap">
                     <input class="radio-search" type="text" id="radioClientSearch" placeholder="🔍  Search ALL BTS radios..." oninput="radioGlobalSearch()">
                 </div>
-                <div class="radio-bts-tabs" id="radioBtsTabs">
-
+                <div class="radio-bts-grid olt-bts-grid" id="radioBtsTabs"></div>
+                                <div class="radio-back-bar" id="radioBackBar" style="display:none">
+                    <button type="button" class="olt-back-btn" onclick="backToRadioBtsList()"><span class="material-icons">arrow_back</span> Back</button>
+                    <span class="olt-detail-title" id="radioBackTitle"></span>
                 </div>
-                <div class="radio-client-list" id="radioClientList"></div>
+                <div class="radio-client-list" id="radioClientList" style="display:none"></div>
             </div>
             <div class="radio-detail-panel">
                 <div class="radio-detail-header">
                     <div style="display:flex;align-items:center;gap:14px;">
+                        <button type="button" class="olt-back-btn radio-detail-back" onclick="showRadioWelcome()"><span class="material-icons">arrow_back</span> Back</button>
                         <div class="radio-header-pulse"></div>
                         <div>
                             <h1>MOTIJHEEL ZONE RADIO</h1>
@@ -2137,27 +2479,19 @@ system\configure# pon on 1 1</code>
                 <div style="font-family:'Orbitron',monospace;font-size:1.7em;font-weight:900;letter-spacing:4px;background:linear-gradient(90deg,#f59e0b 0%,#ef4444 50%,#ec4899 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BTS INFO</div>
                 <div class="app-subtitle">Router &amp; Switch IP Directory</div>
             </div>
-            <div class="card" style="margin-bottom:14px;border-top:3px solid #f59e0b;">
-                <div class="card-head">
-                    <div class="ch-icon" style="background:rgba(251,191,36,0.15);color:#fbbf24;width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;">
-                        <i class="material-icons" style="font-size:16px">search</i>
-                    </div>
-                    <span class="card-head-text">Search by BTS Name</span>
-                </div>
-                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-                    <div style="flex:1;min-width:200px;position:relative;">
-                        <select id="bts-select-dropdown" onchange="selectBtsFromDropdown(this.value)" style="width:100%;padding:8px 14px;border-radius:9px;border:1.5px solid #fde68a;background:#fffbeb;color:#1e1b4b;font-family:'Exo 2',sans-serif;font-size:0.88em;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;">
-                            <option value="">— Select a BTS —</option>
-                        </select>
-                        <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#f59e0b;">▼</span>
-                    </div>
-                    <button onclick="clearBtsSearch()" style="padding:8px 16px;border-radius:9px;border:none;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-family:'Orbitron',monospace;font-size:0.68em;font-weight:700;letter-spacing:1px;cursor:pointer;">CLEAR</button>
+            <div class="docs-card" id="bts-main-card">
+                <div class="docs-card-header"><h2 class="docs-card-title">BTS Info</h2>
                     <button onclick="openBtsModal('add')" style="padding:8px 16px;border-radius:9px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-family:'Orbitron',monospace;font-size:0.68em;font-weight:700;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-plus"></i> ADD</button>
                 </div>
-                <div id="bts-search-result-count" style="margin-top:6px;font-size:0.78em;color:#a78bfa;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px;"></div>
+            <!-- BTS buttons (tab style, same as OLT IP) -->
+            <div id="bts-buttons" class="olt-bts-grid"></div>
+            <div id="bts-detail" style="display:none">
+            <div class="olt-detail-head">
+                <button type="button" class="olt-back-btn" onclick="backToBtsList()"><span class="material-icons">arrow_back</span> Back</button>
+                <span class="olt-detail-title" id="bts-detail-title"></span>
             </div>
             <!-- Compact BTS table -->
-            <div class="card" style="border-top:3px solid #ef4444;padding:0;overflow:hidden;">
+            <div class="card" id="bts-table-card" style="border-top:3px solid #ef4444;padding:0;overflow:hidden;">
                 <div style="overflow-x:auto;">
                     <table id="bts-info-table" style="width:100%;border-collapse:collapse;font-family:'Exo 2',sans-serif;">
                         <thead>
@@ -2174,6 +2508,8 @@ system\configure# pon on 1 1</code>
                 </div>
             </div>
             <div id="bts-cards-mobile"></div>
+            </div>
+            </div>
         </div>
 
         <!-- BTS INFO ADD/EDIT MODAL -->
@@ -2374,13 +2710,19 @@ system\configure# pon on 1 1</code>
 
     function toggleDocsGroup(header) {
         const subnav = document.getElementById('docs-subnav');
-        const isMobile = window.innerWidth <= 700;
-        const isOpen = !isMobile && subnav.classList.contains('open') && document.body.classList.contains('docs-mode');
-        if (isOpen) {
-            subnav.classList.remove('open');
+        const inDocs = document.body.classList.contains('docs-mode');
+        const isOpen = subnav.classList.contains('open');
+        if (inDocs && isOpen) {                       // open -> close
+            closeDocsSubnav();
             header.classList.remove('open');
-            document.getElementById('docs-subnav-backdrop')?.classList.remove('open');
-        } else {
+        } else if (inDocs) {                          // already on OLT DOCS: just show the sub menu again
+            document.getElementById('olt-children').classList.remove('open');
+            document.getElementById('nav-olt-group').classList.remove('open');
+            ensureDocsSubnavPlacement();
+            showDocsContent('d_olt_ips', null);       // default page again
+            openDocsSubnav();
+            header.classList.add('open');
+        } else {                                      // coming from another tab: OLT IP Info page + sub menu
             document.getElementById('olt-children').classList.remove('open');
             document.getElementById('nav-olt-group').classList.remove('open');
             switchToDocsTab(header);
@@ -2400,16 +2742,10 @@ system\configure# pon on 1 1</code>
         mc.style.padding = '0';
         mc.style.display = 'flex';
         mc.style.flexDirection = 'column';
-        // On mobile open as drawer, on desktop open inline
+        // default page = OLT IP Info, and the sub menu opens together with it
         ensureDocsSubnavPlacement();
-        const subnav = document.getElementById('docs-subnav');
-        if (window.innerWidth <= 700) {
-            // Mobile: land directly on OLT IPs; the back button reopens the docs menu
-            closeDocsSubnav();
-            showDocsContent('d_olt_ips', null);
-        } else {
-            subnav.classList.add('open');
-        }
+        showDocsContent('d_olt_ips', null);
+        openDocsSubnav();
         setupAllSearches();
         initEditableDocsSections();
     }
@@ -2446,22 +2782,126 @@ initRadio();
         populateRadioBtsSelect();
     }
 
+    let radioOpenId = null; // null = BTS button grid, else BTS id (or RADIO_DELETED_ID) whose client list is shown
+
+    let radioPopId = null; // BTS id (or RADIO_DELETED_ID) whose dropdown is open
+
+    function radioPopItemsHtml(id) {
+        if (id === RADIO_DELETED_ID) {
+            if (!radioDeleted.length) return '<div class="radio-acc-empty">No deleted radios</div>';
+            return radioDeleted.map((d, i) => `<div class="radio-sub-item" onclick="selectDeletedRadio(this, ${i})"><span class="radio-sub-name">${escapeHtml(d.client.name)}</span></div>`).join('');
+        }
+        const clients = radioData[id].clients;
+        if (!clients.length) return '<div class="radio-acc-empty">No clients</div>';
+        return clients.map((c, i) => `<div class="radio-sub-item" onclick="selectRadioClient(this, '${escapeHtml(id)}', ${i})"><span class="radio-sub-name">${escapeHtml(c.name)}</span></div>`).join('');
+    }
+
+    function filterRadioPop(inp) {
+        const q = inp.value.toLowerCase().trim();
+        const pop = inp.closest('.radio-pop');
+        let shown = 0;
+        pop.querySelectorAll('.radio-sub-item').forEach(it => {
+            const m = !q || it.textContent.toLowerCase().includes(q);
+            it.style.display = m ? '' : 'none';
+            if (m) shown++;
+        });
+        const none = pop.querySelector('.radio-pop-none');
+        if (none) none.style.display = shown ? 'none' : '';
+    }
+
     function renderRadioBtsTabs() {
         const tabs = document.getElementById('radioBtsTabs');
-        tabs.innerHTML = '';
-        Object.entries(radioData).forEach(([id, bts]) => {
-            const btn = document.createElement('button');
-            btn.className = 'radio-bts-tab' + (id === currentRadioBTS ? ' active' : '');
-            btn.textContent = bts.name.replace(' BTS', '');
-            btn.onclick = () => selectRadioBTS(id, btn);
-            tabs.appendChild(btn);
+        if (radioPopId && radioPopId !== RADIO_DELETED_ID && !radioData[radioPopId]) radioPopId = null;
+        const parts = Object.entries(radioData).map(([id, bts]) => {
+            const n = bts.clients.length, eid = escapeHtml(id);
+            return `<div class="radio-bts-cell${radioPopId === id ? ' pop-open' : ''}" data-id="${eid}">
+                <button type="button" class="olt-bts-btn" onclick="toggleRadioPop('${eid}')">
+                    <span class="material-icons">settings_input_antenna</span>
+                    <span><span class="obb-name">${escapeHtml(bts.name)}</span><span class="obb-count">${n} radio${n !== 1 ? 's' : ''}</span></span>
+                </button>
+                <div class="radio-pop">${radioPopItemsHtml(id)}</div>
+            </div>`;
         });
-        tabs.querySelectorAll('.radio-deleted-tab').forEach(e => e.remove());
-        const dBtn = document.createElement('button');
-        dBtn.className = 'radio-bts-tab radio-deleted-tab' + (currentRadioBTS === RADIO_DELETED_ID ? ' active' : '');
-        dBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i> Deleted Radio' + (radioDeleted.length ? ' (' + radioDeleted.length + ')' : '');
-        dBtn.onclick = () => selectRadioBTS(RADIO_DELETED_ID, dBtn);
-        tabs.appendChild(dBtn);
+        parts.push(`<div class="radio-bts-cell radio-deleted-cell${radioPopId === RADIO_DELETED_ID ? ' pop-open' : ''}" data-id="${RADIO_DELETED_ID}">
+            <button type="button" class="olt-bts-btn radio-deleted-btn" onclick="toggleRadioPop('${RADIO_DELETED_ID}')">
+                <span class="material-icons">delete</span>
+                <span><span class="obb-name"><i class="fa-solid fa-trash-can" style="font-size:0.85em"></i> Deleted Radio</span><span class="obb-count">${radioDeleted.length} radio${radioDeleted.length !== 1 ? 's' : ''}</span></span>
+            </button>
+            <div class="radio-pop">${radioPopItemsHtml(RADIO_DELETED_ID)}</div>
+        </div>`);
+        tabs.innerHTML = parts.join('');
+        applyRadioView();
+        if (radioPopId) positionRadioPop();
+    }
+
+    function toggleRadioPop(id) {
+        radioPopId = (radioPopId === id) ? null : id;
+        document.querySelectorAll('#radioBtsTabs .radio-bts-cell').forEach(c => c.classList.toggle('pop-open', c.dataset.id === radioPopId));
+        if (radioPopId) {
+            positionRadioPop();
+        }
+    }
+    function closeRadioPop() {
+        radioPopId = null;
+        document.querySelectorAll('#radioBtsTabs .radio-bts-cell.pop-open').forEach(c => c.classList.remove('pop-open'));
+    }
+    // float the dropdown over the page, keep it inside the screen
+    function positionRadioPop() {
+        const cell = document.querySelector('#radioBtsTabs .radio-bts-cell.pop-open');
+        if (!cell) return;
+        const pop = cell.querySelector('.radio-pop');
+        const vw = document.documentElement.clientWidth, vh = window.innerHeight;
+        const w = Math.min(340, vw - 16);
+        const r = cell.getBoundingClientRect();
+        pop.style.width = w + 'px';
+        pop.style.left = (Math.min(Math.max(r.left, 8), vw - w - 8) - r.left) + 'px';
+        const below = vh - r.bottom, above = r.top;
+        if (below < 260 && above > below) {
+            pop.style.top = 'auto'; pop.style.bottom = 'calc(100% + 6px)';
+            pop.style.maxHeight = Math.max(140, Math.min(above - 12, vh * 0.6)) + 'px';
+        } else {
+            pop.style.bottom = 'auto'; pop.style.top = 'calc(100% + 6px)';
+            pop.style.maxHeight = Math.max(160, Math.min(below - 12, vh * 0.6)) + 'px';
+        }
+    }
+    document.addEventListener('click', e => { if (radioPopId && !e.target.closest('#radioBtsTabs .radio-bts-cell')) closeRadioPop(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRadioPop(); });
+    window.addEventListener('resize', () => { if (radioPopId) positionRadioPop(); });
+
+    // grid <-> client list (search results also use the list)
+    function applyRadioView() {
+        const searching = !!(document.getElementById('radioClientSearch').value || '').trim();
+        const showList = !!radioOpenId || searching;
+        document.getElementById('radioBtsTabs').style.display = showList ? 'none' : '';
+        document.getElementById('radioClientList').style.display = showList ? '' : 'none';
+        document.getElementById('radioBackBar').style.display = (radioOpenId && !searching) ? 'flex' : 'none';
+        if (radioOpenId && !searching) {
+            const isDel = radioOpenId === RADIO_DELETED_ID;
+            const nm = isDel ? 'Deleted Radio' : radioData[radioOpenId].name;
+            const cnt = isDel ? radioDeleted.length : radioData[radioOpenId].clients.length;
+            document.getElementById('radioBackTitle').textContent = nm;
+            document.getElementById('r-panel-bts-name').textContent = isDel ? 'ALL BTS' : nm.toUpperCase();
+            setRadioPanelTitle(isDel ? 'Deleted Radio' : 'Clients');
+            document.getElementById('r-panel-count').textContent = cnt + ' CLIENT' + (cnt !== 1 ? 'S' : '');
+        } else if (!showList) {
+            let total = 0; Object.values(radioData).forEach(b => total += b.clients.length);
+            document.getElementById('r-panel-bts-name').textContent = 'ALL BTS';
+            setRadioPanelTitle('Clients');
+            document.getElementById('r-panel-count').textContent = total + ' CLIENT' + (total !== 1 ? 'S' : '');
+        }
+    }
+
+    function renderRadioListFor(id) {
+        if (id === RADIO_DELETED_ID) renderDeletedCards(radioDeleted.map((d, i) => ({ d, i })));
+        else renderRadioCards(radioData[id].clients, id);
+    }
+
+    function backToRadioBtsList() {
+        radioOpenId = null;
+        document.getElementById('radioClientSearch').value = '';
+        showRadioWelcome();
+        renderRadioBtsTabs();
+        const mc = document.getElementById('main-content'); if (mc) mc.scrollTop = 0;
     }
 
     function populateRadioBtsSelect() {
@@ -2471,31 +2911,13 @@ initRadio();
             `<option value="${id}">${bts.name}</option>`).join('');
     }
 
-    function selectRadioBTS(id, btn) {
-        document.querySelectorAll('.radio-bts-tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        currentRadioBTS = id;
-        document.getElementById('radioClientSearch').value = '';
-        // Update firmware link for selected BTS
-        const fw = document.querySelector('.firmware-btn');
-        if (fw) fw.href = (radioData[id] && radioData[id].firmware) || '#';
-        renderRadioClientPanel(id);
-        showRadioWelcome();
-    }
+    function selectRadioBTS(id) { toggleRadioPop(id); }
 
-    function renderRadioClientPanel(id) {
-        if (id === RADIO_DELETED_ID) {
-            document.getElementById('r-panel-bts-name').textContent = 'ALL BTS';
-            setRadioPanelTitle('Deleted Radio');
-            document.getElementById('r-panel-count').textContent = radioDeleted.length + ' CLIENT' + (radioDeleted.length !== 1 ? 'S' : '');
-            renderDeletedCards(radioDeleted.map((d, i) => ({ d, i })));
-            return;
-        }
-        const bts = radioData[id];
-        setRadioPanelTitle('Clients');
-        document.getElementById('r-panel-bts-name').textContent = bts.name.toUpperCase();
-        document.getElementById('r-panel-count').textContent = bts.clients.length + ' CLIENT' + (bts.clients.length !== 1 ? 'S' : '');
-        renderRadioCards(bts.clients, id);
+    function renderRadioClientPanel() {
+        if ((document.getElementById('radioClientSearch').value || '').trim()) { radioGlobalSearch(); return; }
+        if (radioOpenId && radioOpenId !== RADIO_DELETED_ID && !radioData[radioOpenId]) radioOpenId = null;
+        if (radioOpenId) renderRadioListFor(radioOpenId);
+        renderRadioBtsTabs();
     }
 
     function renderRadioCards(clients, btsId) {
@@ -2539,7 +2961,7 @@ initRadio();
     }
 
     function selectDeletedRadio(el, idx) {
-        document.querySelectorAll('.radio-client-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.radio-client-card, .radio-sub-item').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         currentDetailBtsId = null; currentDetailIdx = null;
         const d = radioDeleted[idx];
@@ -2574,15 +2996,9 @@ initRadio();
     }
 
     function radioGlobalSearch() {
-        if (currentRadioBTS === RADIO_DELETED_ID) {
-            const dq = document.getElementById('radioClientSearch').value.toLowerCase().trim();
-            const items = radioDeleted.map((d, i) => ({ d, i })).filter(x => !dq || x.d.client.name.toLowerCase().includes(dq));
-            document.getElementById('r-panel-count').textContent = items.length + ' CLIENT' + (items.length !== 1 ? 'S' : '');
-            renderDeletedCards(items);
-            return;
-        }
+        applyRadioView();
         const q = document.getElementById('radioClientSearch').value.toLowerCase().trim();
-        if (!q) { renderRadioClientPanel(currentRadioBTS); return; }
+        if (!q) { renderRadioClientPanel(); return; }
         let matches = [];
         for (let [btsId, bts] of Object.entries(radioData)) {
             bts.clients.forEach(c => { if (c.name.toLowerCase().includes(q)) matches.push({...c, _btsId: btsId}); });
@@ -2613,7 +3029,7 @@ initRadio();
     let currentDetailBtsId = null, currentDetailIdx = null;
 
     function selectRadioClient(el, btsId, idx) {
-        document.querySelectorAll('.radio-client-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.radio-client-card, .radio-sub-item').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         currentDetailBtsId = btsId;
         currentDetailIdx = idx;
@@ -2623,12 +3039,11 @@ initRadio();
     function showRadioWelcome() {
         currentDetailBtsId = null;
         currentDetailIdx = null;
-        document.getElementById('radioDetailBody').innerHTML = `
-            <div class="radio-detail-welcome">
-                <div class="radio-detail-welcome-icon">📡</div>
-                <div class="radio-detail-welcome-title">Select a Client</div>
-                <div class="radio-detail-welcome-sub">Choose a BTS tab then select a client</div>
-            </div>`;
+        const wasOpen = document.getElementById('app-radio').classList.contains('detail-open');
+        document.getElementById('app-radio').classList.remove('detail-open');
+        document.getElementById('radioDetailBody').innerHTML = '';
+        if (wasOpen) { const mcB = document.getElementById('main-content'); if (mcB) requestAnimationFrame(() => { mcB.scrollTop = radioListScroll; }); }
+        document.querySelectorAll('.radio-client-card.active, .radio-sub-item.active').forEach(c => c.classList.remove('active'));
     }
 
     function rv(val, isIp) {
@@ -2646,7 +3061,14 @@ initRadio();
         return `<a class="ip-val radio-ip-link" href="${url}" target="_blank" rel="noopener noreferrer" title="Open ${m[2]} in browser">${raw.replace(/^https?:\/\//i, '')}<i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     }
 
+    let radioListScroll = 0;
     function showRadioDetail(c, btsName, firmwareUrl, opts) {
+        const appR = document.getElementById('app-radio');
+        const mcEl = document.getElementById('main-content');
+        if (!appR.classList.contains('detail-open') && mcEl) radioListScroll = mcEl.scrollTop;
+        closeRadioPop();
+        appR.classList.add('detail-open');
+        if (mcEl) mcEl.scrollTop = 0;
         const lt = c.linktype.toLowerCase();
         const vlan = (c.vlan && c.vlan !== 'N/A') ? `<span class="vlan-chip">${c.vlan}</span>` : `<span class="na-val">N/A</span>`;
         const fwLink = c.firmware || firmwareUrl;
@@ -2777,6 +3199,7 @@ initRadio();
         saveRadioDataToStorage();
         closeRadioModal();
         currentRadioBTS = targetBts;
+        radioPopId = targetBts;
         renderRadioBtsTabs();
         renderRadioClientPanel(targetBts);
         showRadioWelcome();
@@ -2860,18 +3283,17 @@ initRadio();
 
     function openDocsSubnav() {
         const subnav = document.getElementById('docs-subnav');
-        const backdrop = document.getElementById('docs-subnav-backdrop');
         ensureDocsSubnavPlacement();
-        // Open with GPON OLT expanded (Troubleshoot / Installation visible)
-        const gponHeader = subnav && subnav.querySelector('.docs-subnav-header[onclick^="toggleDocsSub"]');
-        if (gponHeader) {
-            document.querySelectorAll('.docs-subnav-items').forEach(i => i.classList.remove('open'));
-            document.querySelectorAll('.docs-subnav-header').forEach(h => h.classList.remove('open'));
-            gponHeader.classList.add('open');
-            if (gponHeader.nextElementSibling) gponHeader.nextElementSibling.classList.add('open');
+        if (window.innerWidth <= 700) { // dropdown above the bottom bar, lined up with the OLT DOCS button
+            try {
+                const h = document.getElementById('nav-docs-group').getBoundingClientRect();
+                const w = Math.min(300, window.innerWidth * 0.86);
+                document.documentElement.style.setProperty('--docs-menu-left', Math.max(6, Math.min(h.left, window.innerWidth - w - 6)) + 'px');
+            } catch (e) {}
         }
         if (subnav) subnav.classList.add('open');
-        if (backdrop && window.innerWidth <= 700) backdrop.classList.add('open');
+        const dh = document.getElementById('nav-docs-group');
+        if (dh) dh.classList.add('open');
     }
 
     function closeDocsSubnav() {
@@ -2891,7 +3313,26 @@ initRadio();
         if (!isOpen) { items.classList.add('open'); header.classList.add('open'); }
     }
 
-    function showDocsContent(id, btn) {
+    // ════ OLT DOCS: history + back button (mobile) ════
+    let docsHistory = [];
+    function currentDocsId() {
+        const a = document.querySelector('.docs-tab-content.active');
+        return a ? a.id : 'd_olt_ips';
+    }
+    function updateDocsBackBtn() {
+        const el = document.querySelector('.docs-mobile-back');
+        if (el) el.classList.toggle('show', currentDocsId() !== 'd_olt_ips');
+    }
+    function docsGoBack() {
+        const prev = docsHistory.pop() || 'd_olt_ips';
+        const b = document.querySelector('.docs-sub-btn[onclick*="\'' + prev + '\'"]');
+        showDocsContent(prev, b, true);
+    }
+
+    function showDocsContent(id, btn, isBack) {
+        const prevId = currentDocsId();
+        if (id === 'd_olt_ips') docsHistory = [];
+        else if (!isBack && prevId !== id) docsHistory.push(prevId);
         if (id === 'd_olt_ips' && typeof backToOltBtsList === 'function') backToOltBtsList();
         document.querySelectorAll('.docs-tab-content').forEach(c => c.classList.remove('active'));
         const target = document.getElementById(id);
@@ -2902,6 +3343,7 @@ initRadio();
         }
         document.querySelectorAll('.docs-sub-btn').forEach(b => b.classList.remove('active'));
         if (btn) btn.classList.add('active');
+        updateDocsBackBtn();
     }
 
     // ════ OLT IP INFO: BTS buttons -> details ════
@@ -3981,35 +4423,45 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
         );
     }
 
-    function refreshBtsView() {
-        const sel = document.getElementById('bts-select-dropdown');
-        const currentVal = sel ? sel.value : '';
-        if (sel) {
-            sel.innerHTML = '<option value="">— Select a BTS —</option>';
-            const uniqueBts = [...new Set(btsData.map(r => r.bts))];
-            uniqueBts.forEach(b => { const opt = document.createElement('option'); opt.value = b; opt.textContent = b; sel.appendChild(opt); });
-            if (uniqueBts.includes(currentVal)) sel.value = currentVal;
+    // ════ BTS INFO: BTS buttons -> details (same as OLT IP) ════
+    let btsOpen = '';
+    function renderBtsButtons() {
+        const wrap = document.getElementById('bts-buttons');
+        if (!wrap) return;
+        const counts = {};
+        btsData.forEach(r => { counts[r.bts] = (counts[r.bts] || 0) + 1; });
+        const names = Object.keys(counts);
+        if (!names.length) { wrap.innerHTML = '<div style="padding:24px;text-align:center;color:#a78bfa;font-family:\'Rajdhani\',sans-serif;grid-column:1/-1;">No BTS found</div>'; return; }
+        wrap.innerHTML = names.map(name => {
+            const n = escapeHtml(name);
+            return `<button type="button" class="olt-bts-btn" data-bts="${n}" onclick="showBtsDetail(this.getAttribute('data-bts'))">
+                <span class="material-icons">cell_tower</span>
+                <span><span class="obb-name">${n}</span><span class="obb-count">${counts[name]} device${counts[name] > 1 ? 's' : ''}</span></span>
+            </button>`;
+        }).join('');
+    }
+    function applyBtsView() {
+        if (btsOpen && !btsData.some(r => r.bts === btsOpen)) btsOpen = '';
+        renderBtsButtons();
+        document.getElementById('bts-buttons').style.display = btsOpen ? 'none' : '';
+        document.getElementById('bts-detail').style.display = btsOpen ? 'block' : 'none';
+        if (btsOpen) {
+            const filtered = btsData.filter(r => r.bts === btsOpen);
+            document.getElementById('bts-detail-title').textContent = btsOpen;
+            renderBtsTable(filtered);
         }
-        selectBtsFromDropdown(sel ? sel.value : '');
     }
-
-    function initBtsSearch() {
-        const sel = document.getElementById('bts-select-dropdown');
-        const uniqueBts = [...new Set(btsData.map(r => r.bts))];
-        uniqueBts.forEach(b => { const opt = document.createElement('option'); opt.value = b; opt.textContent = b; sel.appendChild(opt); });
+    function showBtsDetail(name) {
+        btsOpen = name;
+        applyBtsView();
+        const scroll = document.querySelector('.main-content');
+        if (scroll) scroll.scrollTop = 0;
+        window.scrollTo(0, 0);
     }
+    function backToBtsList() { btsOpen = ''; applyBtsView(); }
 
-    function selectBtsFromDropdown(val) {
-        if (!val) { renderBtsTable(btsData); document.getElementById('bts-search-result-count').textContent = ''; return; }
-        const filtered = btsData.filter(r => r.bts === val);
-        renderBtsTable(filtered);
-        document.getElementById('bts-search-result-count').textContent = `${filtered.length} device(s) found for "${val}"`;
-    }
-
-    function clearBtsSearch() {
-        document.getElementById('bts-select-dropdown').value = '';
-        document.getElementById('bts-search-result-count').textContent = '';
-        renderBtsTable(btsData);
+    function refreshBtsView() {
+        applyBtsView();
     }
 
     // ════ INIT ════
@@ -4023,8 +4475,7 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
     }
     ensureDocsSubnavPlacement();
     loadBtsDataFromStorage();
-    renderBtsTable(btsData);
-    initBtsSearch();
+    applyBtsView();
     document.getElementById('olt-type').value = 'cdata-gpon-16';
     document.getElementById('bandwidth').value = '256';
     generateOnuScript();
@@ -4047,7 +4498,7 @@ document.addEventListener('click', function(e) {
     document.getElementById('nav-olt-group').classList.remove('open');
     document.getElementById('nav-docs-group').classList.remove('open');
     // Only auto-close subnav on desktop (mobile has backdrop for that)
-    if (window.innerWidth > 700) closeDocsSubnav();
+    closeDocsSubnav();
 });
 
     // Mobile: dynamically position child panel below the sidebar tab row
