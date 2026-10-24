@@ -515,6 +515,14 @@
         .docs-code .cmd-prompt { font-weight: 800; color: inherit; letter-spacing: 0; }
         .docs-code:hover { border-color: #00ff9d; box-shadow: 0 8px 15px rgba(0,0,0,0.4), 0 0 15px rgba(0,255,157,0.2); transform: translateX(2px); }
         .docs-code.highlighted { background: #002200; border-color: #00ff9d; color: #fff; box-shadow: 0 0 20px rgba(0,255,157,0.4); }
+        /* ════ COLLAPSIBLE COMMANDS (click heading to show/hide command) ════ */
+        #app-docs .docs-cmd-label { cursor: pointer; user-select: none; -webkit-user-select: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; margin-bottom: 0; transition: background-color .15s ease, border-color .15s ease; }
+        #app-docs .docs-cmd-label::after { content: '\25B8'; font-size: 0.9em; color: #64748b; flex-shrink: 0; transition: transform .2s ease; }
+        #app-docs .docs-cmd-label:hover { background: #dcfce7; }
+        #app-docs .docs-cmd-label.open { margin-bottom: 6px; margin-top: 12px; }
+        #app-docs .docs-cmd-label.open::after { transform: rotate(90deg); color: #00a86b; }
+        #app-docs .docs-cmd-label + .docs-code { display: none; }
+        #app-docs .docs-cmd-label.open + .docs-code { display: block; margin-bottom: 18px; }
         /* ════ EDITABLE GPON COMMANDS (ADD/REMOVE) ════ */
         .docs-cmd-item { position: relative; }
         .docs-cmd-checkbox { display: none; position: absolute; top: 22px; right: 4px; width: 20px; height: 20px; accent-color: #ef4444; cursor: pointer; z-index: 2; }
@@ -1138,6 +1146,32 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
             .docs-mobile-back { top: auto !important; bottom: 14px !important; right: 16px !important; }
             .docs-tab-content .docs-card-header { padding-right: 0 !important; }
             body.docs-mode .docs-content-scroll { padding-bottom: 62px; }
+        }
+
+        /* ════ MOBILE: OLT TASK sub-menu as a vertical dropdown (ONU ADD above LINE PROFILE) ════ */
+        @media (max-width: 700px) {
+            .nav-group-children {
+                left: var(--olt-menu-left, 8px) !important;
+                right: auto !important;
+                width: auto !important;
+                min-width: 168px;
+                bottom: calc(var(--mobile-nav-height, 60px) + 6px) !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                justify-content: flex-start !important;
+                gap: 4px !important;
+                padding: 6px !important;
+                border: 1px solid rgba(125,211,252,0.35) !important;
+                border-radius: 12px !important;
+                box-shadow: 0 -6px 24px rgba(0,0,0,0.55) !important;
+            }
+            .nav-child-btn {
+                flex: 0 0 auto !important;
+                width: 100% !important;
+                max-width: none !important;
+                justify-content: flex-start !important;
+                padding: 9px 12px !important;
+            }
         }
 
         .cloud-status { margin-top: 8px; font-family: 'Rajdhani', sans-serif; font-size: 0.72em; font-weight: 700; letter-spacing: 1px; color: rgba(196,181,253,0.6); }
@@ -2298,6 +2332,10 @@ system\configure# pon on 1 1</code>
 
    function toggleOltGroup(header) {
     document.body.classList.add('olt-user-open');
+    try { // mobile: align the dropdown with the OLT TASK button
+        const r = header.getBoundingClientRect();
+        document.documentElement.style.setProperty('--olt-menu-left', Math.max(6, Math.min(r.left, window.innerWidth - 176)) + 'px');
+    } catch (e) {}
     const children = document.getElementById('olt-children');
     const isOpen = children.classList.contains('open');
     children.classList.toggle('open', !isOpen);
@@ -3361,6 +3399,12 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
     })();
 
+    // ════ COLLAPSIBLE DOCS COMMANDS ════
+    document.addEventListener('click', function(e) {
+        const lbl = e.target && e.target.closest ? e.target.closest('#app-docs .docs-cmd-label') : null;
+        if (lbl) lbl.classList.toggle('open');
+    });
+
     // ════ DOCS SEARCH ════
     let searchesInit = false;
     function setupAllSearches() {
@@ -3379,11 +3423,11 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
                     if (!code) return;
                     if (q.length > 0) {
                         const match = lbl.textContent.toLowerCase().includes(q) || code.textContent.toLowerCase().includes(q);
-                        lbl.style.display = match ? 'block' : 'none';
-                        code.style.display = match ? 'block' : 'none';
-                        if (match) code.classList.add('highlighted'); else code.classList.remove('highlighted');
+                        lbl.style.display = match ? 'flex' : 'none';
+                        lbl.classList.toggle('open', match);   // matching commands open automatically
+                        code.classList.toggle('highlighted', match);
                     } else {
-                        lbl.style.display = 'block'; code.style.display = 'block'; code.classList.remove('highlighted');
+                        lbl.style.display = 'flex'; lbl.classList.remove('open'); code.classList.remove('highlighted');
                     }
                 });
             });
@@ -4059,7 +4103,6 @@ document.addEventListener('click', function(e) {
                     changed++;
                 }
             });
-            if (changed) showToast('☁ Updated from cloud');
         }, err => { console.error('Cloud listen failed', err); setStatus('☁ No access', 'off'); });
     })();
     </script>
