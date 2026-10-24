@@ -1817,11 +1817,9 @@ body:not(.show-epon) .docs-grp-epon { display: none !important; }
         background: #dce9fc; border: 1px solid #b4cbef !important; border-radius: 10px;
         box-shadow: 0 6px 20px rgba(15,40,100,0.28); z-index: 30;
     }
-    .docs-subnav .docs-sub-group-items.flip-left { left: auto; right: calc(100% + 8px); }
     .docs-subnav .docs-sub-group-header::after { content: '\25B6' !important; font-size: 0.6em !important; }
     .docs-subnav .docs-sub-group-header.open::after { transform: none !important; }
 }
-#radioBtsTabs.pop-pad { padding-bottom: 75vh !important; }
 #epon-toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: rgba(15,23,42,.92); color: #fff; padding: 9px 16px; border-radius: 20px; font: 600 .85rem 'Exo 2', sans-serif; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 #epon-toast.show { opacity: 1; }
 </style>
@@ -3107,22 +3105,13 @@ initRadio();
         radioPopId = (radioPopId === id) ? null : id;
         document.querySelectorAll('#radioBtsTabs .radio-bts-cell').forEach(c => c.classList.toggle('pop-open', c.dataset.id === radioPopId));
         const tabsEl = document.getElementById('radioBtsTabs');
-        if (tabsEl) tabsEl.classList.toggle('pop-pad', radioPopId === RADIO_DELETED_ID);
         if (radioPopId) {
-            if (radioPopId === RADIO_DELETED_ID) {
-                // bring the Deleted Radio button up so the name list opens DOWNWARD with plenty of room
-                const cell = document.querySelector('#radioBtsTabs .radio-bts-cell.pop-open');
-                if (cell) { cell.style.scrollMarginTop = '12px'; try { cell.scrollIntoView({ block: 'start' }); } catch (e) {} }
-                requestAnimationFrame(positionRadioPop);
-                setTimeout(positionRadioPop, 120);
-            }
             positionRadioPop();
         }
     }
     function closeRadioPop() {
         radioPopId = null;
         const tabsEl = document.getElementById('radioBtsTabs');
-        if (tabsEl) tabsEl.classList.remove('pop-pad');
         document.querySelectorAll('#radioBtsTabs .radio-bts-cell.pop-open').forEach(c => c.classList.remove('pop-open'));
     }
     // float the dropdown over the page, keep it inside the screen
@@ -3147,7 +3136,7 @@ initRadio();
             pop.style.maxHeight = Math.max(140, above) + 'px';
         } else {
             pop.style.bottom = 'auto'; pop.style.top = (r.bottom + 6) + 'px';
-            pop.style.maxHeight = Math.max(160, Math.min(below, vh * 0.75)) + 'px';
+            pop.style.maxHeight = Math.max(100, Math.min(below, vh * 0.75)) + 'px';
         }
     }
     window.addEventListener('scroll', () => { if (radioPopId) positionRadioPop(); }, true);
@@ -5341,20 +5330,18 @@ document.addEventListener('click', function(e) {
         if (fired) { e.stopImmediatePropagation(); e.preventDefault(); fired = false; }
     }, true);
 })();
-/* mobile: if the right-side flyout would go off screen, open it to the left instead */
+/* mobile: keep the whole menu far enough left so the right-side flyout always fits */
 (function () {
-    var orig = window.toggleSubGroup;
+    var orig = window.openDocsSubnav;
     if (typeof orig !== 'function') return;
-    window.toggleSubGroup = function (header) {
-        orig(header);
+    window.openDocsSubnav = function () {
+        orig.apply(this, arguments);
         if (window.innerWidth > 700) return;
-        var items = header.nextElementSibling;
-        if (!items) return;
-        items.classList.remove('flip-left');
-        if (items.classList.contains('open')) {
-            var r = items.getBoundingClientRect();
-            if (r.right > window.innerWidth - 6) items.classList.add('flip-left');
-        }
+        var sn = document.getElementById('docs-subnav'); if (!sn) return;
+        var cur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--docs-menu-left')) || 8;
+        var need = sn.offsetWidth + 8 + 135 + 6;               // menu + gap + flyout + margin
+        var left = Math.max(6, Math.min(cur, window.innerWidth - need));
+        document.documentElement.style.setProperty('--docs-menu-left', left + 'px');
     };
 })();
 /* MOBILE: single tap = default page, double tap = show sub menu (OLT TASK / OLT DOCS) */
