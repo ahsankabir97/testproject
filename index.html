@@ -500,6 +500,18 @@
         #app-bts > .card { padding: 12px 16px; margin-bottom: 10px !important; }
         #app-bts > .card > .card-head { margin-bottom: 8px; padding-bottom: 8px; }
         #app-bts #bts-search-result-count:empty { display: none; }
+        .olt-bts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 4px; }
+        .olt-bts-btn { display: flex; align-items: center; gap: 10px; text-align: left; padding: 14px 14px; background: #fff; border: 2px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-family: 'Exo 2', sans-serif; transition: all .2s ease; }
+        .olt-bts-btn .material-icons { font-size: 22px; color: #00A36C; background: rgba(0,212,255,0.12); border-radius: 8px; padding: 6px; }
+        .olt-bts-btn .obb-name { display: block; font-weight: 700; font-size: 0.95rem; color: #0f172a; line-height: 1.2; }
+        .olt-bts-btn .obb-count { display: block; font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+        .olt-bts-btn:hover { border-color: #00d4ff; box-shadow: 0 4px 14px rgba(0,212,255,0.2); transform: translateY(-1px); }
+        .olt-bts-btn:active { transform: translateY(0); }
+        .olt-detail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+        .olt-back-btn { display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; border: 2px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: 'Exo 2', sans-serif; }
+        .olt-back-btn .material-icons { font-size: 18px; }
+        .olt-back-btn:hover { border-color: #00d4ff; color: #0f172a; }
+        .olt-detail-title { font-weight: 700; font-size: 1.05rem; color: #0f172a; font-family: 'Exo 2', sans-serif; }
         .olt-filter-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
         .olt-filter-label { margin: 0; font-weight: 700; color: #475569; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Exo 2', sans-serif; white-space: nowrap; }
         .olt-filter-wrap .docs-olt-select { flex: 1; min-width: 200px; width: auto; margin-bottom: 0; padding: 8px 14px; font-size: 0.95rem; }
@@ -581,6 +593,11 @@
         .onu-modal-overlay { display:none; position:fixed; inset:0; background:rgba(8,10,30,0.72); backdrop-filter:blur(3px); z-index:900; align-items:center; justify-content:center; padding:24px; }
         .onu-modal-overlay.open { display:flex; }
         .onu-modal-box { background:var(--sb-bg); border:1px solid var(--sb-border); border-radius:16px; width:100%; max-width:640px; max-height:80vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.5); overflow:hidden; }
+        .onu-saved-search { position:relative; flex:1; min-width:120px; max-width:260px; display:flex; align-items:center; }
+        .onu-saved-search .material-icons { position:absolute; left:8px; font-size:16px; color:#7dd3fc; pointer-events:none; }
+        .onu-saved-search input { width:100%; padding:7px 10px 7px 30px; border-radius:9px; border:1px solid rgba(125,211,252,0.3); background:rgba(125,211,252,0.1); color:#e0f2fe; font-size:0.85em; outline:none; }
+        .onu-saved-search input::placeholder { color:rgba(186,230,253,0.55); }
+        .onu-saved-search input:focus { border-color:#7dd3fc; box-shadow:0 0 0 3px rgba(125,211,252,0.15); }
         .onu-modal-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid rgba(125,211,252,0.14); flex-shrink:0; }
         .onu-modal-close { background:transparent; border:1px solid rgba(125,211,252,0.25); color:#7dd3fc; border-radius:8px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; }
         .onu-modal-close:hover { background:rgba(239,68,68,0.18); border-color:rgba(239,68,68,0.4); color:#f87171; }
@@ -607,6 +624,15 @@
         .onu-modal-box .card-head-text { color: #bae6fd !important; letter-spacing: 2px; }
         .onu-modal-box .ch-icon { background: rgba(125,211,252,0.16) !important; color: #7dd3fc !important; }
         .onu-saved-item .osi-name { color: #e0f2fe; }
+        /* slightly lighter theme for the ONU modals */
+        .onu-modal-box, .onu-script-view-box { background: linear-gradient(160deg, #123a7a 0%, #1b5aab 50%, #2f8ae0 100%); border-color: rgba(147,210,255,0.4); }
+        .onu-modal-head { border-bottom-color: rgba(186,230,253,0.25); }
+        .onu-saved-item { background: rgba(255,255,255,0.1); border-color: rgba(186,230,253,0.28); }
+        .onu-saved-item:hover { background: rgba(255,255,255,0.15); }
+        .onu-saved-item .osi-meta { color: rgba(224,242,254,0.75); }
+        .onu-saved-search input { background: rgba(255,255,255,0.14); border-color: rgba(186,230,253,0.4); }
+        .onu-saved-empty { color: rgba(224,242,254,0.7); }
+        textarea.onu-view-textarea { background: rgba(8,30,70,0.3); }
         .onu-view-meta { color: rgba(186,230,253,0.7); }
         textarea.onu-view-textarea, textarea.onu-view-textarea:read-only { color: #e0f2fe; }
         textarea.onu-view-textarea:not(:read-only) { border-color: rgba(125,211,252,0.55); }
@@ -1174,6 +1200,16 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
             }
         }
 
+        /* ════ MOBILE: compact 2-column BTS buttons so all BTS names fit on one screen ════ */
+        @media (max-width: 700px) {
+            .olt-bts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 2px; }
+            .olt-bts-btn { gap: 7px; padding: 8px 8px; border-width: 1.5px; border-radius: 9px; min-width: 0; }
+            .olt-bts-btn .material-icons { font-size: 17px; padding: 4px; border-radius: 6px; flex-shrink: 0; }
+            .olt-bts-btn .obb-name { font-size: 0.78rem; line-height: 1.15; overflow-wrap: anywhere; }
+            .olt-bts-btn .obb-count { font-size: 0.64rem; margin-top: 1px; }
+            #d_olt_ips .docs-card { padding: 10px; }
+        }
+
         .cloud-status { margin-top: 8px; font-family: 'Rajdhani', sans-serif; font-size: 0.72em; font-weight: 700; letter-spacing: 1px; color: rgba(196,181,253,0.6); }
         .cloud-status.ok { color: #34d399; }
         .cloud-status.busy { color: #fbbf24; }
@@ -1549,14 +1585,11 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
                         <div class="ch-icon chi-v"><i class="material-icons" style="font-size:16px">bookmarks</i></div>
                         <span class="card-head-text">Saved Scripts (<span id="onu-saved-count">0</span>)</span>
                     </div>
-                    <div style="display:flex;gap:6px;align-items:center">
-                        <button class="btn" style="padding:5px 10px;font-size:0.72em;background:rgba(125,211,252,0.14);color:#7dd3fc;box-shadow:none" onclick="exportOnuSaved()">
-                            <span class="material-icons" style="font-size:14px">download</span> Export
-                        </button>
-                        <label class="btn" style="padding:5px 10px;font-size:0.72em;background:rgba(125,211,252,0.14);color:#7dd3fc;box-shadow:none;margin:0;cursor:pointer">
-                            <span class="material-icons" style="font-size:14px">upload</span> Import
-                            <input type="file" accept="application/json" onchange="importOnuSaved(this)" style="display:none">
-                        </label>
+                    <div style="display:flex;gap:6px;align-items:center;flex:1;justify-content:flex-end;min-width:0">
+                        <div class="onu-saved-search">
+                            <span class="material-icons">search</span>
+                            <input type="text" id="onu-saved-search" placeholder="Search saved scripts..." autocomplete="off" oninput="renderOnuSaved()">
+                        </div>
                         <button class="onu-modal-close" onclick="closeOnuSavedModal()"><span class="material-icons">close</span></button>
                     </div>
                 </div>
@@ -1658,20 +1691,12 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
                 <div id="d_olt_ips" class="docs-tab-content active">
                     <div class="docs-card">
                         <div class="docs-card-header"><h2 class="docs-card-title">OLT IP Info</h2></div>
-                        <div class="olt-filter-wrap">
-                            <label class="olt-filter-label">Filter by BTS Location</label>
-                            <select class="docs-olt-select" id="docs-olt-bts-select" onchange="filterDocsOltIps()">
-                                <option value="all">All BTS Info</option>
-                                <option value="Malek Mansion BTS">Malek Mansion BTS</option>
-                                <option value="Dilkusha BTS">Dilkusha BTS</option>
-                                <option value="Jatrabari BTS">Jatrabari BTS</option>
-                                <option value="Wari BTS">Wari BTS</option>
-                                <option value="Segunbagicha BTS">Segunbagicha BTS</option>
-                                <option value="Eskaton BTS">Eskaton BTS</option>
-                                <option value="Imamganj BTS">Imamganj BTS</option>
-                                <option value="Shahjahanpur BTS">Shahjahanpur BTS</option>
-                            </select>
-                        </div>
+                        <div id="olt-bts-buttons" class="olt-bts-grid"></div>
+                        <div id="olt-bts-detail" style="display:none">
+                            <div class="olt-detail-head">
+                                <button type="button" class="olt-back-btn" onclick="backToOltBtsList()"><span class="material-icons">arrow_back</span> Back</button>
+                                <span class="olt-detail-title" id="olt-detail-title"></span>
+                            </div>
                         <table class="docs-olt-table">
                             <thead><tr><th>OLT Name</th><th>OLT IP</th><th>Uplink Port</th></tr></thead>
                             <tbody id="docs-olt-ip-tbody">
@@ -1696,6 +1721,7 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
                                 <tr data-bts="Shahjahanpur BTS"><td>Shahjhnpr_CDATA_1</td><td>10.49.11.254</td><td>-</td></tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
                 <!-- CDATA GPON Troubleshoot -->
@@ -2866,6 +2892,7 @@ initRadio();
     }
 
     function showDocsContent(id, btn) {
+        if (id === 'd_olt_ips' && typeof backToOltBtsList === 'function') backToOltBtsList();
         document.querySelectorAll('.docs-tab-content').forEach(c => c.classList.remove('active'));
         const target = document.getElementById(id);
         if (target) {
@@ -2877,13 +2904,39 @@ initRadio();
         if (btn) btn.classList.add('active');
     }
 
-    function filterDocsOltIps() {
-        const sel = document.getElementById('docs-olt-bts-select').value;
-        const rows = document.getElementById('docs-olt-ip-tbody').getElementsByTagName('tr');
-        for (let r of rows) {
-            r.style.display = (sel === 'all' || r.getAttribute('data-bts') === sel) ? '' : 'none';
-        }
+    // ════ OLT IP INFO: BTS buttons -> details ════
+    function renderOltBtsButtons() {
+        const wrap = document.getElementById('olt-bts-buttons');
+        const tbody = document.getElementById('docs-olt-ip-tbody');
+        if (!wrap || !tbody) return;
+        const counts = {};
+        Array.from(tbody.rows).forEach(r => { const k = r.getAttribute('data-bts'); counts[k] = (counts[k] || 0) + 1; });
+        wrap.innerHTML = Object.keys(counts).map(name => {
+            const n = escapeHtml(name);
+            return `<button type="button" class="olt-bts-btn" data-bts="${n}" onclick="showOltBts(this.getAttribute('data-bts'))">
+                <span class="material-icons">router</span>
+                <span><span class="obb-name">${n}</span><span class="obb-count">${counts[name]} OLT${counts[name] > 1 ? 's' : ''}</span></span>
+            </button>`;
+        }).join('');
     }
+
+    function showOltBts(name) {
+        const rows = document.getElementById('docs-olt-ip-tbody').rows;
+        for (const r of rows) r.style.display = (r.getAttribute('data-bts') === name) ? '' : 'none';
+        document.getElementById('olt-detail-title').textContent = name;
+        document.getElementById('olt-bts-buttons').style.display = 'none';
+        document.getElementById('olt-bts-detail').style.display = 'block';
+        const scroll = document.getElementById('docs-content-scroll');
+        if (scroll) scroll.scrollTop = 0;
+    }
+
+    function backToOltBtsList() {
+        const d = document.getElementById('olt-bts-detail'), b = document.getElementById('olt-bts-buttons');
+        if (d) d.style.display = 'none';
+        if (b) b.style.display = '';
+    }
+
+    renderOltBtsButtons();
 
     // ════ ONU SCRIPT ════
     // MAC box: type/paste করলেই - : . space সব সরে যাবে
@@ -2982,7 +3035,16 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
     const ONU_SAVED_KEY = 'nms_onu_saved_scripts_v1';
 
     function getOnuSaved() {
-        try { return JSON.parse(localStorage.getItem(ONU_SAVED_KEY) || '[]'); }
+        try {
+            const list = JSON.parse(localStorage.getItem(ONU_SAVED_KEY) || '[]');
+            // old entries were saved as AA:BB:CC:DD:EE:FF — show/keep them as AABBCCDDEEFF
+            const macRe = /^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/;
+            return list.map(it => {
+                if (it && macRe.test(it.name || '')) it.name = it.name.replace(/:/g, '');
+                if (it && macRe.test(it.macKey || '')) it.macKey = it.macKey.replace(/:/g, '');
+                return it;
+            });
+        }
         catch (e) { return []; }
     }
 
@@ -2998,7 +3060,7 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
         const macClean = (onuMac || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         if (!macClean) return; // need a MAC to use as the heading/key
         const list = getOnuSaved();
-        const macKey = macClean.match(/.{1,2}/g).join(':');
+        const macKey = macClean; // no colons, e.g. D01150177F75
         const idx = list.findIndex(s => s.macKey === macKey);
         const entry = {
             id: idx !== -1 ? list[idx].id : (Date.now().toString(36) + Math.random().toString(36).slice(2, 7)),
@@ -3056,6 +3118,8 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
     }
 
     function openOnuSavedModal() {
+        const sInp = document.getElementById('onu-saved-search');
+        if (sInp) sInp.value = '';
         renderOnuSaved();
         document.getElementById('onu-saved-modal').classList.add('open');
     }
@@ -3076,7 +3140,14 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
             wrap.innerHTML = '<div class="onu-saved-empty">No saved scripts yet — click Generate to auto-save one (needs a MAC address).</div>';
             return;
         }
-        wrap.innerHTML = list.map(item => {
+        const sq = ((document.getElementById('onu-saved-search') || {}).value || '').toLowerCase().trim();
+        const shown = sq ? list.filter(item => [item.name, item.oltType, 'pon ' + item.pon, 'onu ' + item.onuId, item.script]
+            .some(v => String(v == null ? '' : v).toLowerCase().includes(sq))) : list;
+        if (!shown.length) {
+            wrap.innerHTML = '<div class="onu-saved-empty">No matching scripts found.</div>';
+            return;
+        }
+        wrap.innerHTML = shown.map(item => {
             const d = new Date(item.savedAt);
             const dateStr = isNaN(d) ? '' : d.toLocaleString();
             const nameEsc = escapeHtml(item.name);
