@@ -1653,6 +1653,21 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
             .docs-sub-group-items { margin-left: 4px !important; padding-left: 8px !important; }
             .docs-sub-group-header { padding: 0 8px !important; }
         }
+    
+        /* ════ SAVED SCRIPTS modal (mobile): 2-line smaller title so search fits in the same row ════ */
+        #onu-saved-modal .sv-br { display: none; }
+        @media (max-width: 700px) {
+            #onu-saved-modal .sv-br { display: inline; }
+            #onu-saved-modal .onu-modal-head { flex-wrap: nowrap; gap: 6px; padding: 12px 12px; }
+            #onu-saved-modal .onu-modal-head > div:first-child { flex: 0 0 auto; gap: 6px !important; }
+            #onu-saved-modal .onu-modal-head .ch-icon { width: 26px; height: 26px; flex-shrink: 0; }
+            #onu-saved-modal .card-head-text { font-size: 0.6em !important; letter-spacing: 1px !important; line-height: 1.35; white-space: nowrap; }
+            #onu-saved-modal .onu-saved-right { flex: 1 1 0; min-width: 0; gap: 5px !important; }
+            #onu-saved-modal .onu-saved-search { flex: 1 1 0; min-width: 0; max-width: calc(100% - 14px); }
+            #onu-saved-modal .onu-saved-search input { font-size: 0.78em; padding: 6px 6px 6px 26px; min-width: 0; }
+            #onu-saved-modal .onu-saved-search .material-icons { left: 6px; font-size: 14px; }
+            #onu-saved-modal .onu-modal-close { flex: 0 0 auto; }
+        }
     </style>
 </head>
 <body>
@@ -1922,9 +1937,9 @@ font-weight: 700; font-weight: 600; color: #1a3a5c; font-size: 13px; }
                 <div class="onu-modal-head">
                     <div style="display:flex;align-items:center;gap:10px">
                         <div class="ch-icon chi-v"><i class="material-icons" style="font-size:16px">bookmarks</i></div>
-                        <span class="card-head-text">Saved Scripts (<span id="onu-saved-count">0</span>)</span>
+                        <span class="card-head-text">Saved<br class="sv-br"> Scripts (<span id="onu-saved-count">0</span>)</span>
                     </div>
-                    <div style="display:flex;gap:6px;align-items:center;flex:1;justify-content:flex-end;min-width:0">
+                    <div class="onu-saved-right" style="display:flex;gap:6px;align-items:center;flex:1;justify-content:flex-end;min-width:0">
                         <div class="onu-saved-search">
                             <span class="material-icons">search</span>
                             <input type="text" id="onu-saved-search" placeholder="Search saved scripts..." autocomplete="off" oninput="renderOnuSaved()">
