@@ -3796,7 +3796,7 @@ initRadio();
         if (!tbody) return;
         tbody.innerHTML = oltIpData.map((o, i) => {
             const uplink = o.uplink ? ipSpan(o.uplink) + (o.port ? ' <span class="olt-port">[' + escapeHtml(o.port) + ']</span>' : '') : (o.port ? '<span class="olt-port">[' + escapeHtml(o.port) + ']</span>' : '-');
-            return '<tr data-bts="' + escapeHtml(o.bts) + '" data-idx="' + i + '"><td>' + escapeHtml(o.name) + '</td><td>' + ipSpan(o.ip).replace('Click to copy', 'Tap: open Termius | Hold 1s: copy IP') + '</td><td>' + uplink + '</td></tr>';
+            return '<tr data-bts="' + escapeHtml(o.bts) + '" data-idx="' + i + '"><td>' + escapeHtml(o.name) + '</td><td>' + ipSpan(o.ip) + '</td><td>' + uplink + '</td></tr>';
         }).join('');
         if (currentOltBts) filterOltRows(currentOltBts);
     }
@@ -5380,10 +5380,11 @@ document.addEventListener('click', function(e) {
         else { last.docs = now; docsSingle(); }
     });
 })();
-/* OLT IP column: TAP = open Termius (telnet://IP), HOLD 1 sec = copy the IP */
+/* MOBILE ONLY - OLT IP column: TAP = open Termius (telnet://IP), HOLD 1 sec = copy the IP. (Web view: single click copies, as before) */
 (function () {
     var timer = null, fired = false, sx = 0, sy = 0;
     function oltIpEl(t) {
+        if (window.innerWidth > 700) return null;      // web view: keep the normal click-to-copy
         var el = t && t.closest && t.closest('.ip-copy');
         if (!el) return null;
         var td = el.closest('td');
