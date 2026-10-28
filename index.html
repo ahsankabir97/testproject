@@ -1823,6 +1823,148 @@ body:not(.show-epon) .docs-grp-epon { display: none !important; }
 #epon-toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: rgba(15,23,42,.92); color: #fff; padding: 9px 16px; border-radius: 20px; font: 600 .85rem 'Exo 2', sans-serif; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 #epon-toast.show { opacity: 1; }
 </style>
+<style>
+/* ════ WEB VIEW ONLY: OLT TASK & OLT DOCS sub menu — slow LEFT → RIGHT slide-open ════ */
+@media (min-width: 701px) {
+    @keyframes subMenuSlideLR {
+        from { opacity: 0; transform: translateX(-40px); clip-path: inset(-30px 100% -30px -30px); }
+        to   { opacity: 1; transform: translateX(0);     clip-path: inset(-30px -30px -30px -30px); }
+    }
+    @keyframes subItemSlideLR {
+        from { opacity: 0; transform: translateX(-26px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* main dropdown panels (OLT TASK list / OLT DOCS tree) */
+    .nav-group-children.open,
+    .docs-subnav.open {
+        animation: subMenuSlideLR 1s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+    }
+    /* nested levels (GPON/EPON -> models -> Troubleshoot / Installation) */
+    .docs-subnav-items.open,
+    .docs-sub-group-items.open {
+        animation: subMenuSlideLR 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+    }
+    /* items glide in one after another, still left -> right */
+    .nav-group-children.open > .nav-child-btn {
+        animation: subItemSlideLR 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+    }
+    .nav-group-children.open > .nav-child-btn:nth-child(1) { animation-delay: 0.20s; }
+    .nav-group-children.open > .nav-child-btn:nth-child(2) { animation-delay: 0.38s; }
+    .docs-subnav.open .docs-subnav-group { animation: subItemSlideLR 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) backwards; }
+    .docs-subnav.open .docs-subnav-group:nth-child(1) { animation-delay: 0.20s; }
+    .docs-subnav.open .docs-subnav-group:nth-child(2) { animation-delay: 0.38s; }
+    .docs-subnav-items.open > .docs-sub-group { animation: subItemSlideLR 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) backwards; }
+    .docs-subnav-items.open > .docs-sub-group:nth-child(1) { animation-delay: 0.10s; }
+    .docs-subnav-items.open > .docs-sub-group:nth-child(2) { animation-delay: 0.22s; }
+    .docs-subnav-items.open > .docs-sub-group:nth-child(3) { animation-delay: 0.34s; }
+    .docs-sub-group-items.open > .docs-sub-btn { animation: subItemSlideLR 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) backwards; }
+    .docs-sub-group-items.open > .docs-sub-btn:nth-child(1) { animation-delay: 0.10s; }
+    .docs-sub-group-items.open > .docs-sub-btn:nth-child(2) { animation-delay: 0.24s; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .nav-group-children.open, .docs-subnav.open, .docs-subnav-items.open, .docs-sub-group-items.open,
+    .nav-group-children.open > *, .docs-subnav.open *, .docs-subnav-items.open > * { animation: none !important; }
+}
+</style>
+<style>
+/* ════ OLT IP INFO / RADIO / BTS INFO: BTS cards rise from the bottom, one by one ════ */
+@keyframes btsRiseUp {
+    from { opacity: 0; transform: translateY(46px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn,
+#bts-buttons.olt-bts-grid > .olt-bts-btn,
+#radioBtsTabs > .radio-bts-cell {
+    animation: btsRiseUp 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(1),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(1),
+#radioBtsTabs > .radio-bts-cell:nth-child(1) { animation-delay: 0.00s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(2),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(2),
+#radioBtsTabs > .radio-bts-cell:nth-child(2) { animation-delay: 0.08s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(3),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(3),
+#radioBtsTabs > .radio-bts-cell:nth-child(3) { animation-delay: 0.16s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(4),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(4),
+#radioBtsTabs > .radio-bts-cell:nth-child(4) { animation-delay: 0.24s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(5),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(5),
+#radioBtsTabs > .radio-bts-cell:nth-child(5) { animation-delay: 0.32s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(6),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(6),
+#radioBtsTabs > .radio-bts-cell:nth-child(6) { animation-delay: 0.40s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(7),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(7),
+#radioBtsTabs > .radio-bts-cell:nth-child(7) { animation-delay: 0.48s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(8),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(8),
+#radioBtsTabs > .radio-bts-cell:nth-child(8) { animation-delay: 0.56s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(9),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(9),
+#radioBtsTabs > .radio-bts-cell:nth-child(9) { animation-delay: 0.64s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(10),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(10),
+#radioBtsTabs > .radio-bts-cell:nth-child(10) { animation-delay: 0.72s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(11),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(11),
+#radioBtsTabs > .radio-bts-cell:nth-child(11) { animation-delay: 0.80s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(12),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(12),
+#radioBtsTabs > .radio-bts-cell:nth-child(12) { animation-delay: 0.88s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(13),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(13),
+#radioBtsTabs > .radio-bts-cell:nth-child(13) { animation-delay: 0.96s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(14),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(14),
+#radioBtsTabs > .radio-bts-cell:nth-child(14) { animation-delay: 1.04s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(15),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(15),
+#radioBtsTabs > .radio-bts-cell:nth-child(15) { animation-delay: 1.12s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(16),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(16),
+#radioBtsTabs > .radio-bts-cell:nth-child(16) { animation-delay: 1.20s; }
+#olt-bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(n+17),
+#bts-buttons.olt-bts-grid > .olt-bts-btn:nth-child(n+17),
+#radioBtsTabs > .radio-bts-cell:nth-child(n+17) { animation-delay: 1.2s; }
+@media (prefers-reduced-motion: reduce) {
+    #olt-bts-buttons.olt-bts-grid > .olt-bts-btn,
+    #bts-buttons.olt-bts-grid > .olt-bts-btn,
+    #radioBtsTabs > .radio-bts-cell { animation: none !important; }
+}
+</style>
+<style>
+/* ════ MOBILE: RADIO tab — Deleted Radio sits beside the last BTS (e.g. Joypara) instead of its own full-width row ════ */
+@media (max-width: 700px) {
+    #app-radio #radioBtsTabs.radio-bts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    #app-radio .radio-bts-cell.radio-deleted-cell { grid-column: auto !important; }
+    #app-radio .radio-bts-grid .olt-bts-btn.radio-deleted-btn { grid-column: auto !important; }
+}
+</style>
+<style>
+/* ════ OLT DOCS: command heading click -> black code box slides DOWN from the top ════ */
+@keyframes cmdBoxDrop {
+    from { opacity: 0; transform: translateY(-16px); clip-path: inset(0 -12px 100% -12px); }
+    to   { opacity: 1; transform: translateY(0);     clip-path: inset(-12px -12px -12px -12px); }
+}
+#app-docs .docs-cmd-label.open + .docs-code {
+    animation: cmdBoxDrop 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+/* closing: black box slides back UP (bottom -> top) */
+@keyframes cmdBoxRise {
+    from { opacity: 1; transform: translateY(0);     clip-path: inset(-12px -12px -12px -12px); }
+    to   { opacity: 0; transform: translateY(-16px); clip-path: inset(0 -12px 100% -12px); }
+}
+#app-docs .docs-cmd-label.open.closing + .docs-code {
+    animation: cmdBoxRise 0.45s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+}
+#app-docs .docs-cmd-label.closing { pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) {
+    #app-docs .docs-cmd-label.open + .docs-code, #app-docs .docs-cmd-label.open.closing + .docs-code { animation: none; }
+}
+</style>
 </head>
 <body>
 
@@ -1985,7 +2127,7 @@ body:not(.show-epon) .docs-grp-epon { display: none !important; }
             var h = document.getElementById('nav-olt-group'), c = document.getElementById('olt-children');
             if (!h || !c) return;
             if (mq.matches) { h.classList.remove('open'); c.classList.remove('open'); h.classList.add('active'); }
-            else { h.classList.add('open'); c.classList.add('open'); }
+            else { h.classList.remove('open'); c.classList.remove('open'); }
         }
         ['pointerdown', 'keydown'].forEach(function (ev) { document.addEventListener(ev, function () { touched = true; }, { once: true, capture: true }); });
         apply();
@@ -4485,7 +4627,28 @@ script += `onu ${onuId} eth ${i} upstream-rate-limit cir ${vsol_bw} pir ${vsol_b
     // ════ COLLAPSIBLE DOCS COMMANDS ════
     document.addEventListener('click', function(e) {
         const lbl = e.target && e.target.closest ? e.target.closest('#app-docs .docs-cmd-label') : null;
-        if (lbl) lbl.classList.toggle('open');
+        if (!lbl) return;
+        const code = lbl.nextElementSibling;
+        const animated = code && code.classList.contains('docs-code') &&
+            !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        if (lbl.classList.contains('closing')) {            // clicked again while closing -> keep it open
+            lbl.classList.remove('closing');
+            return;
+        }
+        if (lbl.classList.contains('open') && animated) {   // 2nd click: slide the black box UP, then close
+            lbl.classList.add('closing');
+            let done = false;
+            const finish = () => {
+                if (done) return; done = true;
+                code.removeEventListener('animationend', onEnd);
+                if (lbl.classList.contains('closing')) lbl.classList.remove('open', 'closing');
+            };
+            const onEnd = (ev) => { if (ev.target === code) finish(); };
+            code.addEventListener('animationend', onEnd);
+            setTimeout(finish, 700);                         // safety net
+        } else {
+            lbl.classList.toggle('open');
+        }
     });
 
     // ════ DOCS SEARCH ════
@@ -5417,6 +5580,413 @@ document.addEventListener('click', function(e) {
         var ip = ipOf(el);
         if (/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) window.location.href = 'telnet://' + ip;
     }, true);
+})();
+</script>
+
+<style>
+/* ════ DESKTOP: Troubleshoot / Installation open as a flyout to the RIGHT of the model name ════ */
+@media (min-width: 701px) {
+    .docs-subnav .docs-sub-group-items.open {
+        position: fixed !important;
+        margin: 0 !important;
+        padding: 6px !important;
+        min-width: 160px;
+        gap: 3px !important;
+        background: linear-gradient(160deg, #0a2557 0%, #1451a3 100%);
+        border: 1px solid rgba(0,212,255,0.45) !important;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(5,11,30,0.55);
+        z-index: 400;
+        animation: flyoutIn .16s ease;
+    }
+    @keyframes flyoutIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+    .docs-subnav .docs-sub-group-header::after { content: '\25B6' !important; font-size: 0.65em; }
+    .docs-subnav .docs-sub-group-header.open::after { transform: none !important; }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf { white-space: nowrap; }
+}
+</style>
+<script>
+(function () {
+    function isDesk() { return window.innerWidth > 700; }
+    function placeFlyout(header) {
+        if (!isDesk() || !header) return;
+        var items = header.nextElementSibling;
+        if (!items || !items.classList.contains('open')) return;
+        var r = header.getBoundingClientRect();
+        items.style.left = (r.right + 8) + 'px';
+        items.style.top = r.top + 'px';
+        var h = items.offsetHeight;
+        if (r.top + h > window.innerHeight - 8) items.style.top = Math.max(8, window.innerHeight - h - 8) + 'px';
+    }
+    function placeAll() { document.querySelectorAll('.docs-sub-group-header.open').forEach(placeFlyout); }
+    var origToggle = window.toggleSubGroup;
+    window.toggleSubGroup = function (header) {
+        origToggle.apply(this, arguments);
+        if (!isDesk()) return;
+        document.querySelectorAll('.docs-sub-group-items').forEach(function (i) {
+            if (!i.classList.contains('open')) { i.style.left = ''; i.style.top = ''; }
+        });
+        placeFlyout(header);
+    };
+    var origOpen = window.openDocsSubnav;
+    window.openDocsSubnav = function () { origOpen.apply(this, arguments); setTimeout(placeAll, 0); };
+    window.addEventListener('resize', placeAll);
+    var sb = document.querySelector('.sidebar');
+    if (sb) sb.addEventListener('scroll', placeAll, { passive: true });
+})();
+</script>
+
+<style>
+/* ════ DESKTOP: sub menu uses the "GPON OLT" font + lighter background ════ */
+@media (min-width: 701px) {
+    .docs-subnav {
+        background: linear-gradient(180deg, rgba(38,104,190,0.62) 0%, rgba(28,88,168,0.5) 100%) !important;
+        border-color: rgba(147,210,255,0.35) !important;
+    }
+    .docs-subnav .docs-sub-group-header {
+        font-family: 'Orbitron', monospace !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        letter-spacing: 1.8px !important;
+        text-transform: uppercase;
+        color: #bdf0ff !important;
+        background: rgba(255,255,255,0.13) !important;
+        border: 1px solid rgba(186,230,253,0.28) !important;
+        border-left: 3px solid rgba(125,211,252,0.85) !important;
+    }
+    .docs-subnav .docs-sub-group-header:hover { background: rgba(255,255,255,0.22) !important; color: #fff !important; }
+    .docs-subnav .docs-sub-group-header.open { background: rgba(0,212,255,0.28) !important; color: #fff !important; border-left-color: #00ff9d !important; }
+    .docs-subnav .docs-sub-group-items.open {
+        background: linear-gradient(160deg, #1b5aab 0%, #2f8ae0 100%) !important;
+        border-color: rgba(186,230,253,0.5) !important;
+    }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: darker text for Troubleshoot / Installation ════ */
+@media (min-width: 701px) {
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf {
+        color: #06204a !important;
+        font-weight: 800 !important;
+    }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf::before { background: #06204a !important; box-shadow: none !important; }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf:hover { color: #021433 !important; background: rgba(255,255,255,0.28) !important; }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf.active { color: #021433 !important; background: rgba(255,255,255,0.4) !important; }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: Troubleshoot / Installation use the OLT TASK colour ════ */
+@media (min-width: 701px) {
+    .docs-subnav .docs-sub-group-items.open {
+        background: linear-gradient(160deg, #0a2557 0%, #1451a3 100%) !important;
+    }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf {
+        color: #7dd3fc !important;
+        text-shadow: 0 0 12px rgba(0,212,255,0.35);
+    }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf::before { background: #7dd3fc !important; }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf:hover { color: #22e0ff !important; background: rgba(0,212,255,0.14) !important; }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf.active { color: #22e0ff !important; background: rgba(0,212,255,0.2) !important; text-shadow: 0 0 16px rgba(0,212,255,0.6); }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: narrower Troubleshoot / Installation flyout ════ */
+@media (min-width: 701px) {
+    .docs-subnav .docs-sub-group-items.open {
+        min-width: 0 !important;
+        width: max-content !important;
+        padding: 4px !important;
+    }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf {
+        padding: 5px 10px 5px 20px !important;
+    }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf::before { left: 8px !important; }
+    .docs-subnav .docs-sub-group-items.open .docs-sub-btn-leaf:hover { padding-left: 22px !important; }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: OLT TASK sub menu (ONU ADD / LINE PROFILE) - original font, slightly bigger + lighter ════ */
+@media (min-width: 701px) {
+    .nav-group-children .nav-child-btn .nav-child-name {
+        font-size: 9.5px !important;
+        color: #bae6fd !important;
+        text-shadow: 0 0 10px rgba(125,211,252,0.3);
+    }
+    .nav-group-children .nav-child-btn:hover .nav-child-name,
+    .nav-group-children .nav-child-btn.active .nav-child-name {
+        color: #f0faff !important;
+        text-shadow: 0 0 14px rgba(125,211,252,0.55);
+    }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: EPON hidden -> OLT DOCS directly shows the 3 GPON models (no "GPON OLT" header) ════ */
+@media (min-width: 701px) {
+    body:not(.show-epon) .docs-grp-gpon > .docs-subnav-header { display: none !important; }
+    body:not(.show-epon) .docs-grp-gpon > .docs-subnav-items {
+        display: flex !important;
+        margin: 0 !important;
+        padding: 2px 0 !important;
+        border: none !important;
+    }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: card headings (CONFIGURATION INPUTS, GENERATED SCRIPT ...) slightly bolder ════ */
+@media (min-width: 701px) {
+    .card-head-text { -webkit-text-stroke: 0.45px currentColor; }
+}
+</style>
+
+<style>
+/* ════ DESKTOP: RADIO tab BTS boxes (incl. Deleted Radio) in 2 columns, 3 per column ════ */
+@media (min-width: 701px) {
+    #app-radio #radioBtsTabs.radio-bts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    #app-radio .radio-bts-cell.radio-deleted-cell { grid-column: auto !important; }
+    #app-radio .radio-bts-grid .olt-bts-btn.radio-deleted-btn { grid-column: auto; }
+}
+</style>
+
+<script>
+/* DESKTOP + MOBILE: RADIO BTS dropdown always opens DOWNWARD (page scrolls a little if there is not enough room) */
+(function () {
+    var orig = window.positionRadioPop;
+    if (typeof orig !== 'function') return;
+    var busy = false;
+    window.positionRadioPop = function () {
+        if (busy) return;
+        var cell = document.querySelector('#radioBtsTabs .radio-bts-cell.pop-open');
+        if (!cell) return;
+        var pop = cell.querySelector('.radio-pop');
+        var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+        var w = Math.min(340, vw - 16);
+        var mc = document.getElementById('main-content');
+        var r = cell.getBoundingClientRect();
+        var mr = mc ? mc.getBoundingClientRect() : { top: 0, bottom: vh };
+        var bottomLimit = Math.min(vh, mr.bottom) - 8;
+        if (window.innerWidth <= 700) {      // mobile: stay above the fixed bottom nav bar
+            var nb = document.querySelector('.sidebar');
+            if (nb) { var nr = nb.getBoundingClientRect(); if (nr.top > 0) bottomLimit = Math.min(bottomLimit, nr.top - 8); }
+        }
+        var below = bottomLimit - r.bottom - 6;
+        var want = Math.min(pop.scrollHeight + 14, vh * 0.6, 340);
+        var appR = document.getElementById('app-radio');
+        if (appR) appR.style.paddingBottom = '';          // start from zero extra space
+        r = cell.getBoundingClientRect();
+        below = bottomLimit - r.bottom - 6;
+        if (below < want && mc) {            // not enough room below -> scroll the page a bit
+            busy = true;
+            var need = want - below;
+            var room = mc.scrollHeight - mc.clientHeight - mc.scrollTop;
+            if (need > room && appR) {        // add ONLY the missing space, nothing more
+                appR.style.paddingBottom = Math.ceil(need - room) + 'px';
+            }
+            mc.scrollTop += need;
+            setTimeout(function () { busy = false; }, 60);
+            r = cell.getBoundingClientRect();
+            below = bottomLimit - r.bottom - 6;
+        }
+        pop.style.position = 'fixed';
+        pop.style.width = w + 'px';
+        pop.style.left = Math.min(Math.max(r.left, 8), vw - w - 8) + 'px';
+        pop.style.bottom = 'auto';
+        pop.style.top = (r.bottom + 6) + 'px';
+        pop.style.maxHeight = Math.max(120, Math.min(below, vh * 0.75)) + 'px';
+    };
+})();
+</script>
+<script>
+/* remove the temporary extra space under the Radio list as soon as no sub menu is open */
+(function () {
+    var grid = document.getElementById('radioBtsTabs');
+    if (!grid) return;
+    function reset() {
+        if (!grid.querySelector('.radio-bts-cell.pop-open')) {
+            var a = document.getElementById('app-radio');
+            if (a) a.style.paddingBottom = '';
+        }
+    }
+    new MutationObserver(reset).observe(grid, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+<style>
+/* ════ FLOATING WINDOW (whole app) ════ */
+#fw-fab { position: fixed; right: 6px; bottom: 6px; z-index: 2147483000; display: flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; color: #fff; opacity: .45;
+    background: rgba(13,71,161,.85); box-shadow: 0 2px 8px rgba(0,0,0,.3); transition: opacity .2s, transform .2s; }
+#fw-fab:hover, #fw-fab:focus-visible, #fw-fab.fw-on { opacity: 1; transform: scale(1.08); }
+#fw-fab.fw-on { background: rgba(198,40,40,.92); }
+#fw-fab svg { width: 16px; height: 16px; flex: none; }
+#fw-fab .fw-lbl { display: none; }
+#fw-win { position: fixed; z-index: 2147482999; display: none; flex-direction: column; min-width: 280px; min-height: 140px;
+    background: #0b1f3a; border: 1px solid rgba(255,255,255,.22); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 18px 50px rgba(0,0,0,.5); animation: fwPop .28s cubic-bezier(.22,.61,.36,1); }
+#fw-win.fw-open { display: flex; }
+@keyframes fwPop { from { opacity: 0; transform: scale(.92) translateY(14px); } to { opacity: 1; transform: none; } }
+#fw-bar { display: flex; align-items: center; gap: 6px; padding: 8px 10px; cursor: move; user-select: none; touch-action: none;
+    color: #fff; font: 700 13px/1 inherit; background: linear-gradient(135deg, #0d47a1, #0a8a8a); flex: none; }
+#fw-bar .fw-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#fw-bar button { width: 28px; height: 28px; border: 0; border-radius: 8px; cursor: pointer; color: #fff; font-size: 14px; line-height: 1;
+    background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; }
+#fw-bar button:hover { background: rgba(255,255,255,.34); }
+#fw-bar button.fw-x:hover { background: #e53935; }
+#fw-body { position: relative; flex: 1; min-height: 0; background: #fff; }
+#fw-frame { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+#fw-shield { position: absolute; inset: 0; display: none; z-index: 2; }
+#fw-win.fw-busy #fw-shield { display: block; }
+#fw-win.fw-min { min-height: 0; height: auto !important; }
+#fw-win.fw-min #fw-body, #fw-win.fw-min #fw-grip { display: none; }
+#fw-grip { position: absolute; right: 0; bottom: 0; width: 26px; height: 26px; cursor: nwse-resize; z-index: 3; touch-action: none;
+    background: linear-gradient(135deg, transparent 50%, rgba(13,71,161,.85) 50%); border-bottom-right-radius: 14px; }
+@media (max-width: 700px) {
+    #fw-fab, #fw-win { display: none !important; }      /* floating window is WEB VIEW only */
+}
+@media (prefers-reduced-motion: reduce) { #fw-win { animation: none; } }
+</style>
+<script>
+/* Floating window: a button opens the whole app in a draggable, resizable window that stays on screen */
+(function () {
+    if (window.self !== window.top) return;            // never create it inside the floating window itself
+    var mq = window.matchMedia('(max-width: 700px)');
+    var fab = document.createElement('button');
+    fab.id = 'fw-fab'; fab.type = 'button'; fab.title = 'Floating window (drag, resize, keep on screen)';
+    fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="11" rx="2"/><path d="M8 19h13V9"/></svg><span class="fw-lbl">Float</span>';
+    var win = document.createElement('div');
+    win.id = 'fw-win';
+    win.innerHTML = '<div id="fw-bar"><span class="fw-title">Floating Window</span>' +
+        '<button type="button" class="fw-pop" title="Pop out: keep visible even when the browser is minimized">&#8599;</button>' +
+        '<button type="button" class="fw-reload" title="Reload">&#10227;</button>' +
+        '<button type="button" class="fw-minb" title="Minimize">&#8211;</button>' +
+        '<button type="button" class="fw-max" title="Maximize / Restore">&#9633;</button>' +
+        '<button type="button" class="fw-x" title="Close">&#10005;</button></div>' +
+        '<div id="fw-body"><div id="fw-shield"></div></div><div id="fw-grip"></div>';
+    document.body.appendChild(win); document.body.appendChild(fab);
+    var bar = win.querySelector('#fw-bar'), body = win.querySelector('#fw-body'), grip = win.querySelector('#fw-grip'), frame = null;
+    var saved = null;
+
+    function vw() { return window.innerWidth; } function vh() { return window.innerHeight; }
+    function clampPos() {
+        var r = win.getBoundingClientRect();
+        var l = Math.min(Math.max(0, r.left), Math.max(0, vw() - 90));
+        var t = Math.min(Math.max(0, r.top), Math.max(0, vh() - 40));
+        win.style.left = l + 'px'; win.style.top = t + 'px';
+    }
+    function place() {
+        var mobile = vw() <= 700;
+        var w = mobile ? Math.round(vw() * 0.94) : Math.min(430, vw() - 40);
+        var h = mobile ? Math.round(vh() * 0.62) : Math.min(660, vh() - 60);
+        win.style.width = w + 'px'; win.style.height = h + 'px';
+        win.style.left = Math.max(0, vw() - w - (mobile ? Math.round(vw() * 0.03) : 24)) + 'px';
+        win.style.top = Math.max(0, mobile ? 56 : vh() - h - 76) + 'px';
+    }
+    function open() {
+        if (!frame) {
+            frame = document.createElement('iframe'); frame.id = 'fw-frame';
+            frame.src = window.location.href.split('#')[0] + '#floating';
+            body.insertBefore(frame, body.firstChild);
+        }
+        if (!win.style.width) place();
+        win.classList.add('fw-open'); fab.classList.add('fw-on');
+        fab.querySelector('.fw-lbl').textContent = 'Close';
+        fab.title = 'Close floating window';
+    }
+    function close() {
+        win.classList.remove('fw-open', 'fw-min'); fab.classList.remove('fw-on');
+        fab.querySelector('.fw-lbl').textContent = 'Float';
+        fab.title = 'Floating window (stays on top of other apps)';
+        if (frame) { frame.remove(); frame = null; }
+    }
+    /* ── TRUE always-on-top window (stays visible even when the browser is minimized / other apps are in front) ── */
+    var pip = null;
+    var appUrl = function () { return window.location.href.split('#')[0] + '#floating'; };
+    function setFabState(on) {
+        fab.classList.toggle('fw-on', on);
+        fab.querySelector('.fw-lbl').textContent = on ? 'Close' : 'Float';
+        fab.title = on ? 'Close floating window' : 'Floating window (stays on top of other apps)';
+    }
+    function openPip() {
+        var w = Math.min(440, screen.availWidth - 40), h = Math.min(680, screen.availHeight - 80);
+        return window.documentPictureInPicture.requestWindow({ width: w, height: h }).then(function (pw) {
+            pip = pw;
+            var d = pw.document;
+            d.title = document.title + ' — Floating';
+            d.documentElement.style.cssText = 'height:100%';
+            d.body.style.cssText = 'margin:0;height:100%;overflow:hidden;background:#0b1f3a';
+            var fr = d.createElement('iframe');
+            fr.src = appUrl();
+            fr.style.cssText = 'border:0;width:100%;height:100%;display:block;background:#fff';
+            d.body.appendChild(fr);
+            setFabState(true);
+            pw.addEventListener('pagehide', function () { pip = null; setFabState(false); });
+        });
+    }
+    function openPopup() {                              // fallback: separate OS window (works in most browsers)
+        var w = 440, h = 680;
+        var p = window.open(appUrl(), 'fw_popup', 'popup=yes,width=' + w + ',height=' + h + ',left=' + Math.max(0, screen.availWidth - w - 20) + ',top=60');
+        if (!p) alert('Popup blocked — please allow popups for this page.');
+        return p;
+    }
+    fab.addEventListener('click', function () {
+        if (pip) { pip.close(); return; }
+        if (win.classList.contains('fw-open')) { close(); return; }
+        if ('documentPictureInPicture' in window) {
+            openPip().catch(function () { open(); });   // if the browser refuses, use the in-page window
+        } else { open(); }
+    });
+    win.querySelector('.fw-pop').addEventListener('click', function () {
+        if (pip) return;
+        if ('documentPictureInPicture' in window) { openPip().then(close).catch(function () { openPopup(); }); }
+        else { openPopup(); }
+    });
+    win.querySelector('.fw-x').addEventListener('click', close);
+    win.querySelector('.fw-reload').addEventListener('click', function () { if (frame) frame.src = frame.src; });
+    win.querySelector('.fw-minb').addEventListener('click', function () {
+        if (!win.classList.contains('fw-min')) win.dataset.h = win.style.height;   // remember height
+        win.classList.toggle('fw-min');
+        win.style.height = win.classList.contains('fw-min') ? 'auto' : (win.dataset.h || '60vh');
+    });
+    win.querySelector('.fw-max').addEventListener('click', function () {
+        if (saved) { win.style.left = saved.l; win.style.top = saved.t; win.style.width = saved.w; win.style.height = saved.h; saved = null; }
+        else {
+            saved = { l: win.style.left, t: win.style.top, w: win.style.width, h: win.style.height };
+            win.classList.remove('fw-min');
+            win.style.left = '8px'; win.style.top = '8px'; win.style.width = (vw() - 16) + 'px'; win.style.height = (vh() - 16) + 'px';
+        }
+    });
+
+    function track(handle, onMove) {                    // mouse + touch via pointer events
+        handle.addEventListener('pointerdown', function (e) {
+            if (e.target.closest && e.target.closest('button')) return;
+            e.preventDefault(); handle.setPointerCapture(e.pointerId);
+            win.classList.add('fw-busy');
+            var sx = e.clientX, sy = e.clientY, r = win.getBoundingClientRect();
+            function mv(ev) { onMove(ev.clientX - sx, ev.clientY - sy, r); }
+            function up() {
+                win.classList.remove('fw-busy');
+                handle.removeEventListener('pointermove', mv); handle.removeEventListener('pointerup', up); handle.removeEventListener('pointercancel', up);
+                if (!win.classList.contains('fw-min')) win.dataset.h = win.style.height;
+            }
+            handle.addEventListener('pointermove', mv); handle.addEventListener('pointerup', up); handle.addEventListener('pointercancel', up);
+        });
+    }
+    track(bar, function (dx, dy, r) {
+        saved = null;
+        win.style.left = Math.min(Math.max(-r.width + 90, r.left + dx), vw() - 90) + 'px';
+        win.style.top = Math.min(Math.max(0, r.top + dy), vh() - 40) + 'px';
+    });
+    track(grip, function (dx, dy, r) {
+        saved = null;
+        win.style.width = Math.max(280, Math.min(r.width + dx, vw() - r.left)) + 'px';
+        win.style.height = Math.max(160, Math.min(r.height + dy, vh() - r.top)) + 'px';
+    });
+    window.addEventListener('resize', function () { if (win.classList.contains('fw-open') && !saved) clampPos(); });
+    mq.addEventListener && mq.addEventListener('change', function (e) { if (e.matches) { if (pip) pip.close(); close(); } });
 })();
 </script>
 </body>
